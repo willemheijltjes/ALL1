@@ -1,0 +1,232 @@
+
+\newcommand\qrr[1]{
+  \ifx#1+\expandafter\@qrr\else
+  \ifx#1*[\*]\else
+  \ifx#1![\forall]\else
+  \ifx#1?[\exists]\else 
+  \ifx#11[a]\else
+  (#1)
+  \fi\fi\fi\fi\fi
+}
+\newcommand\@qrr[1]{[+_{#1}]}
+\newcommand\srr[1]{
+  \ifx#1+\expandafter\@srr\else
+  \ifx#1*(\*)\else
+  \ifx#1!(\forall)\else
+  \ifx#1?(\exists)\else
+  \ifx#11(a)\else
+  (#1)
+  \fi\fi\fi\fi
+}
+\newcommand\@srr[1]{(+_{#1})}
+\newcommand\urr[1]{
+  \ifx#1+\expandafter\@urr\else
+  \ifx#1*\langle\*\rangle\else
+  \ifx#1!\langle\forall\rangle\else
+  \ifx#1?\langle\exists\rangle\else
+  \ifx#11\langle a\rangle\else
+  \langle#1\rangle
+  \fi\fi\fi\fi\fi
+}
+\newcommand\@urr[1]{\langle+_{#1}\rangle}
+ 
+% A \defn{unifying} witness map $\sigma$ for two atomic formulas $A$ and $B$ is one such that $A\sigma=B\sigma$. Note that these will substitute only the free existential variables, but not bound ones or universal variables. For instance, the only unifying witness map of $p(x,y)$ and $p(a,a)$ is $\{x\mapsto a,y\mapsto a\}$, while $\exists y.p(x,x)$ and $\exists y.p(a,y)$ have no unifier.
+
+
+
+%\begin{figure}
+%\[
+%\begin{array}{cc}
+%	\infer[\!\!\scriptstyle{Q\sigma=\dual R\sigma}]{\ujg{\clink QR}QR}{}
+%&	\infer[\!\!\scriptstyle{\sigma\,=\,\sigma(Q,R)}]{\vjg{\clink[]QR}QR}{}
+%\\ \\
+%	\infer{\ujg\lambda A{B_0\+B_1}}{\ujg\lambda A{B_i}}
+%&	\infer{\vjg\lambda A{B_0\+B_1}}{\vjg\lambda A{B_i}}
+%\\ \\
+%	\infer{\ujg{\lambda\cup\kappa}A{B\*C}}{\ujg\lambda AB && \ujg\kappa AC}
+%&	\infer[\!\!\scriptstyle{\sigma\,\vco\,\tau}\vphantom)]{\vjg{\lambda\cup\kappa}[\sigma\vjn\tau]A{B\*C}}{\vjg\lambda[\sigma]AB && \vjg\kappa[\tau]AC}
+%\\ \\
+%	\infer[\!\!\scriptstyle{\sigma(x)=t}]{\ujg\lambda[\sigma\!\minus\!x]A{\exists x.B}}{\ujg\lambda AB}
+%&	\infer{\vjg\lambda[\sigma\!\minus\!x]A{\exists x.B}}{\vjg\lambda AB}
+%\\ \\
+%	\infer[\!\!\scriptstyle{a\,\notin\,\sigma}]{\ujg\lambda A{\forall a.B}}{\ujg\lambda AB}
+%&	\infer[\!\!\scriptstyle{a\,\notin\,\sigma}]{\vjg\lambda A{\forall a.B}}{\vjg\lambda AB}
+%\end{array}
+%\]
+%\caption{Derivation rules for (de-)sequentialization}
+%\label{fig:derivations}
+%\end{figure}
+
+
+
+
+\[
+	\infer{\seq A{\dual A}}{}
+\qquad
+	\infer{\seq AC}{\seq AB && \seq{\dual B}C}
+\]
+
+
+
+The \defn{initial witness map} $\sigma(A,B)$ is the most general unifying witness map for the formulas $A$ and $B$, if it exists; if it does, $A$ and $B$ are \defn{compatible}. An unlabelled axiom link $(P,Q)$ is \defn{compatible} if $P$ and $\dual Q$ are compatible; a labelled one $\clink PQ$ is \defn{compatible} if $\sigma$ is a unifier for $P$ and $\dual Q$. A (labelled) linking or pre-net is \defn{compatible} if all links are compatible axiom links. The \defn{initial labelling} of a compatible linking $\lambda$ or pre-net $\net\lambda AB$ is the labelled linking $\lambda_\star$ or labelled pre-net $\net{\lambda_\star}AB$ given by
+\[
+	\lambda_\star = \{~\clink[\sigma(P,\dual Q)]PQ~\mid~(P,Q)\in\lambda~\}~.
+\]
+
+
+\[
+	\{~\clink[\varnothing]AB~\mid~\clink AB\in\lambda~\}
+\]
+
+
+
+
+A linking (or pre-net) is a \defn{unification linking} if 
+
+
+
+
+
+A link is an \defn{axiom link} if both formulas are atomic propositions.%It is an \defn{axiom linking} if all links are axiom links.
+
+The \defn{domain} $\dom\sigma$ of $\sigma$ are those variables on which it is not the identity, $\{~x\in\varE~\mid~\sigma(x)\neq x~\}$. We write $\varnothing$ for the empty map (the identity). 
+
+A \defn{witness map} $\sigma$ is a substitution map
+\[
+	\sigma\colon \varE \to \terms
+\]
+which assigns terms to existential variables. We write $\varnothing$ for the empty map (the identity). The map $\sigma[x\mapsto t]$ substitutes $t$ for $x$ and is as $\sigma$ everywhere else, while $\sigma\minus x$ is the identity on $x$ and otherwise as $\sigma$. The application of a witness map $\sigma$ to a formula $A$ is written $A\sigma$. 
+ 
+
+
+
+To generate witness maps for an unlabelled linking, we will be using unification. A \defn{unifying} witness map $\sigma$ for formulas $A$ and $B$ is one such that $A\sigma=B\sigma$. Note that these will substitute only the free existential variables, but not bound ones or universal variables. For instance, the only unifying witness map of $p(x,y)$ and $p(a,a)$ is $\{x\mapsto a,y\mapsto a\}$, while $\exists y.p(x,x)$ and $\exists y.p(a,y)$ have no unifier.
+
+The \defn{initial witness map} $\sigma(A,B)$ is the most general unifying witness map for the formulas $A$ and $B$, if it exists; if it does, $A$ and $B$ are \defn{compatible}. An unlabelled axiom link $(P,Q)$ is \defn{compatible} if $P$ and $\dual Q$ are compatible; a labelled one $\clink PQ$ is \defn{compatible} if $\sigma$ is a unifier for $P$ and $\dual Q$. A (labelled) linking or pre-net is \defn{compatible} if all links are compatible axiom links. The \defn{initial labelling} of a compatible linking $\lambda$ or pre-net $\net\lambda AB$ is the labelled linking $\lambda_\star$ or labelled pre-net $\net{\lambda_\star}AB$ given by
+\[
+	\lambda_\star = \{~\clink[\sigma(P,\dual Q)]PQ~\mid~(P,Q)\in\lambda~\}~.
+\]
+%Observe that $\floor{\lambda_\star}=\lambda$. We call $\floor\lambda_\star$ the \defn{initial re-labelling} of a labelled linking $\lambda$, and analogously for a pre-net $\net\lambda AB$.
+
+
+
+
+% ..................................................
+
+
+\begin{figure}
+\[
+\begin{array}{rcl@{\hspace{40pt}}rcl} 
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{B\+C}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{1,1}
+    \end{tikzpicture}}
+&\rightsquigarrow& 
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{B\+C}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}
+&    
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{\exists x.B}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\rightsquigarrow&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{\exists x.B}
+    	\Vlink[red,label={~$\scriptstyle{\sigma\!\minus\!x}$}]{1,1}
+    \end{tikzpicture}}
+\\ \\    
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{B\*C}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-1]1,1}
+    	\Vlink[red,label={~$\scriptstyle\tau$}]{[1]1,3}
+    \end{tikzpicture}}
+&\stackrel{\sigma\comp\tau}\rightsquigarrow&   
+	\vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{B\*C}
+    	\Vlink[red,label={~$\scriptstyle{\sigma\cup\tau}$}]{1,2}
+    \end{tikzpicture}}
+&  
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{\forall a.B}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{a\,\notin\,\fv(A\sigma)}\rightsquigarrow&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{A}
+    	\formula[y=1]{\forall a.B}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,1}
+    \end{tikzpicture}}
+\end{array}
+\]
+\caption{Coalescence rules}
+\label{fig:coalescence}
+\end{figure}
+
+% ..................................................
+%\[
+%\renewcommand{\+}{{+}}
+%\renewcommand{\*}{{\times}}
+%\begin{array}{r@{}c@{\,}c@{\,~}l}
+%    \begin{array}{@{}r@{}}
+%        \net{\{\clink AB\}}A{B\+C} \\ \\[-5pt]
+%        \net{\{\clink AC\}}A{B\+C}
+%    \end{array}
+%&   \left.\begin{array}{@{}c@{}} 
+%		\vphantom\{\\\\[-5pt]\vphantom\{
+%	\end{array}\right\}
+%& \coal &
+%	\net{\{\clink A{B\+C}\}}A{B\+C}
+%\\ \\[-5pt]
+%	\net{\{\clink AB,\clink[\tau]AC\}}A{B\*C}
+%&& \coal &
+%	\net{\{\clink[\sigma\join\tau]A{B\*C}\}}A{B\*C}\quad\text{if }\sigma\comp\tau
+%\\ \\[-5pt]	
+%	\net{\{\clink AB\}}A{\exists x.B}
+%&& \coal &
+%	\net{\{\clink[\sigma\!\minus\!x]A{\exists x.B}\}}A{\exists x.B}
+%\\ \\[-5pt]
+%	\net{\{\clink AB\}}A{\forall a.B}
+%&& \coal &
+%	\net{\clink A{\forall a.B}}A{\forall a.B} \quad \text{if }a\,\notin\,\fv(A\sigma)
+%\end{array}
+%\]
+%\begin{itemize}
+%	\item 
+%\makebox[40pt][l]{$B\+C$:} 
+%Replace a link $\clink AB$ or $\clink AC$ with $\clink A{B\+C}$.
+%	\item 
+%\makebox[40pt][l]{$B\*C$:} 
+%Replace links $\clink AB$ and $\clink[\tau]AC$ with $\clink[\sigma\cup\tau]A{B\*C} $ if $\sigma\comp\tau$.
+%	\item
+%\makebox[40pt][l]{$\exists x.B$:} 
+%Replace a link $\clink AB$ with $\clink[\sigma\minus x]A{\exists x.B}$.
+%	\item
+%\makebox[40pt][l]{$\forall a.B$:}
+%Replace a link $\clink AB$ with $\clink A{\forall a.B}$ if $a\,\notin\,\fv(A\sigma)$.
+%\end{itemize}
+%
+%
+%\begin{itemize}
+%	\item 
+%\makebox[40pt][l]{$B\+C$:} 
+%Replace a link $\clink AB$ or $\clink AC$ with $\clink A{B\+C}$.
+%	\item 
+%\makebox[40pt][l]{$B\*C$:} 
+%Replace links $\clink AB$ and $\clink[\tau]AC$ with $\clink[\sigma\cup\tau]A{B\*C} $ if $\sigma\comp\tau$.
+%	\item
+%\makebox[40pt][l]{$\exists x.B$:} 
+%Replace a link $\clink AB$ with $\clink[\sigma\minus x]A{\exists x.B}$.
+%	\item
+%\makebox[40pt][l]{$\forall a.B$:}
+%Replace a link $\clink AB$ with $\clink A{\forall a.B}$ if $a\,\notin\,\fv(A\sigma)$.
+%\end{itemize}
+

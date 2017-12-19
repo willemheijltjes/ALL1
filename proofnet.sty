@@ -1,0 +1,622 @@
+% Proof net drawing library
+% WBH 26-08-2016
+% WBH 14-09-2016
+% WBH 21-11-2016 Added labeling for curved arms
+% WBH 04-01-2017 Added vertical links between formulae
+% WBH 10-11-2017 Added labeling for vertical links
+%                Changed global keys
+%                   "above"  =>  "links above"
+%                   "below"  =>  "links below"
+
+% ERRORS: 
+%  setting local values for links, e.g. "arms = curved"
+
+\usepackage{tikz}
+\usetikzlibrary{calc,chains,intersections}
+\usepackage{willemtools}
+
+
+% wrapper for  \def[#1]#2...  functions with optional argument
+
+\newcommand\@withdefault[2]{\@ifnextchar[{#2}{#2[#1]}}
+
+
+% storing global values
+
+\def\@globalnorthsouth{north}
+\def\@globaloffset{20pt}
+
+% tikz styles for proof nets and formula tokens
+
+\tikzset{
+	token/.style={
+	  text height=1.9ex,
+	  text depth =.5ex,
+	  inner sep=0pt,
+	  outer sep=0pt
+	},
+	net/.style={
+  	  x=10pt,
+	  y=30pt,
+	  thick,
+	  >=triangle,
+	  inner sep=0pt,
+	  outer sep=0pt,
+%	  resetlinkcounter
+	},
+%	resetlinkcounter/.code = \setcounter{@currenttoken}{0},
+	counter/.code = \netcountertrue,
+	counter/.value forbidden,
+	armlabels/.code = \armlabelstrue,
+	armlabels/.value forbidden,
+	links above/.code = \edef\@linknorthsouth{north}\edef\@globaloffset{#1},
+	links above/.default = 20pt,
+	links below/.code = \edef\@globalnorthsouth{south}\edef\@globaloffset{-#1},
+	links below/.default = 20pt,
+    node/.is choice,
+	node/.default = disc,
+	node/circ/.style		= {/tikz/node value = circ},
+	node/disc/.style        = {/tikz/node value = disc},
+	node/none/.style        = {/tikz/node value = none},
+	node value/.initial     = none,
+	circ/.style             = {/tikz/node value = circ},
+	disc/.style             = {/tikz/node value = disc},
+	no node/.style          = {/tikz/node value = none},
+	disc/.value forbidden,
+	circ/.value forbidden,
+	no node/.value forbidden,
+	arms/.is choice,
+	arms/arc/.style         = {/link/arms value = arc},
+	arms/angled/.style      = {/link/arms value = angled},
+	arms/curved/.style      = {/link/arms value = curved},
+	arms/straight/.style    = {/link/arms value = straight},
+	arms value/.initial     = angled,
+	arc/.style				= {/link/arms value = arc},
+	angled/.style           = {/link/arms value = angled},
+	curved/.style           = {/link/arms value = curved},
+	straight/.style         = {/link/arms value = straight},
+	no arms/.style          = {/link/arms value = none},
+	angled/.value forbidden,
+	curved/.value forbidden,
+	straight/.value forbidden,
+	no arms/.value forbidden,
+}
+
+
+% key-value options for formulas
+
+\pgfkeys{
+	/formula/.is family,
+	/formula,
+	anchor/.is choice,
+	anchor/left/.code     = \edef\@formulaanchor{0},
+	anchor/right/.code    = \edef\@formulaanchor{1},
+	anchor/center/.code   = \edef\@formulaanchor{0.5},
+	anchor/.unknown/.code = \edef\@formulaanchor{\pgfkeyscurrentname},
+	center/.style = {anchor=center},
+	center/.value forbidden,
+	counter/.is if = formulacounter,
+	counter/.default = true,
+	left/.style = {anchor=left},
+	left/.value forbidden,
+	name/.code = \edef\@formulaname{#1},
+	right/.style = {anchor=right},
+	right/.value forbidden,
+	x/.initial = 0,
+	x/.value required,
+	y/.initial = 0,
+	y/.value required,
+}
+
+% storing data for formulae
+
+\newcounter{level}
+\newcommand\@formulaname{-}
+\newcommand\@previousformulaname{-}
+\newcommand\@formulaanchor{bla}
+
+\newdimen\formulawidth
+
+\newif\ifnetcounter
+\newif\ifformulacounter
+\newif\ifformulacountereven
+
+\newif\ifarmlabels
+
+% reset default values
+
+\newcommand\@resetformuladefaults{%
+  \formulacounterfalse%
+  \formulacountereventrue%
+  \setcounter{@currenttoken}{1}
+  \def\@formulaanchor{0.5}%
+  \edef\@previousformulaname{\@formulaname}%
+  \edef\@formulaname{\thelevel}%
+}
+
+% draw a formula
+
+\newcommand\formula[2][]{
+  \@resetformuladefaults
+  \settowidth\formulawidth{\pgfinterruptpicture$\@unstar#2\relax$\endpgfinterruptpicture}
+  \pgfkeys{/formula/.cd,#1}
+  \begin{scope}[start chain={\@formulaname} going right,node distance=0mm]
+  	\node[on chain=\@formulaname,minimum size=0pt,inner sep=0pt,outer sep=0pt] (\@formulaname-0)
+		at ($(\pgfkeysvalueof{/formula/x},\pgfkeysvalueof{/formula/y}) - \@formulaanchor*(\formulawidth,0)$) {};
+	\coordinate (\@formulaname-0-a) at (\@formulaname-0.center);
+    \@token#2\relax
+    \node[on chain=\@formulaname,minimum size=0pt,inner sep=0pt,outer sep=0pt] (\@formulaname-*) {};
+    \coordinate (\@formulaname-*-a) at (\@formulaname-*.center);
+  \end{scope}
+  \stepcounter{level}
+  \setcounter{@currenttoken}{0}
+}
+
+% remove asterisks
+
+\newcommand\@unstar{\@ifstar\@@unstar\@@unstar}
+\newcommand\@@unstar[1]{#1\@ifnextchar\relax{}\@unstar}
+
+% draw a formula token
+
+\newcommand\@token{\@ifstar\@tokenX\@tokenA}
+\newcommand\@tokenX[1]{\node[on chain=\@formulaname,token] {${}#1{}$};\@ifnextchar\relax{}\@token}
+\newcommand\@tokenA[1]{
+	\node[on chain=\@formulaname,token] (\@formulaname-\the@currenttoken) {${}#1{}$};
+	\coordinate (\@formulaname-\the@currenttoken-a) at (\@formulaname-\the@currenttoken.center);
+	\ifnetcounter
+	  \@token@counter{\@formulaname-\the@currenttoken}
+	\else
+	\ifformulacounter
+	  \@token@counter{\@formulaname-\the@currenttoken}
+	\fi\fi
+	\stepcounter{@currenttoken}
+	\@ifnextchar\relax{}\@token
+}
+
+% draw a formula token counter
+
+\newcommand\@token@counter[1]{
+  \ifformulacountereven
+	\formulacounterevenfalse
+	\node[anchor=south,text depth=1ex] at (#1.north) {$\scriptstyle\the@currenttoken$};
+  \else
+	\formulacountereventrue
+	\node[anchor=north,text height=2ex] at (#1.south) {$\scriptstyle\the@currenttoken$};
+  \fi
+}
+
+% storing data for links
+
+\newif\if@linklabeled
+\newif\ifbelownode
+
+\newcounter{@currenttoken}
+\newcounter{@currentlink}
+
+\newcommand\@resetlinkoptions{
+  \@linklabeledfalse
+  \belownodefalse
+  \edef\@linknorthsouth{\@globalnorthsouth}
+  \edef\@linkoffset{\@globaloffset}
+  \setcounter{@currentlink}{1}
+  \pgfkeys{
+    /link/.cd,
+	forward to tikz/.style = {},
+	formula = \@formulaname,
+	pos = 0.5,
+	node = \pgfkeysvalueof{/tikz/node value},
+	arms = \pgfkeysvalueof{/tikz/arms value},
+} }
+
+
+% hackery
+
+\newcommand\@setnodevalue[1]{
+  \SWITCH{#1}
+    {circ} {\pgfkeys{/link/node value = circ}}
+    {disc} {\pgfkeys{/link/node value = disc}}
+    {none} {\pgfkeys{/link/node value = none}}
+    {label}{\pgfkeys{/link/node value = label}}
+  \DEFAULT {\pgfkeys{/link/label = #1}}
+}
+
+
+% key-value options for links
+
+\pgfkeys{
+	/link/.is family,
+	/link,
+	above/.code = \edef\@linknorthsouth{north}\edef\@linkoffset{#1},
+	above/.default = 20pt,
+	below/.code = \edef\@linknorthsouth{south}\edef\@linkoffset{-#1},
+	below/.default = 20pt,
+	formula/.initial = {},
+	formula/.value required,
+	node/.code = \@setnodevalue{#1},
+	node/.default = disc,
+	node value/.initial = none,
+	circ/.style    = {/link/node value = circ},
+	disc/.style    = {/link/node value = disc},
+	no node/.style = {/link/node value = none},
+	disc/.value forbidden,
+	circ/.value forbidden,
+	no node/.value forbidden,
+	label/.code = \@linklabeledtrue\def\@linklabel{#1}\pgfkeys{/link/node = label},
+	label/.value required,
+	label position/.initial = 0.5,
+	label position/.value required,
+	label color/.initial = black,
+	label color/.value required,
+    label side/.initial = west,
+    label side/r/.style = {/link/label side = west},
+    label side/l/.style = {/link/label side = east},
+	label side/.value required,
+	pos/.style = {label position = #1},
+	r/.style   = {/link/label side/r},
+    l/.style   = {/link/label side/l},
+	arms/.is choice,
+	arms value/.initial = angled,
+	arms/arc/.style         = {/link/arms value = arc},
+	arms/curved/.style      = {/link/arms value = curved},
+	arms/angled/.style      = {/link/arms value = angled},
+	arms/straight/.style    = {/link/arms value = straight},
+	arc/.value forbidden,
+	curved/.value forbidden,
+	straight/.value forbidden,
+	angled/.value forbidden,
+	arc/.style		        = {/link/arms value = arc},
+	curved/.style           = {/link/arms value = curved},
+	angled/.style      	    = {/link/arms value = angled},
+	straight/.style         = {/link/arms value = straight},
+	v-ref/.code = \belownodetrue\pgfkeys{/link/v-ref value = #1},
+	v-ref/.value required,
+	v-ref value/.initial = {},
+	forward to tikz/.style = {},
+	.unknown/.code={%
+	  \let\currname\pgfkeyscurrentname%
+	  \let\currval\pgfkeyscurrentvalue%
+	  \ifx#1\pgfkeysnovalue%
+	    \pgfqkeys{/link}{forward to tikz/.append style/.expand once={\currname}}%
+	  \else%
+	    \pgfqkeys{/link}{forward to tikz/.append style/.expand twice={\expandafter\currname\expandafter=\currval}}%
+	  \fi%
+	}%
+%	.unknown/.code  = {%
+%	  \let\@currentname\pgfkeyscurrentname%
+%	  \pgfqkeys{/link}{color/.expanded = \@currentname}%
+%	}
+}
+
+% set start and end points of a link
+
+\newcommand\@setlinkpoints[1]{\@withdefault0\@setlinkstart#1,\relax}
+\def\@setlinkstart[#1]#2,{
+  \coordinate (linkstart) 
+	at ($(\pgfkeysvalueof{/link/formula}-#2-a) + (#1pt,0pt)$);
+  \@setlinkend[#1]#2,
+}
+\def\@setlinkend[#1]#2,{
+  \@ifnextchar\relax{
+	\coordinate (linkend)
+	  at ($(\pgfkeysvalueof{/link/formula}-#2-a) + (#1pt,0pt)$);
+  }{
+	\@withdefault0\@setlinkend
+}}
+
+% \Link [options] {nodes} 
+
+\newcommand\Link[2][{}]{
+  \stepcounter{@currenttoken}
+  \@resetlinkoptions
+  \pgfkeys{/link,#1}
+  \@setlinkpoints{#2}
+  \@linknode
+  \@linkarms{#2} 
+}
+
+% draw link node only
+
+\newcommand\Linknode[2][{}]{
+  \stepcounter{@currenttoken}
+  \@resetlinkoptions
+  \pgfkeys{/link/.cd,#1}
+  \@setlinkpoints{#2}
+  \@linknode
+}
+
+% draw the root node of a link
+
+\newcommand\@linknode{
+  \ifbelownode
+	\coordinate (\@formulaname-\alph{@currenttoken}-a) at 
+	  ({$(linkstart)!\pgfkeysvalueof{/link/label position}!(linkend)$}
+	   |- {$(\@formulaname-\pgfkeysvalueof{/link/v-ref value}-a) + (0,\@linkoffset)$});
+  \else
+	\coordinate (\@formulaname-\alph{@currenttoken}-a) at 
+	  ($(linkstart)!\pgfkeysvalueof{/link/label position}!(linkend) + (0,\@linkoffset)$);
+  \fi
+  \SWITCH{\pgfkeysvalueof{/link/node value}}
+	{none}  {\node[minimum size=0pt,inner sep=0pt,outer sep=0pt] 
+			  (\@formulaname-\alph{@currenttoken}) at (\@formulaname-\alph{@currenttoken}-a) {};}
+	{circ}  {\node[/link/forward to tikz,solid,circle,draw,minimum size=2.5pt,outer sep=1.5pt]
+			  (\@formulaname-\alph{@currenttoken}) at (\@formulaname-\alph{@currenttoken}-a) {};}
+	{disc}  {\node[/link/forward to tikz,solid,circle,draw,fill,minimum size=2.5pt,outer sep=1.5pt]
+			  (\@formulaname-\alph{@currenttoken}) at (\@formulaname-\alph{@currenttoken}-a) {};}
+	{label} {\node[/link/forward to tikz,solid,outer sep=1pt] 
+			  (\@formulaname-\alph{@currenttoken}) at (\@formulaname-\alph{@currenttoken}-a)
+			  {$\scriptstyle\@linklabel\vphantom)$};}
+  \DEFAULT{\errmessage{error: no value (\pgfkeysvalueof{/link/node}) for key `node'}}
+  \ifnetcounter\@link@counter\fi
+}
+
+% draw a link counter
+
+\newcommand\@link@counter{
+  \SWITCH{\pgfkeysvalueof{/link/arms value}}
+    {angled} 
+      {\node[anchor=east,xshift = -2pt]
+		 at ($(linkstart) + (0,\@linkoffset)$)
+		 {$\scriptstyle\alph{@currenttoken}$};}
+	\DEFAULT 
+	  {\SWITCH{\@linknorthsouth}
+		{north} {\node[anchor=south east,xshift = -1pt, yshift = 1pt]
+		 		  at ($(\@formulaname-\alph{@currenttoken}.north west)$)
+		 		  {$\scriptstyle\alph{@currenttoken}\vphantom)$};}
+		\DEFAULT {\node[anchor=north east,xshift = -1pt, yshift = 1pt]
+		 		  at ($(\@formulaname-\alph{@currenttoken}.south west)$)
+		 		  {$\scriptstyle\alph{@currenttoken}\vphantom)$};}
+	  }
+}
+
+% draw the arms of a link
+
+\newcommand\@linkarms[1]{
+  \SWITCH{\pgfkeysvalueof{/link/arms value}}
+	{none}     {}
+	{arc}      {\@linkarc{#1}}
+	{curved}   {\@linkcurved{#1}}
+	{angled}   {\@linkrightangled{#1}}
+	{straight} {\@linkstraight{#1}}
+  \DEFAULT {\errmessage{error: no value (\pgfkeysvalueof{/link/arms}) for key `arms'}}
+}
+
+% draw additional arms
+
+\newcommand\arms[2][{}]{
+  \begin{scope}
+	\pgfkeys{/link,#1}
+	\@linkarms{#2}
+  \end{scope}
+}
+
+% curved arms
+
+\newcommand\@linkcurved[1]{\@withdefault0\@linkcurvedarm#1,\relax}
+\def\@linkcurvedarm[#1]#2,{
+  \coordinate (TIP)  at ($(\pgfkeysvalueof{/link/formula}-#2-a) + (#1pt,0pt)$);
+  \coordinate (NODE) at (\@formulaname-\alph{@currenttoken}-a);
+  \draw[overlay,name path=PATH1,/link/forward to tikz]
+	($(\pgfkeysvalueof{/link/formula}-#2.\@linknorthsouth) + (#1pt,0pt)$) 
+      .. controls
+         ($(TIP) !0.6! (TIP |- NODE)$)
+         and
+         ($ ($(TIP) !-2.5! (TIP -| NODE)$) !.8! (NODE) $) 
+      .. (\@formulaname-\alph{@currenttoken}) ;
+  \ifarmlabels
+  \path[name path=PATH2] 
+  		($(TIP) !0.5! (TIP |- NODE)$) --
+		($(NODE) !0.5! (TIP -| NODE)$);
+  \path[name intersections={of=PATH1 and PATH2}] (intersection-1) coordinate (\the@currentlink);
+  %\node at (\the@currentlink) {$\scriptstyle\the@currentlink$}; %for debugging
+  \stepcounter{@currentlink}
+  \fi
+  \@ifnextchar\relax{}{\@withdefault0\@linkcurvedarm}
+}
+
+% single arc
+
+\newcommand\@linkarc[1]{\@withdefault0\@linkarcsrc#1,\relax}
+\def\@linkarcsrc[#1]#2,{
+  \coordinate (SRC) at ($(\pgfkeysvalueof{/link/formula}-#2.\@linknorthsouth) + (#1pt,0pt)$);
+  \@ifnextchar\relax{}{\@withdefault0\@linkarctgt}
+}
+\def\@linkarctgt[#1]#2,{
+ \@ifnextchar\relax{
+  \coordinate (TGT) at ($(\pgfkeysvalueof{/link/formula}-#2.\@linknorthsouth) + (#1pt,0pt)$);
+  \coordinate (TOP) at (\@formulaname-\alph{@currenttoken}-a);
+  \draw[overlay,name path=PATH1,/link/forward to tikz]
+      (SRC) .. controls (SRC |- TOP) and (TOP -| TGT) .. (TGT);
+  \ifarmlabels
+  \path[name path=PATH2] 
+  		($(SRC) !0.5! (SRC |- TOP)$) --
+		($(TGT) !0.5! (TGT |- TOP)$);
+  \path[name intersections={of=PATH1 and PATH2}] 
+  	(intersection-1) coordinate (1) 
+	(intersection-2) coordinate (2);
+  \fi
+ }
+ {\@withdefault0\@linkarctgt}
+}
+
+
+% straight arms
+
+\newcommand\@linkstraight[1]{\@withdefault0\@linkstraightarm#1,\relax}
+\def\@linkstraightarm[#1]#2,{
+  \draw[/link/forward to tikz,cap=round] 
+     ($(\pgfkeysvalueof{/link/formula}-#2.\@linknorthsouth) + (#1pt,0pt)$) 
+  -- (\@formulaname-\alph{@currenttoken});
+  \@ifnextchar\relax{}{\@withdefault0\@linkstraightarm}
+}
+
+
+% right angled arms
+
+	% append <,\relax> for pattern matching end-of-list
+\newcommand\@linkrightangled[1]{\@withdefault0\@linkrightangledA#1,\relax}
+	% draw right-angled, offset arm
+\def\@linkrightangledA[#1]#2,{
+  \draw[/link/forward to tikz] 
+     ($(\pgfkeysvalueof{/link/formula}-#2.\@linknorthsouth) + (#1pt,0pt)$) 
+  |- (\@formulaname-\alph{@currenttoken});
+  \@ifnextchar\relax{}{\@withdefault0\@linkrightangledB}
+}
+	% draw vert arms
+\def\@linkrightangledB[#1]#2,{
+  \@ifnextchar\relax{\@linkrightangledA[#1]#2,}{
+	\draw[/link/forward to tikz] 
+	   ($(\pgfkeysvalueof{/link/formula}-#2.\@linknorthsouth) + (#1pt,0pt)$)
+	-- ($(\pgfkeysvalueof{/link/formula}-#2-a) + (#1pt,\@linkoffset)$);
+	\@withdefault0\@linkrightangledB
+} }  
+
+
+% add an arm label
+
+\newcommand\armlabel[3][r]{
+  \ifx#1l
+    {\node[anchor=east,inner sep=1pt] at (#2) {$\scriptstyle #3\vphantom)$};}
+  \else
+    {\node[anchor=west,inner sep=1pt] at (#2) {$\scriptstyle #3\vphantom)$};}
+  \fi
+}
+
+% initiate a tree without a formula
+
+\newcommand\tree[2][{}]{
+  \formula[#1]{{\rule{#2}{0pt}}}
+}
+
+% draw a leaf
+
+\newcommand\Leaf[1][{}]{
+  \Linknode[node,#1]{0,*}
+}
+
+% VERTICAL LINKS
+% between previous two formulae
+
+\newcommand\Vlink{
+  \SWITCH{\pgfkeysvalueof{/link/arms value}}
+	{none}     {}
+	{arc}      {\@vlinkcurved}
+	{curved}   {\@vlinkcurved}
+	{angled}   {\@vlinkstraight}
+	{straight} {\@vlinkstraight}
+  \DEFAULT {\errmessage{error: no value (\pgfkeysvalueof{/link/arms}) for key `arms'}}
+}
+
+% curved vertical links
+
+\newcommand\@vlinkcurved[2][{}]{
+  \begin{scope}
+	\pgfkeys{/link,#1}
+	\@withdefault0\@vlinkcurvedsrc#2,\relax
+  \end{scope}
+}
+
+\def\@vlinkcurvedsrc[#1]#2,{
+  \coordinate (SRC) at ($(\@previousformulaname-#2.south) + (#1pt,0pt)$);
+  \@ifnextchar\relax{}{\@withdefault0\@vlinkcurvedtgt}
+}	
+\def\@vlinkcurvedtgt[#1]#2,{
+ \@ifnextchar\relax{
+  \coordinate (TGT) at ($(\@formulaname-#2.north) + (#1pt,0pt)$);
+  \ifdefined\@linklabel
+  \draw[/link/forward to tikz] 
+  	(SRC) 
+	to[out=-90,in=90]
+  	node[pos=\pgfkeysvalueof{/link/label position},
+		 color=\pgfkeysvalueof{/link/label color},
+		 anchor=\pgfkeysvalueof{/link/label side}]
+		 {\@linklabel} %\pgfkeysvalueof{/link/label}} 
+	(TGT) ;
+ \else
+ \draw[/link/forward to tikz] (SRC) to[out=-90,in=90] (TGT);
+ \fi
+ }
+ {}
+}
+
+% straight vertical links
+
+\newcommand\@vlinkstraight[2][{}]{
+  \begin{scope}
+	\pgfkeys{/link,#1}
+	\@withdefault0\@vlinkstraightsrc#2,\relax
+  \end{scope}
+}
+
+\def\@vlinkstraightsrc[#1]#2,{
+  \coordinate (SRC) at ($(\@previousformulaname-#2.south) + (#1pt,0pt)$);
+  \@ifnextchar\relax{}{\@withdefault0\@vlinkstraighttgt}
+}	
+\def\@vlinkstraighttgt[#1]#2,{
+ \@ifnextchar\relax{
+  \coordinate (TGT) at ($(\@formulaname-#2.north) + (#1pt,0pt)$);
+  \ifdefined\@linklabel
+  \draw[/link/forward to tikz,cap=round] 
+  	(SRC) 
+	--
+  	node[pos=\pgfkeysvalueof{/link/label position},
+		 color=\pgfkeysvalueof{/link/label color},
+		 anchor=\pgfkeysvalueof{/link/label side}]
+		 {\@linklabel} %\pgfkeysvalueof{/link/label}} 
+	(TGT) ;
+  \else
+  \draw[/link/forward to tikz,cap=round] (SRC) -- (TGT);
+  \fi
+ }
+ {}
+}
+
+
+
+
+% TINY ARROWHEADS
+
+\newdimen\arrowsize
+\pgfarrowsdeclare{delta}{delta}{
+	\arrowsize=0.8pt 
+	\advance\arrowsize by .5\pgflinewidth
+	\pgfarrowsleftextend{-.5\pgflinewidth}
+	\pgfarrowsrightextend{2\arrowsize-.5\pgflinewidth}
+}{
+	\arrowsize=.8pt
+	\advance\arrowsize by .5\pgflinewidth
+	\pgfsetdash{}{0pt} % do not dash 
+	\pgfsetmiterjoin	% fix join 
+	\pgfsetbuttcap	% fix cap 
+	\pgfpathmoveto{\pgfpoint{2\arrowsize}{0pt}}
+	\pgfpathlineto{\pgfpoint{0pt}{\arrowsize}}
+	\pgfpathlineto{\pgfpoint{0pt}{-\arrowsize}}
+	\pgfpathclose
+	\pgfusepathqstroke
+}
+
+\pgfarrowsdeclare{triangle}{triangle}{
+	\arrowsize=1pt 
+	\advance\arrowsize by .5\pgflinewidth
+	\pgfarrowsleftextend{-\arrowsize-.5\pgflinewidth}
+	\pgfarrowsrightextend{-.5\pgflinewidth}
+}{
+	\arrowsize=1pt
+	\advance\arrowsize by .5\pgflinewidth
+	\pgfsetdash{}{0pt} % do not dash 
+	\pgfsetmiterjoin	% fix join 
+	\pgfsetrectcap	% fix cap 
+	\pgfpathmoveto{\pgfpointorigin}
+	\pgfpathlineto{\pgfpointpolar{150}{\arrowsize}}
+	\pgfpathlineto{\pgfpointpolar{210}{\arrowsize}}
+	%\pgfpathlineto{\pgfpoint{-2\arrowsize}{\arrowsize}}
+	%\pgfpathlineto{\pgfpoint{-2\arrowsize}{-\arrowsize}}
+	\pgfpathclose
+	\pgfusepathqfillstroke
+}
+
+
+
+
+
+
