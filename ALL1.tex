@@ -14,6 +14,10 @@
 
 \bibliographystyle{plainurl}
 
+% ============================== FOR COMMENTS
+
+\newcommand{\lutz}[1]{{\color{blue}     \noindent[\![\![{\bf Lutz: }#1]\!]\!]}}
+\newcommand{\todo}[1]{{\color{red}     \noindent[\![\![{\bf TODO: }#1]\!]\!]}}
 
 % ============================== MACROS
 
@@ -372,11 +376,11 @@ A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda
 
 \subsection{Witness maps}
 
-A \defn{witness map} $\sigma\colon \varE \rightharpoonup \terms$ is a substitution map which assigns terms to existential variables, given as a (finite) partial function. Its \defn{domain} $\dom(\sigma)$ are those variables for which it is defined. The \defn{empty} witness map $\varnothing$ is the everywhere undefined partial function, and the map $\sigma[t/x]$ substitutes $t$ for $x$ and is as $\sigma$ everywhere else. We express by $\sigma(x)=\bot$ that $\sigma$ is undefined for $x$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$. 
+A \defn{witness map} $\sigma\colon \varE \rightharpoonup \terms$ is a substitution map which assigns terms to existential variables, given as a (finite) partial function. Its \defn{domain} $\dom\sigma$ are those variables for which it is defined. The \defn{empty} witness map $\varnothing$ is the everywhere undefined partial function, and the map $\sigma[t/x]$ substitutes $t$ for $x$ and is as $\sigma$ everywhere else. We express by $\sigma(x)=\bot$ that $\sigma$ is undefined for $x$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$. 
 
 We will write $A\sigma$ for the application of the witness map $\sigma\colon\varE\rightharpoonup\terms$ to the formula $A$ as a substitution map. It is applied to a sequent proof, $\pi\sigma$, by applying it to each formula in the proof $\pi$. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
 
-A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to \varE\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)$ in $\lambda$ and $\Sigma(C,D)=\sigma$. When link is not a witness link may be emphasized by calling it \defn{clean}.
+A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to \varE\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)$ in $\lambda$ and $\Sigma(C,D)=\sigma$. When a link is not a witness link, this may be emphasized by calling it \defn{clean}.
 
 \begin{definition}
 A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a witness linking $\lambda_\Sigma$.
@@ -454,6 +458,9 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 	& \quad=\quad 
 	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AB}\pi}{A'}{B'}
 \end{align*}
+\lutz{why the $\Sigma$ in the third equation?}
+
+\lutz{I don't see where the primes come in, i.e, in no equation there is a relation between $A$ and $A'$, etc.}
 \end{definition}
 
 
@@ -541,7 +548,7 @@ $ \hspace*{20pt}
 \begin{equation}
 	\net{\{\link AB\}}A{\forall a.B}
  ~\scoal~
-	\net{\link A{\forall a.B}}A{\forall a.B}
+	\net{\{\link A{\forall a.B}\}}A{\forall a.B}
 \tag{$\srr!$}
 \end{equation}
 
@@ -573,16 +580,19 @@ such that
 	\text{and} \quad
 	\lambda_\Sigma-\kappa_\Xi=\lambda'_{\Sigma'}-\kappa'_{\Xi'}~.
 \]
+\lutz{I think a $\Xi$ in the index is just horrible.}
 
 \begin{definition}
 An \all1 \defn{witnessing proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$, with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+\lutz{shouldn't we say somewhere that the initial linking is just on atoms?}
 \end{definition}
+
 
 Two useful properties of witness nets are preserved over a coalescence sequence, captured in the lemma below. The first property is formulated the way it is to account for vacuous quantifiers, for which no actual variable occurs in $C$ or $D$, as well as formulas such as $\exists x.C\+C'$ where $x$ occurs in $C'$ but not $C$, where we still would like an explicit witness for $x$ on a link $\link CD$. 
 
 
 \begin{lemma}
-Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\link[\varnothing]AB^\pi\}}AB$ from a witness net satisfies the \defn{exact coverage} property: for any link $\link CD$, the domain of $\sigma$ is exactly the variables existentially quantified in $\seq AB$ thad bind in $C$ and $D$,
+Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\link[\varnothing]AB^\pi\}}AB$ from a witness net satisfies the \defn{exact coverage} property: for any link $\link CD$, the domain of $\sigma$ is exactly the variables existentially quantified in $\seq AB$ thad bind \lutz{???} in $C$ and $D$,
 \[
 	\dom\sigma = \{\,x \mid C < \exists x.X \leq A\,\}
 			\cup \{\,y \mid D < \exists y.Y \leq B\,\}~.
@@ -608,7 +618,7 @@ Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\lin
 \begin{proof}
 By induction on the coalescence path, going forward from $\net{\lambda_\Sigma}AB$ for the first property, and working backward from $\net{\{\link[\varnothing]AB^\pi\}}AB$ for the second.
 \end{proof}
-
+\lutz{I am missing something here. In the lemma there is only one statement. So, what is the first, and what the second?}
 
 \begin{theorem}
 For any \all1 proof $\pi$, the de-sequentialization $[\pi]$ is a witness net that sequentializes to $\pi$. 
@@ -715,7 +725,7 @@ Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Xi}AB$. We will consider the 
 %
 \begin{description}
 	\item[$(\srr+i)$]
-A slice $S_B$ of $B$ and $\varnothing$ containing either of $(D_0,\tau)$, $(D_1,\tau)$, and $(D_0\+D_1,\tau)$ must also contain the other two. A slice $S$ of $\seq AB$ then contains all three of $\link C{D_0}$, $\link C{D_1}$, and  $\link C{D_0{\+}D_1}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Xi$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_0{\+}D_1}$ plus $(D_i,\sigma|\ex B{D_i})$ itself, which is minimal in the order $\dep$.
+A slice $S_B$ of $B$ and $\varnothing$ containing either of $(D_0,\tau)$, $(D_1,\tau)$, and $(D_0\+D_1,\tau)$ must also contain the other two. \lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.} A slice $S$ of $\seq AB$ then contains all three of $\link C{D_0}$, $\link C{D_1}$, and  $\link C{D_0{\+}D_1}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Xi$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_0{\+}D_1}$ plus $(D_i,\sigma|\ex B{D_i})$ itself, which is minimal in the order $\dep$.
 
 	\item[$(\srr*)$]
 A slice $S$ of $\seq AB$ contains $\link C{D_0\+D_1}$ if and only if it contains either of $\link C{D_0}$ or $\link C{D_1}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Xi$ is. Dependency-correctness is immediate, as above.
