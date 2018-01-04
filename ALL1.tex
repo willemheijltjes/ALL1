@@ -80,6 +80,8 @@
 %\newcommandx\deseq[4][2=\sigma]{\floor{#1}_{#2}^{#3,#4}}
 %\newcommandx\Deseq[4][2=\sigma]{\left\lfloor\vcenter{#1}\right\rfloor_{#2}^{#3,#4}}
 
+\newcommand\comp{\mathbin;}
+
 % ===== Witness maps
 
 \newcommand\mgu{\textsc{mgu}}
@@ -88,7 +90,13 @@
 \newcommand\coh{\smallfrown}
 \newcommand\join{\vee}
 
+\newcommand\res[1]{|_{#1}}
+\newcommand\fix[1]{\vec{#1}}
+\newcommand\dcom{\mathbin\cdot}
+
 \newcommand\init[2]{#1\star #2}
+
+
 
 % ===== Slices
 
@@ -146,6 +154,21 @@
 
 \newcommand\QU{\Leftrightarrow}
 
+% ===== Doubly labeled link
+
+\newcommandx\Wlink[7][1={},4=0,6=0]{
+  \begin{scope}
+    \coordinate (SRC) at ($(\@previousformulaname-#5.south) + (#4pt,0pt)$);
+    \coordinate (TGT) at ($(\@formulaname-#7.north) + (#6pt,0pt)$);
+    \draw[#1,cap=round] 
+      	(SRC) 
+    	--
+      	node[color=black,anchor=east]{$\scriptstyle{#2}$}
+      	node[color=black,anchor=west]{$\scriptstyle{#3}$} 
+    	(TGT) ;
+  \end{scope}
+}
+
 
 \makeatother
 
@@ -174,7 +197,219 @@
 
 % ============================== CONTENT
 
+\newcommand\cyc{\mathbin\cdot}
+
 \begin{document}
+
+\subsection{Composition}
+
+For a witness map $\sigma$ and a formula $A$ we abbreviate $\sigma\res{\fv(A)}$ to $\sigma(A)$. The witness map of a link $\link CD$ then has two components, $\sigma_C$ and $\sigma_D$.
+
+The \defn{domain-preserving composition} $\sigma\dcom\tau$ is the map $\sigma\tau\res{\dom\sigma}$.
+
+The \defn{fixpoint} $\fix\sigma$ of a witness map $\sigma$ is the least fixed point of $\sigma$, i.e.\ the least map $\rho$ satisfying $\rho = \rho\sigma$. Where it is used, in the composition of the witness maps of two links, we will need to demonstrate that it is well defined.
+
+
+
+\begin{definition}
+The \defn{composition} $(\net{\lambda_\Sigma^\Pi}AB)\comp(\net{\kappa_\Theta^\Phi}{\dual B}C)$ of two labelled pre-nets is
+\[
+	\net{\{~l\comp k~\mid~l\in{\lambda_\Sigma^\Pi}~,~k\in\kappa_\Theta^\Phi~\}~}AC
+%	\net{\{~\link XY^\pi\comp\link[\tau]{\dual Y}Z^\phi~\mid~\link XY^\pi\in{\lambda_\Sigma^\Pi}~,~\link[\tau]{\dual Y}Z^\phi\in\kappa_\Theta^\Phi~\}~}AC
+\]
+where the composition of two links is given by
+\[
+	\link XY^\pi\comp\link[\tau]{\dual Y}Z^\phi = \link[\rho]XZ^\psi
+\]
+where
+\[
+	\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
+\qquad
+	\psi = ~\vcenter{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq {X\rho}{Z\rho}}{
+	 \left(\vcenter{\deduce{\seq{X\sigma}{Y\sigma}\vphantom{\dual Y}}{\pi}}\right)\sigma\cyc\tau
+	&\left(\vcenter{\deduce{\seq{\dual Y\tau}{Z\tau}}{\phi}}\right)\sigma\cyc\tau
+	}}~.
+\]
+\end{definition}
+
+%	\net{\{~\link[\rho]XZ~\mid~\link XY\in{\lambda_\Sigma}~,~\link[\tau]{\dual Y}Z\in\kappa_\Theta~,~\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}~\}~}AC
+%~\rho=\sigma_A\tau_{\smash{\,\dual{\!B}}\vphantom B}\cup\tau_C\sigma_B~
+%(\sigma\res{\ex AX})(\tau\res{\ex{\dual B}{\dual Y}})\cup(\tau\res{\ex CZ})(\sigma\res{\ex BY})
+
+
+
+\[
+\begin{array}{ccc}
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{B\*C}
+        \Vlink[red,label={$\scriptstyle{\pi,\sigma\vphantom)~}$},l]{[-2]1,1}
+        \Vlink[red,label={$\scriptstyle{~\pi'\!,\sigma\vphantom)}$},r]{[2]1,3}
+        \formula[y=1.2]{{\dual B}\+{\dual C}}
+        \formula[y=0]{D}
+        \Vlink[red,label={$\scriptstyle{\phi,\tau\vphantom)~}$},l]{1,1}
+    \end{tikzpicture}}
+    & 
+    \begin{array}{c}\scoal\\[40pt]\scoal\end{array}
+    &
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{B\*C}
+        \Vlink[red,label={$\scriptstyle{\pi''\!\!,\sigma\vphantom)~}$},l]{1,2}
+        \formula[y=1.2]{{\dual B}\+{\dual C}}
+        \formula[y=0]{D}
+        \Vlink[red,label={$\scriptstyle{\phi'\!,\tau\vphantom)~}$},l]{2,1}
+    \end{tikzpicture}}
+\\\\ \Downarrow && \Downarrow \\\\
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{D}
+        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi,\rho\vphantom)~}$}},l]{1,1}
+    \end{tikzpicture}}
+    &&
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{D}
+        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi',\rho\vphantom)~}$}},l]{1,1}
+    \end{tikzpicture}}
+\end{array}
+\qquad
+\begin{array}{l}
+	\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
+\\ \\ \\
+	\psi =~\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{D\rho}}{
+	 \left(\vc{
+	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	 }\right)\sigma\cyc\tau
+	 &
+	 \left(\vc{
+	  \deduce{\seq{\dual B\tau}{D\tau}}{\phi\vphantom)}
+	 }\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
+	}}
+\\ \\ \\
+	\psi' = 
+\\ \\
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{D\rho}}{
+	 \left(\vc{\infer{\seq{A\sigma}{B\sigma\*C\sigma}\vphantom{\dual B}}{
+	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	  &
+	  \deduce{\seq{A\sigma}{C\sigma\vphantom{\dual B}}}{\pi'\vphantom)}
+	 }}\right)\sigma\cyc\tau
+	 &
+	 \left(\vc{\infer{\seq{\dual B\tau\+\dual C\tau}{D\tau}}{
+	  \deduce{\seq{\dual B\tau}{D\tau}}{\phi\vphantom)}
+	 }}\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
+	}}
+\end{array}
+\]
+
+\[
+\begin{array}{ccc}
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{\exists x.B}
+        \Vlink[red,label={~$\scriptstyle{\pi,\sigma\vphantom)}$},r]{1,4}
+        \formula[y=1.2]{\forall x.{\dual B}}
+        \formula[y=0]{C}
+        \Vlink[red,label={~$\scriptstyle{\phi,\tau\vphantom)}$},r]{4,1}
+    \end{tikzpicture}}
+    & 
+    \begin{array}{c}\scoal\\[40pt]\stackrel{x\,\notin\,\tau\vphantom)}\scoal\end{array}
+    &
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{\exists x.B}
+        \Vlink[red,label={~$\scriptstyle{\pi,\sigma\minus x\vphantom)}$},r]{1,1}
+        \formula[y=1.2]{\forall x.{\dual B}}
+        \formula[y=0]{C}
+        \Vlink[red,label={~$\scriptstyle{\phi,\tau\vphantom)}$},r]{1,1}
+    \end{tikzpicture}}
+\\\\ \Downarrow~~ && \Downarrow~~ \\\\
+    \vc{ 
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi,\rho\vphantom)~}$}},l]{1,1}
+    \end{tikzpicture}}
+    &&
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi',\rho'\vphantom)~}$}},l]{1,1}
+    \end{tikzpicture}}
+\end{array}
+%
+\qquad
+%
+\begin{array}{l}
+	\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
+\\ \\ \\
+	\rho' = (\sigma\minus x\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
+\\ \\ \\
+	\psi =~\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{C\rho}}{
+	 \left(\vc{
+	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	 }\right)\sigma\cyc\tau
+	 &
+	 \left(\vc{
+	  \deduce{\seq{\dual B\tau}{D\tau}}{\phi\vphantom)}
+	 }\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
+	}}
+\\ \\ \\
+	\psi' = 
+\\ \\
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{C\rho}}{
+	 \left(\vc{\infer{\seq{A\sigma}{\exists x.B\sigma\minus x}\vphantom{\dual B}}{
+	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	 }}\right)\sigma\cyc\tau
+	 &
+	 \left(\vc{\infer{\seq{\forall x.\dual B\tau}{C\tau}}{
+	  \deduce{\seq{\dual B\tau}{C\tau}}{\phi\vphantom)}
+	 }}\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
+	}}
+\end{array}
+\]
+
+\end{document}
+
+
+\begin{proposition}
+If $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ both coalesce, so does their composition.
+\end{proposition}
+
+\begin{proof}
+By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{\link[\varnothing]AB\}$ and $\kappa_\Theta=\{\link[\varnothing]{\dual B}C\}$, and the composition is $\net{\{\link[\varnothing]AC\}}AC$.
+
+If
+\end{proof}
+
+\begin{proposition}
+If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$ then the composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ sequentializes to a normal form $\psi$ of the proof
+\[
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{
+	 %\prf\pi AB & \prf\phi{\dual B}C
+	 \deduce{\seq AB\vphantom{\dual B}}{\pi}
+	&\deduce{\seq{\dual B}C}{\phi}
+	}
+\]
+\end{proposition}
+
+
+
+\end{document}
+
 
 \maketitle
 
@@ -376,11 +611,11 @@ A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda
 
 \subsection{Witness maps}
 
-A \defn{witness map} $\sigma\colon \varE \rightharpoonup \terms$ is a substitution map which assigns terms to existential variables, given as a (finite) partial function. Its \defn{domain} $\dom\sigma$ are those variables for which it is defined. The \defn{empty} witness map $\varnothing$ is the everywhere undefined partial function, and the map $\sigma[t/x]$ substitutes $t$ for $x$ and is as $\sigma$ everywhere else. We express by $\sigma(x)=\bot$ that $\sigma$ is undefined for $x$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$. 
+A \defn{witness map} $\sigma\colon \varE \rightharpoonup \terms$ is a substitution map which assigns terms to existential variables, given as a (finite) partial function. Its \defn{domain} $\dom\sigma$ is the set of those variables for which it is defined. The \defn{empty} witness map $\varnothing$ is the everywhere undefined partial function, and the map $\sigma[t/x]$ substitutes $t$ for $x$ and is as $\sigma$ everywhere else. We express by $\sigma(x)=\bot$ that $\sigma$ is undefined for $x$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, and $\sigma\res V$ is the restriction of $\sigma$ to a set of variables $V$. We abbreviate by $a\in \sigma$ the statement that a variable $a$ occurs free in the range of $\sigma$, i.e.\ that $a\in\fv(\sigma(x))$ for some $x$.
 
 We will write $A\sigma$ for the application of the witness map $\sigma\colon\varE\rightharpoonup\terms$ to the formula $A$ as a substitution map. It is applied to a sequent proof, $\pi\sigma$, by applying it to each formula in the proof $\pi$. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
 
-A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to \varE\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)$ in $\lambda$ and $\Sigma(C,D)=\sigma$. When a link is not a witness link, this may be emphasized by calling it \defn{clean}.
+A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to \varE\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)\in\lambda$ and $\Sigma(C,D)=\sigma$. When a link is not a witness link, this may be emphasized by calling it \defn{clean}.
 
 \begin{definition}
 A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a witness linking $\lambda_\Sigma$.
@@ -422,10 +657,9 @@ For a link $\link CD$, existential variables in the range of $\sigma$ are fresh,
 
 
 %We assume the existential variables occurring in the range of $\Sigma$ to be fresh, i.e.\ distinct from any existentially quantified variable in $\seq AB$.  
-We abbreviate by $a\in \sigma$ the statement that a variable $a$ occurs free in the range of $\sigma$, i.e.\ that $a\in\fv(\sigma(x))$ for some $x$.
 
 \begin{definition}
-The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\lambda_\Sigma}AB$ where $\lambda_\Sigma=\deseq[\varnothing]\pi AB$ and $\deseq-AB$ is defined as follows.
+The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\lambda_\Sigma}AB$ where $\lambda_\Sigma=\deseq[\varnothing]\pi AB$ and the function $\deseq-AB$ is defined as follows.
 %
 \newlength\deseqwidth
 \settowidth\deseqwidth{$\scriptstyle{A'\,,\,B'_0\+B'_1}$}
@@ -439,13 +673,13 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 	\Deseq{\deduce[\rule{0pt}{1pt}]{\seq A{B_i}}\pi}{A'}{B_i'}
 \\ \\
 	\XDeseq{\infer{\seq A{B\*C}}{
-	  \deduce[\rule{0pt}{1pt}]{\seq AB}\pi 
+	  \deduce[\rule{0pt}{1pt}]{\seq AB}{\pi\vphantom'} 
 	  && 
-	  \deduce[\rule{0pt}{1pt}]{\seq AC}\Sigma}}{A'}{B'\*C'}
+	  \deduce[\rule{0pt}{1pt}]{\seq AC}{\pi'}}}{A'}{B'\*C'}
 	& \quad=\quad 
-	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AB}\pi}{A'}{B'}
+	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AB}{\pi\vphantom'}}{A'}{B'}
 	  \cup
-	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AC}\Sigma}{A'}{C'}
+	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AC}{\pi'}}{A'}{C'}
 \\ \\
 	\XDeseq{\infer{\seq A{\exists x.B}}{\deduce[\rule{0pt}{1pt}]{\seq A{B[t/x]}}\pi}}
 	  {A'}{\exists x.B'}
@@ -458,13 +692,27 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 	& \quad=\quad 
 	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AB}\pi}{A'}{B'}
 \end{align*}
-\lutz{why the $\Sigma$ in the third equation?}
-
-\lutz{I don't see where the primes come in, i.e, in no equation there is a relation between $A$ and $A'$, etc.}
 \end{definition}
 
+A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$. While a sequent proof instantiates existential witnesses immedately into the premise of the existential quantifier rule, for proof nets we delay the substitutions $\sigma$. Hence we need to maintain the separation of the conclusion $\seq AB$ into the substitutions $\sigma$ and the subformulas $A'$ and $B'$ of the conclusion of the proof net.
 
-A witness link $\link PQ$ on two atomic formulas $P$ and $Q$ is an \defn{axiom} link if $P\sigma=\dual Q\sigma$; a witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
+We will conclude this section by discussing two further essential notions. First, a witness link $\link PQ$ on two atomic formulas $P$ and $Q$ is an \defn{axiom} link if $P\sigma=\dual Q\sigma$; a witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
+
+Second, given a link $\link CD$ in a pre-net $\net\lambda AB$, we expect the domain of $\sigma$ to be exactly those variables that existentially quantified in $A$ and $B$ dominating $C$ and $D$. That is, any variable $x$ such that there is a subformula $\exists x.X$ in $A$ that in turn has $C$ as a subformula, and likewise for $B$ and $D$. We will now make this precise. For a subformula $C$ of a formula $A$, let the \defn{existential cover} $\ex AC$ of $C$ in $A$ be the following set:
+\[
+	\ex AC = \{\,x \mid C < \exists x.X \sub A\,\}~.
+\]
+
+\begin{definition}
+A witness pre-net $\net{\lambda_\Sigma}AB$ has \defn{exact coverage} if for every link $\link CD$ in $\lambda_\Sigma$ the domain of $\sigma$ is exactly the existential covers of $C$ and $D$:
+\[
+	\dom\sigma = \ex AC\cup\ex BD~.
+\]
+\end{definition}
+
+A de-sequentialization $[\pi]$ has exact coverage. Note that the property is carefully formulated, using the \emph{exisential cover} rather than simply the free existential variables in a formula, to account for vacuous quantifiers ($\exists x.C$ where $x$ is not free in $C$). The issue becomes even more pertinent for a link $\link CD$ where $C$ occurs in $\exists x.C{\+}C'$ and $x$ is free in $C'$ but not $C$, where we still would like an explicit witness for $x$ in $\sigma$. 
+
+
 
 
 % --------------------------------------------------
@@ -475,9 +723,9 @@ Correctness and sequentialization for \all1 proof nets will be through \defn{coa
 
 We will define two coalescence relations, one \defn{strict} $(\scoal)$, for witness nets, and one \defn{unifying} $(\ucoal)$, for unification nets, in a later section. In the former, to join two slices the witness assignment must be the same; in the latter, witness assignments must be compatible, so that a common, more general witness map exists. 
 
-For sequentialization, the links in a pre-net will be labelled with a sequent proof. An axiom link will carry an axiom, and each coalescence step introduces one proof rule. Formalizing this, a \defn{proof linking} $\lambda_\Sigma^\Pi$ is a witness linking $\lambda_\Sigma$ with a \defn{proof labelling} $\Pi\colon \lambda\to\proofs$ assigning each link a sequent proof. We will use and define $\lambda_\Sigma^\Pi$ as a set of \defn{proof links} $\link CD^\pi$, where we require that $\prf\pi{C\sigma}{D\sigma}$, i.e.\ that $\pi$ proves the conclusion $\seq{C\sigma}{D\sigma}$. A \defn{labelled pre-net} $\net{\lambda_\Sigma^\Pi}AB$ is a witness pre-net $\net{\lambda_\Sigma}AB$ with a proof labelling $\Pi$ on $\lambda_\Sigma$. The \defn{initial proof labelling} $\lambda_\Sigma^\star$ of an axiom linking $\lambda_\Sigma$ is:
+For sequentialization, the links in a pre-net will be labelled with a sequent proof. An axiom link will carry an axiom, and each coalescence step introduces one proof rule. Formalizing this, a \defn{proof linking} $\lambda_\Sigma^\Pi$ is a witness linking $\lambda_\Sigma$ with a \defn{proof labelling} $\Pi\colon \lambda\to\proofs$ assigning each link a sequent proof. We will use and define $\lambda_\Sigma^\Pi$ as a set of \defn{proof links} $\link CD^\pi$, where we require that $\prf\pi{C\sigma}{D\sigma}$, i.e.\ that $\pi$ proves the conclusion $\seq{C\sigma}{D\sigma}$. A \defn{labelled pre-net} $\net{\lambda_\Sigma^\Pi}AB$ is a witness pre-net $\net{\lambda_\Sigma}AB$ with a proof labelling $\Pi$ on $\lambda_\Sigma$. If $\lambda_\Sigma$ is an axiom linking, we assign an \defn{initial proof labelling} $\lambda_\Sigma^\star$ as follows.
 \[
-	\lambda_\Sigma^\star = \{~\link PQ^\pi~\mid~\link PQ\in\lambda_\Sigma~,~\pi=~\infer{\seq{P\sigma}{Q\sigma}}{}~\}~.
+	\lambda_\Sigma^\star = \{~\link PQ^\pi~\mid~\link PQ\in\lambda_\Sigma~,~\pi=~\infer{\seq{P\sigma}{Q\sigma}}{}~\}
 \]
 For correctness we may coalesce a pre-net directly, without constructing a proof. 
 
@@ -487,7 +735,7 @@ To recap, we have accumulated the following further notational conventions.
 \begin{tabular}{@{}lcll@{}}
 	$\kappa,\lambda$ 	& $\subset$ & $\form\times\form$ 	& linkings (sets of pairs of formulas)\\
 	$\rho,\sigma,\tau$	& $\colon$  & $\varE\rightharpoonup\terms$ & witness maps\\
-	$\Sigma,\Xi$		& $\colon$  & $(\form\times\form)\rightharpoonup\varE\rightharpoonup\terms$		& witness labellings on a linking \\
+	$\Sigma,\Theta$		& $\colon$  & $(\form\times\form)\rightharpoonup\varE\rightharpoonup\terms$		& witness labellings on a linking \\
 	$\pi,\phi,\psi$		& $\in$ & $\proofs$ & \all1 sequent proofs\\
 	$\Pi,\Phi,\Psi$		& $\colon$  & $(\form\times\form)\rightharpoonup\proofs$		& proof labellings on a linking
 \end{tabular}
@@ -569,56 +817,22 @@ A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces
 
 To be explicit, to generate coalescence as a rewrite relation means the following: a pre-net coalesces to another, $\net{\lambda_\Sigma} AB\scoal \net{{\lambda'_{\Sigma'}}}AB$ if and only if there is a rewrite rule
 \[
-	\net{\kappa_\Xi} CD\scoal\net{\kappa'_{\Xi'}} CD
+	\net{\kappa_\Theta} CD\scoal\net{\kappa'_{\Theta'}} CD
 \] 
 such that 
 \[
 	C\leq A \qquad
 	D\leq B \qquad
-	\kappa_\Xi\subseteq\lambda_\Sigma \qquad
-	\kappa'_{\Xi'}\subseteq\lambda'_{\Sigma'} \quad
+	\kappa_\Theta\subseteq\lambda_\Sigma \qquad
+	\kappa'_{\Theta'}\subseteq\lambda'_{\Sigma'} \quad
 	\text{and} \quad
-	\lambda_\Sigma-\kappa_\Xi=\lambda'_{\Sigma'}-\kappa'_{\Xi'}~.
+	\lambda_\Sigma-\kappa_\Theta=\lambda'_{\Sigma'}-\kappa'_{\Theta'}~.
 \]
-\lutz{I think a $\Xi$ in the index is just horrible.}
 
 \begin{definition}
 An \all1 \defn{witnessing proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$, with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
-\lutz{shouldn't we say somewhere that the initial linking is just on atoms?}
 \end{definition}
 
-
-Two useful properties of witness nets are preserved over a coalescence sequence, captured in the lemma below. The first property is formulated the way it is to account for vacuous quantifiers, for which no actual variable occurs in $C$ or $D$, as well as formulas such as $\exists x.C\+C'$ where $x$ occurs in $C'$ but not $C$, where we still would like an explicit witness for $x$ on a link $\link CD$. 
-
-
-\begin{lemma}
-Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\link[\varnothing]AB^\pi\}}AB$ from a witness net satisfies the \defn{exact coverage} property: for any link $\link CD$, the domain of $\sigma$ is exactly the variables existentially quantified in $\seq AB$ thad bind \lutz{???} in $C$ and $D$,
-\[
-	\dom\sigma = \{\,x \mid C < \exists x.X \leq A\,\}
-			\cup \{\,y \mid D < \exists y.Y \leq B\,\}~.
-\]
-\end{lemma}
-
-%
-%\begin{lemma}
-%Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\link[\varnothing]AB^\pi\}}AB$ from a witness net satisfies the following properties. 
-%\begin{description}
-%	\item[Eigenvariables not free]
-%For any link $\link CD$, a universal variable $a\in\varA$ quantified in $C$ or $D$ does not occur free in the range of $\sigma$, $a\notin\sigma$.
-%
-%	\item[Exact coverage]
-%For any link $\link CD$, the domain of $\sigma$ is exactly the variables existentially quantified in $\seq AB$ that will be bound in $C$ and $D$, if they occur:
-%\[
-%	\dom\sigma = \{\,x \mid C < \exists x.X \leq A\,\}
-%			\cup \{\,y \mid D < \exists y.Y \leq B\,\}~.
-%\]
-%\end{description}
-%\end{lemma}
-
-\begin{proof}
-By induction on the coalescence path, going forward from $\net{\lambda_\Sigma}AB$ for the first property, and working backward from $\net{\{\link[\varnothing]AB^\pi\}}AB$ for the second.
-\end{proof}
-\lutz{I am missing something here. In the lemma there is only one statement. So, what is the first, and what the second?}
 
 \begin{theorem}
 For any \all1 proof $\pi$, the de-sequentialization $[\pi]$ is a witness net that sequentializes to $\pi$. 
@@ -633,37 +847,30 @@ It follows by induction on $\prf\pi AB$ that if $\lambda_\Sigma=[\pi]_{A',B'}^\s
 
 \subsection{Geometric correctness}
 
-%A formula $\exists x.A$ has two natural immediate descendants: one \emph{syntactic}, its subformula $A$, and one \emph{semantic}, the premise $A[t/x]$ for its introduction rule, for any given $t$. We will define the latter as a tree-order generated from a formula $A$: the \defn{positions} of $A$ are its subformulas under substitution,
-%\[
-%	\poss A~=~\{~B'\sigma~\mid~A=A'\sigma~,~B'\sub A'~,~\sigma\in\varE\rightharpoonup\terms~\}
-%\]
-
 A \defn{slice} is the fraction of a proof that depends on a given choice of one branch (or projection) on each product formula $A\*B$. Important to additive proof theory is that many operations can be performed on a per-slice basis, such as normalization, or proof net correctness. We will here use slices for the latter purpose.
 
 As in the propositional case, we define a slice of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$.
-
-%In the propositional case, slices are readily defined as sets of subformulas. Here, in the first-order case, we will need to 
-
-%The immediate problem is that the number of positions immediately below $\exists x.B$ is infinite, as there is one immediate descendant $B[t/x]$ for every term $t$. We reduce it to finite width by restricting a slice to just the terms assigned to $x$ by the witness labelling $\Sigma$ in a pre-net $\net{\lambda_\Sigma}AB$.
 
 For a witness linking $\lambda_\Sigma$ and an existential variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
 \[
 	\Sigma(x) = \{~\sigma(x)~\mid~\link CD\in\lambda_\Sigma~\}~.
 \]
-%
-Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma)$ where $A'$ is a subformula of $A$, given by: $S=\{(A,\sigma)\}\cup S'$ where $S'$ is as follows.
+
+
+\begin{definition}[Slice]
+Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'$ is a subformula of $A$ and $\sigma\subseteq\sigma'$, given by: $S=\{(A,\sigma)\}\cup S'$ where $S'$ is as follows.
 %
 \begin{itemize}
 	\item
-\makebox[70pt][l]{If $A = P$}			then $S'=\varnothing$.
+\makebox[65pt][l]{If $A = P$}			then $S'=\varnothing$.
 	\item
-\makebox[70pt][l]{If $A = B\+C$} 		then $S'=S_B\uplus S_C$ where $S_B$ is a slice of $B$ and $\sigma$, and $S_C$ a slice of $C$ and $\sigma$.
+\makebox[65pt][l]{If $A = B\+C$} 		then $S'=S_B\uplus S_C$ with $S_B$ a slice of $B$ and $\sigma$, and $S_C$ one of $C$ and $\sigma$.
 	\item
-\makebox[70pt][l]{If $A = B\*C$}		then $S'$ is a slice of $B$ and $\sigma$ or a slice of $C$ and $\sigma$.
+\makebox[65pt][l]{If $A = B\*C$}		then $S'$ is a slice of $B$ and $\sigma$ or a slice of $C$ and $\sigma$.
 	\item
-\makebox[70pt][l]{If $A = \exists x.B$}	then $S'=\uplus_{t\,\in\,\Sigma(x)}S_t$ where each $S_t$ is a slice of $B$ and $\sigma[t/x]$.
+\makebox[65pt][l]{If $A = \exists x.B$}	then $S'=\uplus_{t\,\in\,\Sigma(x)}S_t$ where each $S_t$ is a slice of $B$ and $\sigma[t/x]$.
 	\item
-\makebox[70pt][l]{If $A = \forall a.B$}	then $S'$ is a slice of $B$ and $\sigma$.
+\makebox[65pt][l]{If $A = \forall a.B$}	then $S'$ is a slice of $B$ and $\sigma$.
 \end{itemize}
 %
 \noindent
@@ -672,28 +879,37 @@ A \defn{slice} of a sequent $\seq AB$ is a set of links
 	\{~\link[\sigma\cup\tau]CD~\mid~(C,\sigma)\in S_A~,~(D,\tau)\in S_B~\}
 \]
 where $S_A$ is a slice of $A$ and $\varnothing$, and $S_B$ a slice of $B$ and $\varnothing$.  A \defn{slice} of a witness pre-net $\net{\lambda_\Sigma} AB$ is the intersection $\lambda_\Sigma\cap S$ of $\lambda_\Sigma$ with a slice $S$ of $\seq AB$.
+\end{definition}
 
-Within a slice, we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $a$ of the primary formula $\forall a.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect.
+As in the propositional case, for correctness we will require that each slice is a singleton. In addition, within each slice we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $a$ of the primary formula $\forall a.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect. For simplicity we will define the dependency condition on individual links rather than on slices (since each slice will be a singleton). 
 
-Since we will require that each slice contains a single link, for simplicity we will define the dependency condition on individual links rather than on slices. It is expected that for a more involved logic that includes multiplicative connectives, a dependency condition such as the below one needs to be applied to a slice instead.
-
-For a subformula $C$ of a formula $A$, let the \defn{existential covering} $\ex AC$ of $C$ be the set of variables that are existentially quantified in $A$ dominating $C$:
-\[
-	\ex AC = \{\,x \mid C < \exists x.X \sub A\,\}
-\]
 In a pre-net $\net{\lambda_\Sigma}AB$, let the \defn{column} of a link $\link CD$ be the set of pairs 
 \[
-	\{~(X,\sigma|\ex AX)~\mid~C\sub X\sub A~\}\cup\{~(Y,\sigma|\ex BY)~\mid~D\sub Y\sub B~\}~,
+	\{~(X,\sigma\res{\ex AX})~\mid~C\sub X\sub A~\}\cup\{~(Y,\sigma\res{\ex BY})~\mid~D\sub Y\sub B~\}~,
 \]
-with an order $(\dep)$ given by: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$, or $Y$ occurs as $\forall a.Y$ and $a\in\rho$.
+with an order $(\dep)$ given by: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall a.Y$ and $a\in\rho$.
 
+%It is expected that for a more involved logic that includes multiplicative connectives, a dependency condition such as the below one needs to be applied to a slice instead.
+%
 \begin{definition}
 A witness pre-net is \defn{correct} if it is
-\begin{enumerate}
+\begin{itemize}
 \item \defn{slice-correct}: every slice is a singleton, and
 \item \defn{dependency-correct}: every column is a partial order (i.e.\ is acyclic/antisymmetric).
-\end{enumerate}
+\end{itemize}
 \end{definition}
+
+
+\begin{lemma}
+If a pre-net coalesces, it has exact coverage.
+%Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\link[\varnothing]AB^\pi\}}AB$ from a witness net satisfies the exact coverage property.
+\end{lemma}
+
+\begin{proof}
+By induction on the coalescence path. %, working backward from $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+\end{proof}
+
+
 
 
 \begin{lemma}
@@ -702,7 +918,7 @@ Strict coalescence preserves and reflects correctness: for a strict coalescence 
 \end{lemma}
 
 \begin{proof}
-Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Xi}AB$. We will consider the four coalescence steps as shown below. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
+Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. We will consider the four coalescence steps as shown below. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
 %
 \begin{align}
   	\net{\{\link C{D_i}\}}C{D_0{\+}D_1} 
@@ -725,18 +941,24 @@ Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Xi}AB$. We will consider the 
 %
 \begin{description}
 	\item[$(\srr+i)$]
-A slice $S_B$ of $B$ and $\varnothing$ containing either of $(D_0,\tau)$, $(D_1,\tau)$, and $(D_0\+D_1,\tau)$ must also contain the other two. \lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.} A slice $S$ of $\seq AB$ then contains all three of $\link C{D_0}$, $\link C{D_1}$, and  $\link C{D_0{\+}D_1}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Xi$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_0{\+}D_1}$ plus $(D_i,\sigma|\ex B{D_i})$ itself, which is minimal in the order $\dep$.
+A slice $S_B$ of $B$ and $\varnothing$ containing either of $(D_0,\tau)$, $(D_1,\tau)$, and $(D_0\+D_1,\tau)$ must also contain the other two. 
+%
+%\lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
+%
+% A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.
+%
+A slice $S$ of $\seq AB$ then contains all three of $\link C{D_0}$, $\link C{D_1}$, and $\link C{D_0{\+}D_1}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_0{\+}D_1}$ plus $(D_i,\sigma|\ex B{D_i})$ itself, which is minimal in the order $\dep$.
 
 	\item[$(\srr*)$]
-A slice $S$ of $\seq AB$ contains $\link C{D_0\+D_1}$ if and only if it contains either of $\link C{D_0}$ or $\link C{D_1}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Xi$ is. Dependency-correctness is immediate, as above.
+A slice $S$ of $\seq AB$ contains $\link C{D_0\+D_1}$ if and only if it contains either of $\link C{D_0}$ or $\link C{D_1}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Dependency-correctness is immediate, as above.
 
 	\item[$(\srr?)$]
-The witness sets $\Sigma(x)$ and $\Xi(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Xi(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Xi$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Xi$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Xi(x)$ and in fact $S=S'$. 
+The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
 
 For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
 
 	\item[$(\srr!)$]
-A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall a.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Xi$ is. 
+A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall a.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. 
 
 For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall a.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $a\notin\sigma$; then $a$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
 \qedhere
@@ -770,9 +992,6 @@ To see that a maximally deep link coalesces, first note that a link $\link C{D_i
 \end{proof}
 
 
-\subsection{Normalization}
-
-\includegraphics[scale=0.4]{normalization.jpg}
 
 
 \section{Unification nets}
@@ -813,9 +1032,9 @@ For a pre-net $\net{\lambda_\star}AB$ we assume the \defn{exact coverage} conven
 
 %Together with the convention that existential variables in the range of $\sigma(P,Q)$ are fresh, 
 
-For two witness labellings $\Sigma$ and $\Xi$ on the same linking $\lambda$, one is \defn{more general} than the other, $\Sigma\gen\Xi$, \lutz{say which one is more general} if $\Sigma(C,D)\gen\Xi(C,D)$ for every link $(C,D)\in\lambda$. We extend this to the linkings themselves: $\lambda_\Sigma\gen\lambda_\Xi$. Observe that for an axiom linking $\lambda$, the initial linking $\lambda_\star$ is the most general among the witness linkings $\lambda_\Sigma$ for any $\Sigma$.
+For two witness labellings $\Sigma$ and $\Theta$ on the same linking $\lambda$, one is \defn{more general} than the other, $\Sigma\gen\Theta$, \lutz{say which one is more general} if $\Sigma(C,D)\gen\Theta(C,D)$ for every link $(C,D)\in\lambda$. We extend this to the linkings themselves: $\lambda_\Sigma\gen\lambda_\Theta$. Observe that for an axiom linking $\lambda$, the initial linking $\lambda_\star$ is the most general among the witness linkings $\lambda_\Sigma$ for any $\Sigma$.
 
-We write $\Sigma\tau$ for the composition of every map in $\Sigma$ with $\tau$:	$\Sigma\tau(C,D) = \Sigma(C,D)\tau$. Because of the exact coverage convention, we have that, if $\lambda_\star=\lambda_\Sigma\gen\lambda_\Xi$, then $\Xi=\Sigma\tau$ for some $\tau$.
+We write $\Sigma\tau$ for the composition of every map in $\Sigma$ with $\tau$:	$\Sigma\tau(C,D) = \Sigma(C,D)\tau$. Because of the exact coverage convention, we have that, if $\lambda_\star=\lambda_\Sigma\gen\lambda_\Theta$, then $\Theta=\Sigma\tau$ for some $\tau$.
 
 
 
