@@ -225,36 +225,53 @@
 
 \end{abstract}
 
+\section{Introduction}
+
+
+
 \subsection{Proof identity}
 
+At the heart of a theory of proof nets is the question of proof identity, of when two proofs should be considered equivalent, and should thus map onto the same proof net. 
+%
+%It can be approached semantically, by asking whether two proofs are identified in every model; 
+%
+The introduction of quantifiers creates an interesting issue: if two proofs differ by an immaterial choice of existential witness, should they be equivalent? For example, to prove the sequent $\seq{\exists x.P(x)}{\exists y.\dual P(y)}$ both quantifiers must receive \emph{the same} witness, as in the following two proofs, but any witness will do.
 \[
-	\infer={\exists x.p(x),\exists y.\dual p(y)}{\infer{p(t),\dual p(t)}{}}
+	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(s)}{\dual P(s)}}{}}}
 	\quad
 	\stackrel?\equiv
 	\quad
-	\infer={\exists x.P(x),\exists y.\dual p(y)}{\infer{p(s),\dual p(s)}{}}
+	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(t)}{\dual P(t)}}{}}}
 \]
-
+The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ where $x$ is not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists R$-rule makes the instantiating witness explicit.
+%
+Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists R$-rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
 \[
-	\infer{\exists x.p,\dual p}{\infer{p[t/x],\dual p}{}}
+	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
 	\quad
 	\stackrel?\equiv
 	\quad	
-	\infer{\exists x.p,\dual p}{\infer{p[s/x],\dual p}{}}
-\]
-
-\[
-	\infer{\exists x.p\+q(x),\dual p}{\infer{p\+q(t)}{\infer{p,\dual p}{}}}
+	\vc{\infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}\qquad
+	\vc{
+	 \infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P\+Q(x)}{\dual P}}{
+	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(s)}{\dual P}}{\infer{\seq P{\dual P}}{}}
+	}}
 	\quad
 	\stackrel?\equiv
 	\quad	
-	\infer{\exists x.p\+q(x),\dual p}{\infer{p\+q(s)}{\infer{p,\dual p}{}}}
+	\vc{
+	 \infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P\+Q(x)}{\dual P}}{
+	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(t)}{\dual P}}{\infer{\seq P{\dual P}}{}}
+	}}
 \]
+In this paper we will not attempt to decisively settle the question of proof identity. Rather, we will present two natural and coherent notions of proof net, that represent two extremes. One, \defn{witness nets}, takes the choice of existential witnesses to be essential proof content, and rejects all three equivalences above. The other, \defn{unification nets}, removes any redundancy by rejecting explicit witnessing information altogether; instead, a most general witness for every quantifier is reconstructed by unification.
+
+
 
 \[
 \begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall a.~p(a,x)}
-\formula[y=0]{\exists y.~{\dual p}(y,s)\*{\dual p}(y,t)}
+\formula[y=1.2]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
 \Vlink[red,label={$\scriptstyle\sigma~$},l]{[-2]8,5}
 \Vlink[red,label={$~\scriptstyle\tau$}]{[2]8,12}
 \end{tikzpicture}
@@ -262,32 +279,32 @@
 
 \[
 \begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall a.~p(a,x)}
-\formula[y=0]{\exists y.~{\dual p}(y,s)\*{\dual p}(y,t)}
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
 \Vlink[red,label={$~\scriptstyle\upsilon$}]{8,11}
 \end{tikzpicture}
 \]
 
 \[
 \begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall a.~p(a,x)}
-\formula[y=0]{\exists y.~{\dual p}(y,s)\*{\dual p}(y,t)}
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
 \Vlink[red,label={$\quad\scriptstyle{\upsilon\minus y}$}]{8,1}
 \end{tikzpicture}
 \]
 
 \[
 \begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall a.~p(a,x)}
-\formula[y=0]{\exists y.~{\dual p}(y,s)\*{\dual p}(y,t)}
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
 \Vlink[red,label={$~\scriptstyle{\upsilon\minus y}$}]{4,1}
 \end{tikzpicture}
 \]
 
 \[
 \begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall a.~p(a,x)}
-\formula[y=0]{\exists y.~{\dual p}(y,s)\*{\dual p}(y,t)}
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
 \Vlink[red,label={$~\scriptstyle{\rho}$}]{1,1}
 \end{tikzpicture}
 \]
