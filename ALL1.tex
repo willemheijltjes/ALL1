@@ -23,6 +23,7 @@
 
 \makeatletter
 
+
 \theoremstyle{plain}
 \newtheorem{proposition}[theorem]{Proposition}
 
@@ -89,14 +90,16 @@
 \newcommand\gen{\leq}
 \newcommand\coh{\smallfrown}
 \newcommand\join{\vee}
+\newcommand\minus{\mathop{\!/\mathchoice{\kern-3pt}{\kern-3pt}{\kern-2.5pt}{\kern-2pt}/\!}}
+
 
 \newcommand\res[1]{|_{#1}}
-\newcommand\fix[1]{\vec{#1}}
+\newcommand\fix[1]{\overrightharpoon{#1}}
 \newcommand\dcom{\mathbin\cdot}
 
 \newcommand\init[2]{#1\star #2}
 
-
+\newcommand\subdual[1]{_{\smash{\,\dual{\!#1}}}}
 
 % ===== Slices
 
@@ -104,8 +107,6 @@
 % ===== Coalescence
 
 \newcommand\link[3][\sigma]{(#2,#3)_{#1}}
-\newcommand\minus{\mathop{\!/\mathchoice{\kern-3pt}{\kern-3pt}{\kern-2.5pt}{\kern-2pt}/\!}}
-
 
 \newcommand\scoal{\rightarrow} %{\leadsto}
 \newcommand\ucoal{\rightsquigarrow}
@@ -154,20 +155,36 @@
 
 \newcommand\QU{\Leftrightarrow}
 
-% ===== Doubly labeled link
+% ===== Overset extensible harpoon
 
-\newcommandx\Wlink[7][1={},4=0,6=0]{
-  \begin{scope}
-    \coordinate (SRC) at ($(\@previousformulaname-#5.south) + (#4pt,0pt)$);
-    \coordinate (TGT) at ($(\@formulaname-#7.north) + (#6pt,0pt)$);
-    \draw[#1,cap=round] 
-      	(SRC) 
-    	--
-      	node[color=black,anchor=east]{$\scriptstyle{#2}$}
-      	node[color=black,anchor=west]{$\scriptstyle{#3}$} 
-    	(TGT) ;
-  \end{scope}
-}
+\DeclareFontFamily{U}{MnSymbolA}{}
+\DeclareFontShape{U}{MnSymbolA}{m}{n}{
+    <-6>  MnSymbolA5
+   <6-7>  MnSymbolA6
+   <7-8>  MnSymbolA7
+   <8-9>  MnSymbolA8
+   <9-10> MnSymbolA9
+  <10-12> MnSymbolA10
+  <12->   MnSymbolA12}{}
+\DeclareFontShape{U}{MnSymbolA}{b}{n}{
+    <-6>  MnSymbolA-Bold5
+   <6-7>  MnSymbolA-Bold6
+   <7-8>  MnSymbolA-Bold7
+   <8-9>  MnSymbolA-Bold8
+   <9-10> MnSymbolA-Bold9
+  <10-12> MnSymbolA-Bold10
+  <12->   MnSymbolA-Bold12}{}
+\DeclareSymbolFont{MnSyA}{U}{MnSymbolA}{m}{n}
+\SetSymbolFont{MnSyA}{bold}{U}{MnSymbolA}{b}{n}
+
+\DeclareRobustCommand{\overleftharpoon}{\mathpalette{\overarrow@\leftharpoonfill@}}
+\DeclareRobustCommand{\overrightharpoon}{\mathpalette{\overarrow@\rightharpoonfill@}}
+\def\leftharpoonfill@{\arrowfill@\leftharpoondown\mn@relbar\mn@relbar}
+\def\rightharpoonfill@{\arrowfill@\mn@relbar\mn@relbar\rightharpoonup}
+
+\DeclareMathSymbol{\leftharpoondown}{\mathrel}{MnSyA}{'112}
+\DeclareMathSymbol{\rightharpoonup}{\mathrel}{MnSyA}{'100}
+\DeclareMathSymbol{\mn@relbar}{\mathrel}{MnSyA}{'320}
 
 
 \makeatother
@@ -197,219 +214,10 @@
 
 % ============================== CONTENT
 
-\newcommand\cyc{\mathbin\cdot}
+\newcommand\Seq{\vphantom(\seq}
+\newcommand\Prf[3]{\deduce{\Seq{#2}{#3}}{\vphantom(#1}}
 
 \begin{document}
-
-\subsection{Composition}
-
-For a witness map $\sigma$ and a formula $A$ we abbreviate $\sigma\res{\fv(A)}$ to $\sigma(A)$. The witness map of a link $\link CD$ then has two components, $\sigma_C$ and $\sigma_D$.
-
-The \defn{domain-preserving composition} $\sigma\dcom\tau$ is the map $\sigma\tau\res{\dom\sigma}$.
-
-The \defn{fixpoint} $\fix\sigma$ of a witness map $\sigma$ is the least fixed point of $\sigma$, i.e.\ the least map $\rho$ satisfying $\rho = \rho\sigma$. Where it is used, in the composition of the witness maps of two links, we will need to demonstrate that it is well defined.
-
-
-
-\begin{definition}
-The \defn{composition} $(\net{\lambda_\Sigma^\Pi}AB)\comp(\net{\kappa_\Theta^\Phi}{\dual B}C)$ of two labelled pre-nets is
-\[
-	\net{\{~l\comp k~\mid~l\in{\lambda_\Sigma^\Pi}~,~k\in\kappa_\Theta^\Phi~\}~}AC
-%	\net{\{~\link XY^\pi\comp\link[\tau]{\dual Y}Z^\phi~\mid~\link XY^\pi\in{\lambda_\Sigma^\Pi}~,~\link[\tau]{\dual Y}Z^\phi\in\kappa_\Theta^\Phi~\}~}AC
-\]
-where the composition of two links is given by
-\[
-	\link XY^\pi\comp\link[\tau]{\dual Y}Z^\phi = \link[\rho]XZ^\psi
-\]
-where
-\[
-	\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
-\qquad
-	\psi = ~\vcenter{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq {X\rho}{Z\rho}}{
-	 \left(\vcenter{\deduce{\seq{X\sigma}{Y\sigma}\vphantom{\dual Y}}{\pi}}\right)\sigma\cyc\tau
-	&\left(\vcenter{\deduce{\seq{\dual Y\tau}{Z\tau}}{\phi}}\right)\sigma\cyc\tau
-	}}~.
-\]
-\end{definition}
-
-%	\net{\{~\link[\rho]XZ~\mid~\link XY\in{\lambda_\Sigma}~,~\link[\tau]{\dual Y}Z\in\kappa_\Theta~,~\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}~\}~}AC
-%~\rho=\sigma_A\tau_{\smash{\,\dual{\!B}}\vphantom B}\cup\tau_C\sigma_B~
-%(\sigma\res{\ex AX})(\tau\res{\ex{\dual B}{\dual Y}})\cup(\tau\res{\ex CZ})(\sigma\res{\ex BY})
-
-
-
-\[
-\begin{array}{ccc}
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=3]{A}
-        \formula[y=1.8]{B\*C}
-        \Vlink[red,label={$\scriptstyle{\pi,\sigma\vphantom)~}$},l]{[-2]1,1}
-        \Vlink[red,label={$\scriptstyle{~\pi'\!,\sigma\vphantom)}$},r]{[2]1,3}
-        \formula[y=1.2]{{\dual B}\+{\dual C}}
-        \formula[y=0]{D}
-        \Vlink[red,label={$\scriptstyle{\phi,\tau\vphantom)~}$},l]{1,1}
-    \end{tikzpicture}}
-    & 
-    \begin{array}{c}\scoal\\[40pt]\scoal\end{array}
-    &
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=3]{A}
-        \formula[y=1.8]{B\*C}
-        \Vlink[red,label={$\scriptstyle{\pi''\!\!,\sigma\vphantom)~}$},l]{1,2}
-        \formula[y=1.2]{{\dual B}\+{\dual C}}
-        \formula[y=0]{D}
-        \Vlink[red,label={$\scriptstyle{\phi'\!,\tau\vphantom)~}$},l]{2,1}
-    \end{tikzpicture}}
-\\\\ \Downarrow && \Downarrow \\\\
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=1.2]{A}
-        \formula[y=0]{D}
-        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi,\rho\vphantom)~}$}},l]{1,1}
-    \end{tikzpicture}}
-    &&
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=1.2]{A}
-        \formula[y=0]{D}
-        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi',\rho\vphantom)~}$}},l]{1,1}
-    \end{tikzpicture}}
-\end{array}
-\qquad
-\begin{array}{l}
-	\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
-\\ \\ \\
-	\psi =~\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{D\rho}}{
-	 \left(\vc{
-	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
-	 }\right)\sigma\cyc\tau
-	 &
-	 \left(\vc{
-	  \deduce{\seq{\dual B\tau}{D\tau}}{\phi\vphantom)}
-	 }\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
-	}}
-\\ \\ \\
-	\psi' = 
-\\ \\
-	\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{D\rho}}{
-	 \left(\vc{\infer{\seq{A\sigma}{B\sigma\*C\sigma}\vphantom{\dual B}}{
-	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
-	  &
-	  \deduce{\seq{A\sigma}{C\sigma\vphantom{\dual B}}}{\pi'\vphantom)}
-	 }}\right)\sigma\cyc\tau
-	 &
-	 \left(\vc{\infer{\seq{\dual B\tau\+\dual C\tau}{D\tau}}{
-	  \deduce{\seq{\dual B\tau}{D\tau}}{\phi\vphantom)}
-	 }}\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
-	}}
-\end{array}
-\]
-
-\[
-\begin{array}{ccc}
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=3]{A}
-        \formula[y=1.8]{\exists x.B}
-        \Vlink[red,label={~$\scriptstyle{\pi,\sigma\vphantom)}$},r]{1,4}
-        \formula[y=1.2]{\forall x.{\dual B}}
-        \formula[y=0]{C}
-        \Vlink[red,label={~$\scriptstyle{\phi,\tau\vphantom)}$},r]{4,1}
-    \end{tikzpicture}}
-    & 
-    \begin{array}{c}\scoal\\[40pt]\stackrel{x\,\notin\,\tau\vphantom)}\scoal\end{array}
-    &
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=3]{A}
-        \formula[y=1.8]{\exists x.B}
-        \Vlink[red,label={~$\scriptstyle{\pi,\sigma\minus x\vphantom)}$},r]{1,1}
-        \formula[y=1.2]{\forall x.{\dual B}}
-        \formula[y=0]{C}
-        \Vlink[red,label={~$\scriptstyle{\phi,\tau\vphantom)}$},r]{1,1}
-    \end{tikzpicture}}
-\\\\ \Downarrow~~ && \Downarrow~~ \\\\
-    \vc{ 
-    \begin{tikzpicture}[net]
-        \formula[y=1.2]{A}
-        \formula[y=0]{C}
-        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi,\rho\vphantom)~}$}},l]{1,1}
-    \end{tikzpicture}}
-    &&
-    \vc{
-    \begin{tikzpicture}[net]
-        \formula[y=1.2]{A}
-        \formula[y=0]{C}
-        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi',\rho'\vphantom)~}$}},l]{1,1}
-    \end{tikzpicture}}
-\end{array}
-%
-\qquad
-%
-\begin{array}{l}
-	\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
-\\ \\ \\
-	\rho' = (\sigma\minus x\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}
-\\ \\ \\
-	\psi =~\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{C\rho}}{
-	 \left(\vc{
-	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
-	 }\right)\sigma\cyc\tau
-	 &
-	 \left(\vc{
-	  \deduce{\seq{\dual B\tau}{D\tau}}{\phi\vphantom)}
-	 }\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
-	}}
-\\ \\ \\
-	\psi' = 
-\\ \\
-	\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}\kern5pt]{\seq{A\rho}{C\rho}}{
-	 \left(\vc{\infer{\seq{A\sigma}{\exists x.B\sigma\minus x}\vphantom{\dual B}}{
-	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
-	 }}\right)\sigma\cyc\tau
-	 &
-	 \left(\vc{\infer{\seq{\forall x.\dual B\tau}{C\tau}}{
-	  \deduce{\seq{\dual B\tau}{C\tau}}{\phi\vphantom)}
-	 }}\right)\makebox[0pt][l]{$\sigma\cyc\tau$}
-	}}
-\end{array}
-\]
-
-\end{document}
-
-
-\begin{proposition}
-If $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ both coalesce, so does their composition.
-\end{proposition}
-
-\begin{proof}
-By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{\link[\varnothing]AB\}$ and $\kappa_\Theta=\{\link[\varnothing]{\dual B}C\}$, and the composition is $\net{\{\link[\varnothing]AC\}}AC$.
-
-If
-\end{proof}
-
-\begin{proposition}
-If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$ then the composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ sequentializes to a normal form $\psi$ of the proof
-\[
-	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{
-	 %\prf\pi AB & \prf\phi{\dual B}C
-	 \deduce{\seq AB\vphantom{\dual B}}{\pi}
-	&\deduce{\seq{\dual B}C}{\phi}
-	}
-\]
-\end{proposition}
-
-
-
-\end{document}
-
 
 \maketitle
 
@@ -991,6 +799,329 @@ To see that a maximally deep link coalesces, first note that a link $\link C{D_i
 
 \end{proof}
 
+
+
+\subsection{Composition}
+
+\[
+\begin{array}{ccc}
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
+	 \infer[\!\!\scriptstyle{\qrr*}]{\Seq A{B_1\*B_2}\vphantom{\dual B}}{\Prf{\pi_1}A{B_1} & \Prf{\pi_2}A{B_2}}
+	 &&
+	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{B_i}C}
+	}}
+	&\Rightarrow&
+	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf{\pi_i}A{B_i} && \Prf\phi{\dual B_i}C}}
+\\ \\
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
+	 \infer[\!\!\scriptstyle{\qrr?t}]{\Seq A{\exists x.B}}{\Prf\pi A{B[t/x]}}
+	 &&
+	 \infer[\!\!\scriptstyle{\qrr!}]{\Seq {\forall x.\dual B}C}{\Prf\phi{\dual B}C}
+	}}
+	&\Rightarrow&
+	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf\pi A{B[t/x]} && \Prf{\phi[t/x]}{\dual B[t/x]}C}}
+	
+\end{array}
+\]
+
+
+For a witness map $\sigma$ and a formula $B$ that is understood as a subformula of a formula $A$, we abbreviate $\sigma\res{\ex AB}$ to $\sigma_B$. A witness map of a link $\link CD$ then has two components, $\sigma_C$ and $\sigma_D$.
+
+The \defn{domain-preserving composition} of two witness maps $\sigma\dcom\tau$ is the map $(\sigma\tau)\res{\dom\sigma}$.
+
+The \defn{least fixed point} $\fix\sigma$ of a witness map $\sigma$ is the least map $\rho$ satisfying $\rho = \rho\sigma$. It is the shortest sequence $\fix\sigma=\sigma\sigma\dots\sigma$ such that no variable is both in the domain and range of $\fix\sigma$. Where it is used, in the composition of the witness maps of two links, we will need to demonstrate that it is well defined.
+
+
+
+\begin{definition}
+The \defn{composition} of two proof links $\link AB^\pi\comp\link[\tau]{\dual B}C^\phi$ is $\link[\rho]AC^\psi$ where
+\[
+	\rho = \sigma_A\tau_C\dcom\fix{\sigma_B\tau\subdual B}
+\qquad\text{and}\qquad
+	\psi = ~\vcenter{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq {A\rho}{B\rho}}{
+	 \left(\vcenter{\deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\vphantom\phi\pi}}\right)\fix{\sigma_B\tau\subdual B}
+	&\left(\vcenter{\deduce{\seq{\dual B\tau}{C\tau}}{\phi}}\right)\fix{\sigma_B\tau\subdual B}
+	}}~.
+\]
+The \defn{composition} of two labelled pre-nets $(\net{\lambda_\Sigma^\Pi}AB)\comp(\net{\kappa_\Theta^\Phi}{\dual B}C)$ is then
+\[
+	\net{\{~\link XY^\pi\comp\link[\tau]{\dual Y}Z^\phi
+		~\mid~
+		\link XY^\pi\in{\lambda_\Sigma^\Pi}
+		~,~
+		\link[\tau]{\dual Y}Z^\phi\in\kappa_\Theta^\Phi~\}
+	}AC~.
+\]
+The composition of two witness pre-nets omits the proof annotations.
+\end{definition}
+
+%	\net{\{~\link[\rho]XZ~\mid~\link XY\in{\lambda_\Sigma}~,~\link[\tau]{\dual Y}Z\in\kappa_\Theta~,~\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}~\}~}AC
+%~\rho=\sigma_A\tau_{\smash{\,\dual{\!B}}\vphantom B}\cup\tau_C\sigma_B~
+%(\sigma\res{\ex AX})(\tau\res{\ex{\dual B}{\dual Y}})\cup(\tau\res{\ex CZ})(\sigma\res{\ex BY})
+
+
+In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization with composition, and demonstrate that how they are resolved.
+
+The first critical pair of composition (downward as $\Rightarrow$) and sequentialization is the following. We consider the composition of pre-nets on $\seq AB$ and $\seq{\dual B}C$ where $B=B_1\*B_2$, with a synchronized sequentialization step on both pre-nets.
+\[
+\begin{array}{ccc}
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{B*{_1}\*B*{_2}}
+        \Vlink[red,label={$\scriptstyle{\pi,\sigma\vphantom)~}$},l]{[-2]1,1}
+        \Vlink[red,label={$\scriptstyle{~\pi'\!,\sigma\vphantom)}$},r]{[2]1,3}
+        \formula[y=1.2]{{\dual B}*{_1}\+{\dual B}*{_2}}
+        \formula[y=0]{C}
+        \Vlink[red,label={$\scriptstyle{\phi,\tau\vphantom)~}$},l]{1,1}
+    \end{tikzpicture}}
+    & 
+    \begin{array}{c}\scoal\\[40pt]\scoal\end{array}
+    &
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{B*{_1}\*B*{_2}}
+        \Vlink[red,label={$\scriptstyle{\pi''\!\!,\sigma\vphantom)~}$},l]{1,2}
+        \formula[y=1.2]{{\dual B}*{_1}\+{\dual B}*{_2}}
+        \formula[y=0]{C}
+        \Vlink[red,label={$\scriptstyle{\phi'\!,\tau\vphantom)~}$},l]{2,1}
+    \end{tikzpicture}}
+\\\\[-5pt] \Downarrow && \Downarrow \\\\[-5pt]
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi,\rho\vphantom)~}$}},l]{1,1}
+    \end{tikzpicture}}
+    &&
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][r]{$\scriptstyle{\psi',\rho'\vphantom)~}$}},l]{1,1}
+    \end{tikzpicture}}
+\end{array}
+\qquad
+\begin{array}{l@{\,}l}
+	\rho  &=~ \sigma_A\tau_C\dcom\fix{\sigma_B\tau\subdual B} 
+\\ \\
+	\rho' &=~ \sigma_A\tau_C\dcom\fix{\sigma_{B_1}\tau\subdual{B_1}}
+\\ \\
+	\psi &=~\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq{A\rho}{C\rho}}{
+	 \left(\vc{
+	  \deduce{\seq{A\sigma}{B_1\sigma}\vphantom{\dual B_1}}{\pi\vphantom)}
+	 }\right)\fix{\sigma_{B_1}\tau\subdual{B_1}}
+	 &
+	 \left(\vc{
+	  \deduce{\seq{\dual B_1\tau}{C\tau}}{\phi\vphantom)}
+	 }\right)\makebox[0pt][l]{$\fix{\sigma_{B_1}\tau\subdual{B_1}}$}
+	}}
+\\ \\ \\
+	\psi' &= ~
+	\vc{\scalebox{0.75}{$
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq{A\rho'}{C\rho'}}{
+	 \left(\vc{\infer{\seq{A\sigma}{B_1\sigma\*B_2\sigma}\vphantom{\dual B}}{
+	  \deduce{\seq{A\sigma}{B_1\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	  &
+	  \deduce{\seq{A\sigma}{B_2\sigma\vphantom{\dual B}}}{\pi'\vphantom)}
+	 }}\right)\fix{\sigma_B\tau\subdual B}
+	 &
+	 \left(\vc{\infer{\seq{\dual B_1\tau\+\dual B_2\tau}{C\tau}}{
+	  \deduce{\seq{\dual B_1\tau}{C\tau}}{\phi\vphantom)}
+	 }}\right)\makebox[0pt][l]{$\fix{\sigma_B\tau\subdual B}$}
+	}$}\kern5pt}
+\end{array}
+\]
+Since the existential covers of $B$ and $B_1$ are the same, $\sigma_B\tau\subdual B = \sigma_{B_1}\tau\subdual{B_1}$ and $\rho=\rho'$. It then follows that $\psi'$ cut-eliminates in one step to $\psi$.
+
+The next critical pair is the following.
+\[
+\begin{array}{ccc}
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{\exists x.B}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\pi,\sigma\vphantom)}$}},r]{1,4}
+        \formula[y=1.2]{\forall x.{\dual B}}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\phi,\tau\vphantom)}$}},r]{4,1}
+    \end{tikzpicture}}
+    & 
+    \begin{array}{c}\scoal\\[40pt]\stackrel{x\,\notin\,\tau\vphantom)}\scoal\end{array}
+    &
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{\exists x.B}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\pi',\sigma\minus x\vphantom)}$}},r]{1,1}
+        \formula[y=1.2]{\forall x.{\dual B}}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\phi',\tau\vphantom)}$}},r]{1,1}
+    \end{tikzpicture}}
+\\\\ \Downarrow && \Downarrow \\\\
+    \vc{ 
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\psi,\rho\vphantom)}$}},r]{1,1}
+    \end{tikzpicture}}
+    &&
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{C}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\psi',\rho'\vphantom)}$}},r]{1,1}
+    \end{tikzpicture}}
+\end{array}
+%
+\qquad\quad
+%
+\begin{array}{l@{\,}l}
+	\rho  &=~ \sigma_A\tau_C\dcom\fix{\sigma_B\tau\subdual B}
+\\ \\
+	\rho' &=~ \sigma_A\tau_C\dcom\fix{(\sigma_B\minus x)\tau\subdual B}
+\\ \\
+	\psi  &=~
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq{A\rho}{C\rho}}{
+	 \left(\vc{
+	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	 }\right)\fix{\sigma_B\tau\subdual B}
+	 &
+	 \left(\vc{
+	  \deduce{\seq{\dual B\tau}{C\tau}}{\phi\vphantom)}
+	 }\right)\makebox[0pt][l]{$\fix{\sigma_B\tau\subdual B}$}
+	}}
+\\ \\ \\
+	\psi' &=~ 
+	\vc{\scalebox{0.8}{$
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq{A\rho'}{C\rho'}}{
+	 \left(\vc{\infer{\seq{A\sigma}{\exists x.B\sigma\minus x}\vphantom{\dual B}}{
+	  \deduce{\seq{A\sigma}{B\sigma}\vphantom{\dual B}}{\pi\vphantom)}
+	 }}\right)\fix{(\sigma_B\minus x)\tau\subdual B}
+	 &
+	 \left(\vc{\infer{\seq{\forall x.\dual B\tau}{C\tau}}{
+	  \deduce{\seq{\dual B\tau}{C\tau}}{\phi\vphantom)}
+	 }}\right)\makebox[0pt][l]{$\fix{(\sigma_B\minus x)\tau\subdual B}$}
+	}$}}
+	\rule{25pt}{0pt}
+\end{array}
+\]
+Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
+
+
+\[
+\begin{array}{ccc}
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{B}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\pi,\sigma\vphantom)}$}},r]{1,1}
+        \formula[y=1.2]{{\dual B}}
+        \formula[y=0]{\exists x.C}
+        \Vlink[red,label={\makebox[0pt][r]{~$\scriptstyle{\phi,\tau\vphantom)}$~}},l]{1,4}
+    \end{tikzpicture}}
+    & 
+    \begin{array}{c}\\[45pt]\scoal\end{array}
+    &
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=3]{A}
+        \formula[y=1.8]{B}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\pi,\sigma\vphantom)}$}},r]{1,1}
+        \formula[y=1.2]{{\dual B}}
+        \formula[y=0]{\exists x.C}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\phi',\tau\minus x\vphantom)}$}},r]{1,1}
+    \end{tikzpicture}}
+\\\\ \Downarrow && \Downarrow \\\\
+    \vc{ 
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{\exists x.C}
+        \Vlink[red,label={\makebox[0pt][r]{~$\scriptstyle{\psi,\rho\vphantom)}$~}},l]{1,4}
+    \end{tikzpicture}}
+    &&
+    \vc{
+    \begin{tikzpicture}[net]
+        \formula[y=1.2]{A}
+        \formula[y=0]{\exists x.C}
+        \Vlink[red,label={\makebox[0pt][l]{~$\scriptstyle{\psi',\rho'\vphantom)}$}},r]{1,1}
+    \end{tikzpicture}}
+\end{array}
+%
+\qquad\quad
+%
+\begin{array}{l@{\,}l}
+	\rho  &=~ \sigma_A\tau_C\dcom\fix{\sigma_B\tau\subdual B}
+\\ \\
+	\rho' &=~ \sigma_A(\tau_C\minus x)\dcom\fix{\sigma_B\tau\subdual B}
+\\ \\
+	\psi &=~
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq{A\rho}{C\rho}}{
+	 \left(\vc{
+	  \Prf\pi{A\sigma}{B\sigma}
+	 }\right)\fix{\sigma_B\tau\subdual B}
+	 &
+	 \left(\vc{
+	  \Prf\phi{\dual B\tau}{C\tau}
+	 }\right)\fix{\sigma_B\tau\subdual B}
+	}}
+\\ \\
+	\psi' &=~
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq{A\rho'}{C\rho'}}{
+	 \left(\vc{
+	  \Prf\pi{A\sigma}{B\sigma}
+	 }\right)\fix{\sigma_B\tau\subdual B}
+	 &
+	 \left(\vc{
+	  \infer{\Seq{\dual B\tau}{\exists x.C(\tau\minus x)}}{\Prf\phi{\dual B\tau}{C\tau}}
+	 }\right)\fix{\sigma_B\tau\subdual B}
+	}}
+\end{array}
+\]
+Observe that since $x$ occurs in $C$ but not $B$, it is not in the domain of $\tau_B$, so that $\tau_B\minus x$ is just $\tau_B$. Then $\rho'=\rho\minus x$, and the diagram is closed by a sequentialization step (from left to right) that extends $\psi$ with an existential introduction rule, to a proof equivalent to $\psi'$:
+\[
+	\infer[\!\!\scriptstyle{\qrr?{\rho(x)}}]{\Seq{A\rho'}{\exists x.C\rho'}}{
+	 \Prf\psi{A\rho}{C\rho}
+	}
+\]
+
+There are three further critical pairs 
+
+%\end{document}
+
+
+\begin{proposition}
+If $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ both coalesce, so does their composition.
+\end{proposition}
+
+\begin{proof}
+By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{\link[\varnothing]AB\}$ and $\kappa_\Theta=\{\link[\varnothing]{\dual B}C\}$, and the composition is $\net{\{\link[\varnothing]AC\}}AC$.
+
+If
+\end{proof}
+
+\begin{proposition}
+If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$ then the composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ sequentializes to a normal form $\psi$ of the proof
+\[
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{
+	 %\prf\pi AB & \prf\phi{\dual B}C
+	 \deduce{\seq AB\vphantom{\dual B}}{\pi}
+	&\deduce{\seq{\dual B}C}{\phi}
+	}
+\]
+\end{proposition}
+
+
+
+%\end{document}
 
 
 
