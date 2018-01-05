@@ -10,3 +10,7 @@
 *.vtc
 
 ALL1.pdf
+
+*.blg
+
+*.bbl

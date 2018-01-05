@@ -23,15 +23,12 @@
 
 \makeatletter
 
-
 \theoremstyle{plain}
 \newtheorem{proposition}[theorem]{Proposition}
-
 
 % ===== Definitions
 
 \newcommand\defn[1]{\textit{\textbf{#1}}}
-
 
 % ===== General maths
 
@@ -39,6 +36,7 @@
 
 % ===== Sets
 
+\newcommand\var{\textsc{var}}
 \newcommand\varA{\textsc{var}^\forall}
 \newcommand\varE{\textsc{var}^\exists}
 \newcommand\terms{\textsc{term}}
@@ -48,7 +46,7 @@
 \newcommand\proofs{\textsc{proof}}
 \newcommand\all{\textsc{all}}
 
-\newcommand\ex[2]{\textsc{ex}_{#1}(#2)}
+\newcommand\ex[2][{}]{\textsc{ev}_{#1}(#2)}
 
 \newcommand\subs[1]{\textsc{sub}(#1)}
 \newcommand\poss[1]{\textsc{pos}(#1)}
@@ -62,7 +60,6 @@
 
 \newcommand\sub{\leq}
 \newcommand\dep{\preccurlyeq}
-%\newcommand\dep{\stackrel\star{\smash\preccurlyeq\rule{0pt}{1ex}}}
 
 \newcommand\seq[3][]{{\vdash_{#1}}#2,#3}
 \newcommand\fv{\textsc{fv}}
@@ -77,9 +74,6 @@
 
 \newcommand\deseq[4][\sigma]{[#2]_{#1}^{#3,#4}}
 \newcommand\Deseq[4][\sigma]{\left[\vcenter{#2}\right]_{#1}^{#3\,,\,#4}}
-
-%\newcommandx\deseq[4][2=\sigma]{\floor{#1}_{#2}^{#3,#4}}
-%\newcommandx\Deseq[4][2=\sigma]{\left\lfloor\vcenter{#1}\right\rfloor_{#2}^{#3,#4}}
 
 \newcommand\comp{\mathbin;}
 
@@ -111,6 +105,7 @@
 \newcommand\scoal{\rightarrow} %{\leadsto}
 \newcommand\ucoal{\rightsquigarrow}
 
+\newcommand\Qrr{\!\!\scriptstyle\qrr}
 
 \newcommand\qrr[1]{
   \ifx#1+\expandafter\@qrr\else
@@ -123,6 +118,7 @@
 }
 \newcommand\@qrr[1]{+\mathrm R,#1}
 \newcommand\@@qrr[1]{\exists\mathrm R,#1}
+
 \newcommand\srr[1]{
   \ifx#1+\expandafter\@srr\else
   \ifx#1*\*\mathrm S\else
@@ -132,6 +128,7 @@
   #1\mathrm S  \fi\fi\fi\fi\fi
 }
 \newcommand\@srr[1]{+_{#1}\mathrm S}
+
 \newcommand\urr[1]{
   \ifx#1+\expandafter\@urr\else
   \ifx#1*\*\mathrm U\else
@@ -194,7 +191,6 @@
 \title{Proof nets for first-order additive linear logic}
 %\titlerunning{Proof nets for ALL1}
 
-
 \author[1]{Willem B.\ Heijltjes}
 \author[2]{Dominic J.D.\ Hughes}
 \author[3]{Lutz Stra\ss burger}
@@ -225,9 +221,20 @@
 
 \end{abstract}
 
+
+% ==================================================
+
 \section{Introduction}
 
 
+Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}. This is a simple graph rewriting relation that gives top-down sequentialization, from the axioms to the conclusion of a proof. It is the additive counterpart to Danos \defn{contractibility} for multiplicative linear logic. 
+
+We will define two coalescence relations, one \defn{strict} $(\scoal)$, for witness nets, and one \defn{unifying} $(\ucoal)$, for unification nets, in a later section. In the former, to join two slices the witness assignment must be the same; in the latter, witness assignments must be compatible, so that a common, more general witness map exists. 
+
+
+
+
+% --------------------------------------------------
 
 \subsection{Proof identity}
 
@@ -267,61 +274,30 @@ Below right is an interesting intermediate variant: the witness $s$ or $t$ can b
 In this paper we will not attempt to decisively settle the question of proof identity. Rather, we will present two natural and coherent notions of proof net, that represent two extremes. One, \defn{witness nets}, takes the choice of existential witnesses to be essential proof content, and rejects all three equivalences above. The other, \defn{unification nets}, removes any redundancy by rejecting explicit witnessing information altogether; instead, a most general witness for every quantifier is reconstructed by unification.
 
 
+%$\seq{\,\exists x.P(x,x,s)\,}{\,\exists y.\dual P(t,y,y)}$ 
 
-\[
-\begin{tikzpicture}[net]
-\formula[y=1.2]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-2]8,5}
-\Vlink[red,label={$~\scriptstyle\tau$}]{[2]8,12}
-\end{tikzpicture}
-\]
+% --------------------------------------------------
 
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$~\scriptstyle\upsilon$}]{8,11}
-\end{tikzpicture}
-\]
+\subsection{Background and related work}
 
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$\quad\scriptstyle{\upsilon\minus y}$}]{8,1}
-\end{tikzpicture}
-\]
 
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$~\scriptstyle{\upsilon\minus y}$}]{4,1}
-\end{tikzpicture}
-\]
+\cite{Whitman-1941}
+\cite{Girard-1987}
+\cite{Galmiche-Marion-1995} % ALL proof search
+\cite{Girard-1996}
+\cite{Hu-99}
+\cite{Galmiche-2000} % ALL connection net (Def 6.11.)
+\cite{Hughes-VanGlabbeek-2005}
+\cite{Cockett-Santocanale-2009}
+\cite{Heijltjes-2011, Heijltjes-2012}
+\cite{Heijltjes-Hughes-2015}
 
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$~\scriptstyle{\rho}$}]{1,1}
-\end{tikzpicture}
-\]
+\cite{Danos-1990}
+\cite{Guerrini-Masini-2001}
+\cite{Guerrini-2011}
 
-\[
-	\sigma = [a/y, s/x]
-	\qquad
-	\tau = [a/y, t/x]
-\]
-\[
-	\upsilon = \rho[a/y, u/x]
-	\qquad
-	\rho = \mgu(s,t)
-	\qquad
-	 u=s\rho=t\rho
-\]
-
+\cite{Herbrand-1930}
+\cite{Heijltjes-2010}
 
 % ==================================================
 
@@ -329,56 +305,21 @@ In this paper we will not attempt to decisively settle the question of proof ide
 
 % ..................................................
 
-%\begin{figure}
-%\[
-%	\infer{\seq P{\dual P}}{}
-%\qquad
-%	\infer{\seq A{B_0\+B_1}}{\seq A{B_i}}
-%\qquad
-%	\infer{\seq A{B\*C}}{\seq AB && \seq AC}
-%\qquad
-%	\infer{\seq A{\exists x.B}}{\seq A{B[t/x]}}
-%\qquad
-%	\infer[\!\!\scriptstyle{a\,\notin\,\textsc{fv}(A)}]{\seq A{\forall a.B}}{\seq AB}
-%\]
-%\caption{A sequent calculus for $\all1$}
-%\label{fig:sequent calculus}
-%\end{figure}
-
 \begin{figure}
 \[
-	\infer[\!\!\scriptstyle{\qrr1}]{\seq P{\dual P}}{}
+	\infer[\Qrr1]{\seq P{\dual P}}{}
 \quad
-	\infer[\!\!\scriptstyle{\qrr+i}]{\seq A{B_0\+B_1}}{\seq A{B_i}}
+	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
 \quad
-	\infer[\!\!\scriptstyle{\qrr*}]{\seq A{B\*C}}{\seq AB & \seq AC}
+	\infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
 \quad
-	\infer[\!\!\scriptstyle{\qrr?t}]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
+	\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
 \quad
-	\infer[\!\!\scriptstyle{\qrr!~(a\,\notin\,\textsc{fv}(A))}]{\seq A{\forall a.B}}{\seq AB}
+	\infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
 \]
 \caption{A sequent calculus for $\all1$}
 \label{fig:sequent calculus}
 \end{figure}
-%
-%\begin{figure}
-%\[
-%\raisebox{.5ex}{$\qrr1$}\quad
-%	\infer{\seq P{\dual P}}{}
-%\quad\raisebox{.5ex}{$\qrr+i$}\quad
-%	\infer{\seq A{B_0\+B_1}}{\seq A{B_i}}
-%\quad\raisebox{.5ex}{$\qrr*$}\quad
-%	\infer{\seq A{B\*C}}{\seq AB && \seq AC}
-%\quad\raisebox{.5ex}{$\qrr?$}\quad
-%	\infer{\seq A{\exists x.B}}{\seq A{B[t/x]}}
-%\quad\raisebox{.5ex}{$\qrr!$}\quad
-%	\infer[\!\!\scriptstyle{a\,\notin\,\textsc{fv}(A)}]{\seq A{\forall a.B}}{\seq AB}
-%\]
-%\caption{A sequent calculus for $\all1$}
-%\label{fig:sequent calculus}
-%\end{figure}
-
-
 
 % ..................................................
 
@@ -391,24 +332,23 @@ First-order terms and the formulas of first-order $\all$ are generated by the fo
 \setMidspace{5pt}
 \[
 \begin{array}{@{}l@{}l}
-	t &\Coloneqq a \Mid x \Mid f(t_1,\dots,t_n)
+	t &\Coloneqq x \Mid f(t_1,\dots,t_n)
 \\[10pt]
-	P &\Coloneqq p(t_1,\dots,t_n) \Mid \dual p(t_1,\dots,t_n)
+	a &\Coloneqq P(t_1,\dots,t_n) \Mid \dual P(t_1,\dots,t_n)
 \\[10pt]
-	A &\Coloneqq P \Mid A\+A \Mid A\*A \Mid \exists x.A \Mid \forall a.A
+	A &\Coloneqq a \Mid A\+A \Mid A\*A \Mid \exists x.A \Mid \forall x.A
 \end{array}
 \]
 %
-Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual p$, as a matter of convenience. The \defn{dual} $\dual A$ of an arbitrary formula $A$ is given by DeMorgan. We use the following notational conventions.
+Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$, as a matter of convenience. The \defn{dual} $\dual A$ of an arbitrary formula $A$ is given by DeMorgan. We use the following notational conventions.
 %
 \[
-\begin{tabular}{@{}lll@{}}
-	$a,b,c$ & $\in \varA$ 		& universally quantified variables (and free variables)\\
-	$x,y,z$ & $\in \varE$		& existentially quantified variables (and term-language variables)\\
+\begin{tabular}{@{}lll@{}} 
+	$x,y,z$ & $\in \var$		& first-order variables\\
 	$f,g,h$ & $\in \Sigma_f$	& $n$-ary $(n\geq 0)$ function symbols from a fixed alphabet $\Sigma_f$\\
-	$p,q,r$ & $\in \Sigma_p$	& $n$-ary $(n\geq 0)$ predicate symbols from a fixed alphabet $\Sigma_p$ \\
-	$s,t,u$ & $\in \terms$ 		& first-order terms over $\varA$, $\varE$, $\Sigma_f$, and $\Sigma_p$ \\
-	$P,Q,R$ & $\in \atom$		& atomic propositions \\
+	$P,Q,R$ & $\in \Sigma_p$	& $n$-ary $(n\geq 0)$ predicate symbols from a fixed alphabet $\Sigma_p$ \\
+	$s,t,u$ & $\in \terms$ 		& first-order terms over $\var$ and $\Sigma_f$ \\
+	$a,b,c$ & $\in \atom$		& atomic propositions \\
 	$A,B,C$ & $\in \form$		& \all1 formulas \\
 \end{tabular}
 \]
@@ -420,7 +360,7 @@ By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance
 	\subs A = \{A\} \cup
 	\left\{\begin{array}{ll}
 		\subs B\uplus\subs C	& \text{if $A=B\+C$ or $A=B\*C$} \\[5pt]
-		\subs B					& \text{if $A=\exists x.B$ or $A=\forall a.B$}
+		\subs B					& \text{if $A=\exists x.B$ or $A=\forall x.B$}
 	\end{array}\right.
 \]
 
@@ -431,158 +371,150 @@ A \defn{linking} $\lambda$ on the sequent $\seq AB$ is a set of links on it.
 A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda$ on it.
 \end{definition}
 
-
 % --------------------------------------------------
 
 \subsection{Witness maps}
 
-A \defn{witness map} $\sigma\colon \varE \rightharpoonup \terms$ is a substitution map which assigns terms to existential variables, given as a (finite) partial function. Its \defn{domain} $\dom\sigma$ is the set of those variables for which it is defined. The \defn{empty} witness map $\varnothing$ is the everywhere undefined partial function, and the map $\sigma[t/x]$ substitutes $t$ for $x$ and is as $\sigma$ everywhere else. We express by $\sigma(x)=\bot$ that $\sigma$ is undefined for $x$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, and $\sigma\res V$ is the restriction of $\sigma$ to a set of variables $V$. We abbreviate by $a\in \sigma$ the statement that a variable $a$ occurs free in the range of $\sigma$, i.e.\ that $a\in\fv(\sigma(x))$ for some $x$.
+A \defn{witness map} $\sigma\colon\var\rightharpoonup\terms$ is a substitution map which assigns terms to variables, given as a (finite) partial function. We define it as $\sigma=[t_1/x_1,\dots,t_n/x_n]$, where its \defn{domain} $\dom\sigma$ is $\{x_1,\dots,x_n\}$. We abbreviate by $y\in\sigma$ that a variable $y$ occurs free in its the range, $y\in\fv(t_i)$ for some $i\leq n$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, we write $\sigma\res V$ for the restriction of $\sigma$ to a set of variables $V$, and $\varnothing$ is the \defn{empty} witness map.
+%
+We write $A\sigma$ for the application of the substitutions in $\sigma$ to the formula $A$, and $\pi\sigma$ for its application to the proof $\pi$, where it is applied to each formula in the proof. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
 
-We will write $A\sigma$ for the application of the witness map $\sigma\colon\varE\rightharpoonup\terms$ to the formula $A$ as a substitution map. It is applied to a sequent proof, $\pi\sigma$, by applying it to each formula in the proof $\pi$. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
+%\[
+%\begin{tabular}{@{}ll@{}} 
+%	$\varnothing$ & is the empty witness map \\
+%	$\sigma\minus x$ & is the witness map that is undefined on $x$ and otherwise as $\sigma$ \\
+%	$\sigma\res V$ & is the restriction of $\sigma$ to a set of variables $V$\\
+%	$y\in\sigma$ & abbreviates $y\in\fv(\sigma(x))$ for some $x$ ($y$ occurs in the range of $\sigma$) \\
+%	$A\sigma$ & is the application of $\sigma$ as a substitution map to a formula $A$ \\
+%	$\pi\sigma$ & is the application of $\sigma$ to a proof $\pi$ (applied to all its formulas) \\
+%\end{tabular}
+%\]
 
-A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to \varE\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)\in\lambda$ and $\Sigma(C,D)=\sigma$. When a link is not a witness link, this may be emphasized by calling it \defn{clean}.
+A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to\var\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)\in\lambda$ and $\Sigma(C,D)=\sigma$.
+% When a link is not a witness link, this may be emphasized by calling it \defn{clean}.
 
 \begin{definition}
 A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a witness linking $\lambda_\Sigma$.
-%
-%\begin{description}
-%	\item[Exact coverage]
-%The domain of $\sigma$ is exactly the variables existentially quantified in $\seq AB$ that will be bound in $C$ and $D$, if they occur:
-%\[
-%	\dom\sigma = \{\,x \mid C < \exists x.X \leq A\,\}
-%			\cup \{\,y \mid D < \exists y.Y \leq B\,\}~.
-%\]
-%
-%	\item[Eigenvariables not free]
-%A universal variable $a\in\varA$ quantified in $C$ or $D$ may not occur free in the range of $\sigma$, $a\notin\sigma$.
-%
-%	\item[Freshness]
-%Existential variables in the range of $\sigma$ are fresh, i.e.\ distinct from any existentially quantified variable in $\seq AB$.
-%\end{description}
 \end{definition}
 
-We will assume the following variable naming conventions for \all1 pre-nets.
-
+We will assume the following variable naming conventions.
+%
 \begin{description}
 	\item
-[\defn{Barendregt's convention}] All quantifiers in a sequent $\seq AB$ have a distinct binding variable, and no bound variable shares a name with a free one.
-%	\item
-%% ALTERNATIVE: "STATIC WITNESSING"
-%[\defn{Universal witnessing}] All existential witnesses in a proof are \defn{universal terms} $\termsA\subset\terms$, generated by the following grammar.
-%\[
-%	\termsA: \qquad t \Coloneqq a \Mid f(t_1,\dots,t_n)
-%\]
+[Barendregt's convention] All quantifiers in a sequent $\seq AB$ have a distinct binding variable, and no bound variable shares a name with a free one.
 
 	\item[Eigenvariables not free]
-For a link $\link CD$, a universal variable $a\in\varA$ quantified in $C$ or $D$ may not occur free in the range of $\sigma$, $a\notin\sigma$.
+For a link $\link CD$, a universally quantified variable in $C$ or $D$ does not occur free in the range of $\sigma$.
 
 	\item[Freshness]
-For a link $\link CD$, existential variables in the range of $\sigma$ are fresh, i.e.\ distinct from any existentially quantified variable in $\seq AB$.
+For a link $\link CD$ in $\net{\lambda_\Sigma}AB$, variables in the range of $\sigma$ are fresh: distinct from any existentially quantified (as $\exists x$) variable in $\seq AB$.
 \end{description}
 
 
-%We assume the existential variables occurring in the range of $\Sigma$ to be fresh, i.e.\ distinct from any existentially quantified variable in $\seq AB$.  
-
 \begin{definition}
-The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\lambda_\Sigma}AB$ where $\lambda_\Sigma=\deseq[\varnothing]\pi AB$ and the function $\deseq-AB$ is defined as follows.
+The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\deseq[\varnothing]\pi AB}AB$ where the function $\deseq-AB$ is defined inductively as follows.
 %
-\newlength\deseqwidth
-\settowidth\deseqwidth{$\scriptstyle{A'\,,\,B'_0\+B'_1}$}
-\newcommand\XDeseq[4][\sigma]{\left[\vcenter{#2}\right]_{#1}^{\makebox[\deseqwidth][l]{$\scriptstyle{#3\,,\,#4}$}}}
+% $\net{\lambda_\Sigma}AB$ where $\lambda_\Sigma=\deseq[\varnothing]\pi AB$ and the function $\deseq-AB$ is defined as follows.
+%
+%\newlength\deseqwidth
+%\settowidth\deseqwidth{$\scriptstyle{A'\,,\,B'_0\+B'_1}$}
+%
+\newcommand\XDeseq[4][\sigma]{
+ \left[\vcenter{#2}\right]%
+ _{\makebox[0pt][l]{$\scriptstyle{#1}$}}%
+ ^{\makebox[0pt][l]{$\scriptstyle{#3\,,\,#4}$}}%
+ \rule{35pt}{0pt}
+}
+%
 \begin{align*}
-	\XDeseq{\infer{\seq P{\dual P}}{}}QR &\quad=\quad \{\link QR\}
-\\ \\
-	\XDeseq{\infer {\seq A {B_0\+B_1}} {\deduce [\rule{0pt}{1pt}] {\seq A{B_i}} \pi }}
-	  {A'}{B_0'\+B'_1} 
+	\XDeseq{\,\infer[\Qrr1]{\seq a{\dual a}}{}}bc &\quad=\quad \{\link bc\}
+\\ \\[-5pt]
+	\XDeseq{\infer[\Qrr+i]{\seq A {B_1\+B_2}}{\Prf \pi A{B_i}}} {A'} {B_1'\+B'_2} 
 	& \quad=\quad 
-	\Deseq{\deduce[\rule{0pt}{1pt}]{\seq A{B_i}}\pi}{A'}{B_i'}
-\\ \\
-	\XDeseq{\infer{\seq A{B\*C}}{
-	  \deduce[\rule{0pt}{1pt}]{\seq AB}{\pi\vphantom'} 
-	  && 
-	  \deduce[\rule{0pt}{1pt}]{\seq AC}{\pi'}}}{A'}{B'\*C'}
+	\Deseq{\Prf\pi A{B_i}} {A'} {B_i'}
+\\ \\[-5pt]
+	\XDeseq{\infer[\Qrr*]{\seq A{B\*C}}{
+	 \Prf\pi AB && \Prf{\pi'}AC 
+	}}{A'}{B'\*C'}
 	& \quad=\quad 
-	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AB}{\pi\vphantom'}}{A'}{B'}
+	  \Deseq{\Prf\pi AB}{A'}{B'}
 	  \cup
-	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AC}{\pi'}}{A'}{C'}
-\\ \\
-	\XDeseq{\infer{\seq A{\exists x.B}}{\deduce[\rule{0pt}{1pt}]{\seq A{B[t/x]}}\pi}}
-	  {A'}{\exists x.B'}
+	  \Deseq{\Prf{\pi'}AC}{A'}{C'}
+\\ \\[-5pt]
+	\XDeseq{\infer[\Qrr?t]{\seq A{\exists x.B}}{\Prf\pi A{B[t/x]}}}{A'}{\exists x.B'}
 	& \quad=\quad 
-	 \Deseq[{\sigma[t/x]}]{\deduce[\rule{0pt}{1pt}]{\seq A{B[t/x]}}\pi}
-	  {A'}{B'}
-\\ \\
-	\XDeseq{\infer[\!\!\scriptstyle{a\,\notin\,\textsc{fv}(A)}]
-	  {\seq A{\forall a.B}}{\deduce[\rule{0pt}{1pt}]{\seq AB}\pi}}{A'}{\forall a.B'}
+	 \Deseq[{\sigma[t/x]}]{\Prf\pi A{B[t/x]}} {A'} {B'}
+\\ \\[-5pt]
+	\XDeseq{\infer[\Qrr!]
+	  {\seq A{\forall x.B}}{\Prf\pi AB}} {A'} {\forall x.B'}
 	& \quad=\quad 
-	  \Deseq{\deduce[\rule{0pt}{1pt}]{\seq AB}\pi}{A'}{B'}
+	  \Deseq{\Prf\pi AB}{A'}{B'}
 \end{align*}
 \end{definition}
 
-A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$. While a sequent proof instantiates existential witnesses immedately into the premise of the existential quantifier rule, for proof nets we delay the substitutions $\sigma$. Hence we need to maintain the separation of the conclusion $\seq AB$ into the substitutions $\sigma$ and the subformulas $A'$ and $B'$ of the conclusion of the proof net.
+A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$: the translation separates a sequent $\seq AB$ into subformulas $A'$, $B'$ of the ultimate conclusion of the proof, and the accumulated existential witnesses $\sigma$.
+%While a sequent proof instantiates existential witnesses immedately into the premise of the existential quantifier rule, for proof nets we delay the substitutions $\sigma$. Hence we need to maintain the separation of the conclusion $\seq AB$ into the substitutions $\sigma$ and the subformulas $A'$ and $B'$ of the conclusion of the proof net.
 
-We will conclude this section by discussing two further essential notions. First, a witness link $\link PQ$ on two atomic formulas $P$ and $Q$ is an \defn{axiom} link if $P\sigma=\dual Q\sigma$; a witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
+We will conclude this section by discussing two further essential notions. First, a witness link $\link ab$ on two atomic formulas $a$ and $b$ is an \defn{axiom} link if $a\sigma=\dual b\sigma$. A witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
 
-Second, given a link $\link CD$ in a pre-net $\net\lambda AB$, we expect the domain of $\sigma$ to be exactly those variables that existentially quantified in $A$ and $B$ dominating $C$ and $D$. That is, any variable $x$ such that there is a subformula $\exists x.X$ in $A$ that in turn has $C$ as a subformula, and likewise for $B$ and $D$. We will now make this precise. For a subformula $C$ of a formula $A$, let the \defn{existential cover} $\ex AC$ of $C$ in $A$ be the following set:
+Second, given a link $\link CD$ in a pre-net $\net\lambda AB$, we expect the domain of $\sigma$ to be exactly the existentially quantified variables in $A$ and $B$ in whose scope $C$ and $D$ occur. 
+%That is, any variable $x$ such that there is a subformula $\exists x.X$ in $A$ that in turn has $C$ as a subformula, and likewise for $B$ and $D$. We will now make this precise. 
+For a subformula $C$ of $A$, let the \defn{existential variables} $\ex[A]C$ of $C$ in $A$ be the set
 \[
-	\ex AC = \{\,x \mid C < \exists x.X \sub A\,\}~.
+	\ex[A]C = \{\,x \mid C < \exists x.X \sub A\,\}~.
 \]
 
 \begin{definition}
-A witness pre-net $\net{\lambda_\Sigma}AB$ has \defn{exact coverage} if for every link $\link CD$ in $\lambda_\Sigma$ the domain of $\sigma$ is exactly the existential covers of $C$ and $D$:
+A witness pre-net $\net{\lambda_\Sigma}AB$ has \defn{exact coverage} if for every link $\link CD$ in $\lambda_\Sigma$ the domain of $\sigma$ is exactly the existential variables of $C$ and $D$:
 \[
-	\dom\sigma = \ex AC\cup\ex BD~.
+	\dom\sigma = \ex[A]C\cup\ex[B]D~.
 \]
 \end{definition}
+%
+The witness map $\sigma$ of a link $\link CD$ then has two natural components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we will abbreviate by $\sigma_C$ and $\sigma_D$ respectively.
 
-A de-sequentialization $[\pi]$ has exact coverage. Note that the property is carefully formulated, using the \emph{exisential cover} rather than simply the free existential variables in a formula, to account for vacuous quantifiers ($\exists x.C$ where $x$ is not free in $C$). The issue becomes even more pertinent for a link $\link CD$ where $C$ occurs in $\exists x.C{\+}C'$ and $x$ is free in $C'$ but not $C$, where we still would like an explicit witness for $x$ in $\sigma$. 
+Finally, note that a de-sequentialization $[\pi]$ has exact coverage.
 
-
+%Note that the property is carefully formulated, using the \emph{exisential cover} rather than simply the free existential variables in a formula, to account for vacuous quantifiers.
+% ($\exists x.C$ where $x$ is not free in $C$). The issue becomes even more pertinent for a link $\link CD$ where $C$ occurs in $\exists x.C{\+}C'$ and $x$ is free in $C'$ but not $C$, where we still would like an explicit witness for $x$ in $\sigma$. 
 
 
 % --------------------------------------------------
 
 \subsection{Correctness and sequentialization}
 
-Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}. This is a simple graph rewriting relation that gives top-down sequentialization, from the axioms to the conclusion of a proof. It is the additive counterpart to Danos \defn{contractibility} for multiplicative linear logic. 
-
-We will define two coalescence relations, one \defn{strict} $(\scoal)$, for witness nets, and one \defn{unifying} $(\ucoal)$, for unification nets, in a later section. In the former, to join two slices the witness assignment must be the same; in the latter, witness assignments must be compatible, so that a common, more general witness map exists. 
-
-For sequentialization, the links in a pre-net will be labelled with a sequent proof. An axiom link will carry an axiom, and each coalescence step introduces one proof rule. Formalizing this, a \defn{proof linking} $\lambda_\Sigma^\Pi$ is a witness linking $\lambda_\Sigma$ with a \defn{proof labelling} $\Pi\colon \lambda\to\proofs$ assigning each link a sequent proof. We will use and define $\lambda_\Sigma^\Pi$ as a set of \defn{proof links} $\link CD^\pi$, where we require that $\prf\pi{C\sigma}{D\sigma}$, i.e.\ that $\pi$ proves the conclusion $\seq{C\sigma}{D\sigma}$. A \defn{labelled pre-net} $\net{\lambda_\Sigma^\Pi}AB$ is a witness pre-net $\net{\lambda_\Sigma}AB$ with a proof labelling $\Pi$ on $\lambda_\Sigma$. If $\lambda_\Sigma$ is an axiom linking, we assign an \defn{initial proof labelling} $\lambda_\Sigma^\star$ as follows.
+For sequentialization, the links in a pre-net will be labelled with a sequent proof. An axiom link will carry an axiom, and each coalescence step introduces one proof rule. Formalizing this, a \defn{proof linking} $\lambda_\Sigma^\Pi$ is a witness linking $\lambda_\Sigma$ with a \defn{proof labelling} $\Pi\colon \lambda\to\proofs$ assigning a sequent proof to each link. We will use and define $\lambda_\Sigma^\Pi$ as a set of \defn{proof links} $\link CD^\pi$, where we require that $\prf\pi{C\sigma}{D\sigma}$, i.e.\ that $\pi$ proves the conclusion $\seq{C\sigma}{D\sigma}$. A \defn{labelled pre-net} $\net{\lambda_\Sigma^\Pi}AB$ is a witness pre-net $\net{\lambda_\Sigma}AB$ with a proof labelling $\Pi$ on $\lambda_\Sigma$. If $\lambda_\Sigma$ is an axiom linking, we assign an \defn{initial proof labelling} $\lambda_\Sigma^\star$ as follows.
 \[
-	\lambda_\Sigma^\star = \{~\link PQ^\pi~\mid~\link PQ\in\lambda_\Sigma~,~\pi=~\infer{\seq{P\sigma}{Q\sigma}}{}~\}
+	\lambda_\Sigma^\star = \{~\link ab^\pi~\mid~\link ab\in\lambda_\Sigma~,~\pi=~\infer{\seq{a\sigma}{b\sigma}}{}~\}
 \]
 For correctness we may coalesce a pre-net directly, without constructing a proof. 
-
-To recap, we have accumulated the following further notational conventions.
+%
+Then to recap, we have accumulated the following further notational conventions.
 %
 \[
 \begin{tabular}{@{}lcll@{}}
+	$\pi,\phi,\psi$		& $\in$ & $\proofs$ & \all1 sequent proofs\\
 	$\kappa,\lambda$ 	& $\subset$ & $\form\times\form$ 	& linkings (sets of pairs of formulas)\\
 	$\rho,\sigma,\tau$	& $\colon$  & $\varE\rightharpoonup\terms$ & witness maps\\
 	$\Sigma,\Theta$		& $\colon$  & $(\form\times\form)\rightharpoonup\varE\rightharpoonup\terms$		& witness labellings on a linking \\
-	$\pi,\phi,\psi$		& $\in$ & $\proofs$ & \all1 sequent proofs\\
 	$\Pi,\Phi,\Psi$		& $\colon$  & $(\form\times\form)\rightharpoonup\proofs$		& proof labellings on a linking
 \end{tabular}
 \]
 
 \begin{definition}
- \defn{Strict sequentialization} ($\scoal$) is the rewrite relation on witness pre-nets generated by the following rules, which apply symmetrically to the first formula in the sequent. \defn{Strict coalescence} is the same relation ignoring proof labels, on witness pre-nets.
+ \defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules. \defn{Strict coalescence} is the same relation ignoring proof labels, on witness pre-nets, illustrated in Figure~\ref{fig:coalescence}.
 %
 \renewcommand{\+}{{+}}
 \renewcommand{\*}{{\times}}
 \begin{equation}
-  	\net{\{\link A{B_i}^\pi\}}A{B_0\+B_1} 
+  	\net{\{\link A{B_i}^\pi\}}A{B_1\+B_2} 
  ~\scoal~
-	\net{\{\link A{B_0\+B_1} ^\psi\}}A{B_0\+B_1}
+	\net{\{\link A{B_1\+B_2} ^\psi\}}A{B_1\+B_2}
 \tag{$\srr+i$}
 \end{equation}
 
 \hfill $\text{where}\quad \psi=~
-  \vc{
-   \infer  {\seq{A\sigma}{B_0\sigma\,\+\,B_1\sigma}}  {
-  	\deduce  [\rule{0pt}{1pt}]  {\seq{A\sigma}{B_i\sigma}}  \pi
-  }}
+  \vc{\infer  {\seq{A\sigma}{B_1\sigma\,\+\,B_2\sigma}}  {\Prf \pi {A\sigma} {B_i\sigma}}}
 $ \hspace*{20pt}
 
 \begin{equation}
@@ -595,9 +527,9 @@ $ \hspace*{20pt}
 \hfill $\text{where}\quad \psi=~
   \vc{
    \infer  {\seq{A\sigma}{B\sigma\,\*\,C\sigma}}  {
-    \deduce  [\rule{0pt}{1pt}]  {\seq{A\sigma}{B\sigma}}  \pi
+    \Prf \pi {A\sigma} {B\sigma}
     &
-    \deduce  [\rule{0pt}{1pt}]  {\seq{A\sigma}{C\sigma}}  \phi    
+    \Prf \phi {A\sigma} {C\sigma}    
   }}$ \hspace*{20pt}
 
 \begin{equation}
@@ -614,7 +546,7 @@ $ \hspace*{20pt}
 		\text{and}\quad \psi=~
   \vc{
    \infer  {\seq{A\tau}{\exists x.B\tau}}  {
-    \deduce  [\rule{0pt}{1pt}]  {\seq{A\sigma}{B\sigma}}  \pi  
+    \Prf \pi {A\sigma} {B\sigma}
   }}
 $ \hspace*{20pt}
 
@@ -630,7 +562,7 @@ $ \hspace*{20pt}
 		\text{where}\quad \psi=~
   \vc{
    \infer  {\seq{A\sigma}{\forall a.B\sigma}}  {
-    \deduce  [\rule{0pt}{1pt}]  {\seq{A\sigma}{B\sigma}}  \pi  
+    \Prf \pi {A\sigma} {B\sigma}
   }}
 $ \hspace*{20pt}
 
@@ -667,6 +599,7 @@ For any \all1 proof $\pi$, the de-sequentialization $[\pi]$ is a witness net tha
 It follows by induction on $\prf\pi AB$ that if $\lambda_\Sigma=[\pi]_{A',B'}^\sigma$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the specific case $\sigma=\varnothing$.
 \end{proof}
 
+\end{document}
 
 % --------------------------------------------------
 
@@ -843,8 +776,6 @@ To see that a maximally deep link coalesces, first note that a link $\link C{D_i
 \end{array}
 \]
 
-
-For a witness map $\sigma$ and a formula $B$ that is understood as a subformula of a formula $A$, we abbreviate $\sigma\res{\ex AB}$ to $\sigma_B$. A witness map of a link $\link CD$ then has two components, $\sigma_C$ and $\sigma_D$.
 
 The \defn{domain-preserving composition} of two witness maps $\sigma\dcom\tau$ is the map $(\sigma\tau)\res{\dom\sigma}$.
 
@@ -1308,6 +1239,48 @@ An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\n
 \label{fig:coalescence}
 \end{figure}
 
+\[
+\begin{tikzpicture}[net]
+\formula[y=1.2]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
+\Vlink[red,label={$\scriptstyle{[y/z,s/x]}~~$},l]{[-2]8,5}
+\Vlink[red,label={$~\scriptstyle{[y/z,t/x]}$}]{[2]8,12}
+\end{tikzpicture}
+\]
+
+\[
+\begin{tikzpicture}[net]
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
+\Vlink[red,label={$~\scriptstyle{[y/z,s/x]\mgu(s,t)}$}]{8,11}
+\end{tikzpicture}
+\]
+
+\[
+\begin{tikzpicture}[net]
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
+\Vlink[red,label={$\quad\scriptstyle{[s/x]\mgu(s,t)}$}]{8,1}
+\end{tikzpicture}
+\]
+
+\[
+\begin{tikzpicture}[net]
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
+\Vlink[red,label={$~~\scriptstyle{[s/x]\mgu(s,t)}$}]{4,1}
+\end{tikzpicture}
+\]
+
+\[
+\begin{tikzpicture}[net]
+\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
+\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
+\Vlink[red,label={$~\scriptstyle{\mgu(s,t)}$}]{1,1}
+\end{tikzpicture}
+\]
+
+\bibliography{ALL1}
 
 \end{document}
 
