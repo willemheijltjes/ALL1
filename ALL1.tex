@@ -733,31 +733,11 @@ A witness pre-net is \defn{correct} if
 \end{itemize}
 \end{definition}
 
-
+\newcounter{lemcorrectness}
+\setcounter{lemcorrectness}{\thetheorem}
 \begin{lemma}
-If a pre-net coalesces, it has exact coverage.
-\end{lemma}
-
-\begin{proof}
-By induction on the coalescence path.
-\end{proof}
-
-\newcounter{lemslicecorrect}
-\setcounter{lemslicecorrect}{\thetheorem}
-\begin{lemma}
-\label{lem:slice-correct}
-Strict coalescence preserves and reflects slice-correctness.
-\end{lemma}
-
-\begin{proof}
-See appendix.
-\end{proof}
-
-\newcounter{lemdependencycorrect}
-\setcounter{lemdependencycorrect}{\thetheorem}
-\begin{lemma}
-\label{lem:dependency-correct}
-Strict coalescence preserves and reflects dependency-correctness.
+\label{lem:correctness}
+Strict coalescence preserves and reflects correctness.
 \end{lemma}
 
 \begin{proof}
@@ -783,7 +763,7 @@ A witness pre-net is correct if and only if it strict-coalesces.
 \begin{proof}
 From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:preservation} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
 
-From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:slice-correct} and Lemma~\ref{lem:dependency-correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
+From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
 \end{proof}
 
 \begin{corollary}
@@ -795,172 +775,10 @@ A correct witness pre-net strongly strict-coalesces.
 \end{corollary}
 
 \begin{proof}
-By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{lem:slice-correct} and Lemma~\ref{lem:dependency-correct} any coalescence step preserves correctness.
+By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{lem:correct} any coalescence step preserves correctness.
 \end{proof}
 
-
-\appendix
-
-\section{Postponed proofs}
-
-
-% ..................................................
-
-\setcounter{theorem}{\thelemslicecorrect}
-\begin{lemma}[Restatement]
-Strict coalescence preserves and reflects slice-correctness.
-\end{lemma}
-
-\begin{proof}
-For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is slice-correct if and only if $R$ is. Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. We will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
-
-\begin{itemize}
-	\item
-$\link C{D_i}\scoal\link C{D_1{\+}D_2}$
-\\
-A slice $S_B$ of $B$ and $\varnothing$ containing one of $(D_1,\tau)$, $(D_2,\tau)$, and $(D_1\+D_2,\tau)$ must also contain the other two. 
-%
-\lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
-%
-\willem{Indeed. A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.}
-%
-A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is.
-
-	\item
-$\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
-\\
-A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
-
-	\item
-$\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
-\\
-The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
-
-	\item
-$\link CD\scoal\link C{\forall x.D}$
-\\
-A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall x.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. 
-\qedhere
-\end{itemize}
-\end{proof}
-
-% ..................................................
-
-\setcounter{theorem}{\thelemdependencycorrect}
-\begin{lemma}[Restatement]
-Strict coalescence preserves and reflects dependency-correctness.
-\end{lemma}
-
-\begin{proof}
-For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is dependency-correct if and only if $R$ is. Again let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$.
-
-\begin{itemize}
-	\item
-$\link C{D_i}\scoal\link C{D_1{\+}D_2}$
-\\
-The column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
-
-	\item
-$\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
-\\
-Immediate, as above.
-
-	\item
-$\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
-\\
-The column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
-
-	\item
-$\link CD\scoal\link C{\forall x.D}$
-\\
-The column of $\link CD$ is that of $\link C{\forall x.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $x\notin\sigma$; then $x$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
-\qedhere
-\end{itemize}
-\end{proof}
-
-% ..................................................
-
-\setcounter{theorem}{\thelemcoalescenceapplies}
-\begin{lemma}[Restatement]
-In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
-\end{lemma}
-
-\begin{proof}
-Let the \defn{depth} of a link $\link CD$ be a pair of integers $(n,m)$, where $n$ is the distance from $C$ to the root of $A$, and $m$ that from $D$ to $B$. We order link depth in the product order: $(i,j)\leq(n,m)$ if and only if $i\leq n$ and $j\leq m$. We will demonstrate that a link at maximal depth may always be coalesced, unless it is the unique link $\link[\varnothing]AB$ at $(0,0)$. 
-
-To see that a maximally deep link coalesces, first note that a link $\link C{D_i}$ where $D_i$ occurs in $D_0{\+}D_1$ may always coalesce, as may a link $\link CD$ where $D$ occurs in $\exists x.D$. This leaves the following cases:
-\begin{itemize}
-	\item 
-$\link A{D_i}$ with $D_i$ occurring in $D=D_1\*D_2$.
-\\ 
-Without loss of generality, let $i=1$. A slice $S_1$ of $\seq AB$ containing $\link A{D_1}$ has a counterpart $S_2$ containing $\link A{D_2}$. The depth of $\link A{D_2}$ is the same as that of $\link A{D_1}$. By correctness $S_2\cap \lambda_\Sigma$ is a singleton; by the assumption of maximality it may not contain a deeper link than $\link A{D_2}$; and it may not contain a shallower one since that would be shared with $S_1\cap\lambda_\Sigma$. Then $\net{\lambda_\Sigma}AB$ contains both $\link A{D_1}$ and $\link A{D_2}$, and these contract to $\link AD$.
-	
-	\item 
-$\link AD$ with $D$ in $\forall x.D$. 
-\\
-The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) If $x\in\sigma$ then $x\in\tau$, and in the column of $\link AD$ we would have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
-
-	\item
-$\link{C_i}{D_j}$ in $C=C_1\*C_2$ and $D=D_1\*D_2$.
-\\
-Without loss of generality, let $i=j=1$. By minimal depth and using similar reasoning to the first case above, the pre-net must contain one of the following three configurations.\\
-\begin{tabular}[c]{ll}
-	1. & $\link{C_1}{D_1},\link{C_1}{D_2},\link{C_2}{D_1},\link{C_2}{D_2}$
-\\	2. & $\link{C_1}{D_1},\link{C_1}{D_2},\link{C_2}{D}$
-\\	3. & $\link{C_1}{D_1},\link{C_2}{D_1},\link{C}{D_2}$
-\end{tabular}
-\hfill
-$
-\scriptstyle
-1:~\vc{
-\begin{tikzpicture}[net]
-	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
-	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
-	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[2]1,[-2]3}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{[2]3,[2]3}
-\end{tikzpicture}}
-\qquad
-2:~\vc{
-\begin{tikzpicture}[net]
-	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
-	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
-	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[2]1,[-2]3}\Vlink[red]{3,2}
-\end{tikzpicture}}
-\qquad
-3:~\vc{
-\begin{tikzpicture}[net]
-	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
-	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
-	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{2,3}
-\end{tikzpicture}}
-\qquad
-$
-In the second case, the step $\link{C_1}{D_1},\link{C_1}{D_2}\scoal\link{C_1}D$ applies; in the third case, $\link{C_1}{D_1},\link{C_2}{D_1}\scoal\link C{D_1}$; and in the first case, both.
-
-	\item 
-$\link{C_i}D$ in $C=C_1\*C_2$ and $\forall x.D$.
-\\
-Without loss of generality let $i=1$. If $x\notin\sigma$ the rewrite step $\link{C_1}D\scoal\link{C_1}{\forall x.D}$ applies. Otherwise, let $x\in\sigma$. The slice $S_1$ of $\seq AB$ containing $\link{C_1}D$ has a counterpart $S_2$ containing $\link{C_2}D$, which must include exactly one link of $\lambda_\Sigma$. By the assumption of minimal depth, it cannot have greater depth than $\link{C_2}D$. It cannot be $\link CD$ or any shallower link, since that would be shared with the slice $S_1$ which already contains $\link{C_1}D$. It cannot be $\link{C_2}{\forall x.D}$ or any shallower link $\link[\tau]{C_2}{X}$ (i.e.\ with $\forall x.D\leq X$) because $x\in\sigma$. This would mean either $x\in\tau$ which contradicts the \emph{eigenvariables not free} convention, or $x\in\fv(\sigma(y))$ where $\forall x.D<\exists y.Y\leq X$ which creates a cyclic column, as in the second case above. It follows that $S_2\cap\lambda_\Sigma=\{\link{C_2}{D}\}$, so that the rewrite step $\link{C_1}D,\link{C_2}D\scoal\link CD$ applies.
-
-	\item 
-$\link CD$ in $\forall x.C$ and $\forall y.D$.
-\\
-A rewrite step $\link CD\scoal\link{\forall x.C}D$ or $\link CD\scoal\link C{\forall y.D}$ applies unless $x,y\in\sigma$. But that would generate a cycle in the column of $\link CD$, in one of three ways. If $x\in\sigma_C$ or $y\in\sigma_D$ then, since $\sigma_C=\sigma_{\forall x.C}$ and $\sigma_D=\sigma_{\forall y.D}$, respectively:
-\[
-	(C,\sigma_C)\dep(\forall x.C,\sigma_C)\dep(C,\sigma_C)
-\qquad\quad
-	(D,\sigma_D)\dep(\forall y.D,\sigma_D)\dep(D,\sigma_D)~.
-\]
-Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
-\[
-	(C,\sigma_C)\dep(\forall x.C,\sigma_C)\dep(D,\sigma_D)\dep(\forall x.D,\sigma_D)\dep(C,\sigma_C)~.
-\qedhere
-\]
-\end{itemize}
-\end{proof}
-
-% ..................................................
-
-\end{document}
+% --------------------------------------------------
 
 \subsection{Composition}
 
@@ -1277,6 +1095,151 @@ If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\du
 	}
 \]
 \end{proposition}
+
+% --------------------------------------------------
+
+
+
+
+
+% ==================================================
+
+\newpage
+\appendix
+
+\section{Postponed proofs}
+
+% ..................................................
+
+\setcounter{theorem}{\thelemcorrectness}
+\begin{lemma}[Restatement]
+Strict coalescence preserves and reflects correctness.
+\end{lemma}
+
+\begin{proof}
+For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is correct if and only if $R$ is. Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. In each case, exact coverage is immediately preserved and reflected. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices. For dependency-correctness, we will briefly show how acyclicity of the columns of the involved links is preserved.
+
+\begin{itemize}
+	\item
+$\link C{D_i}\scoal\link C{D_1{\+}D_2}$
+\\
+A slice $S_B$ of $B$ and $\varnothing$ containing one of $(D_1,\tau)$, $(D_2,\tau)$, and $(D_1\+D_2,\tau)$ must also contain the other two. 
+%
+\lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
+%
+\willem{Indeed. A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.}
+%
+A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is.
+
+For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
+
+	\item
+$\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
+\\
+A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
+
+Dependency-correctness is immediate, as above.
+
+	\item
+$\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
+\\
+The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
+
+For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
+
+	\item
+$\link CD\scoal\link C{\forall x.D}$
+\\
+A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall x.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
+
+For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall x.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $x\notin\sigma$; then $x$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
+\qedhere
+\end{itemize}
+\end{proof}
+
+% ..................................................
+
+\setcounter{theorem}{\thelemcoalescenceapplies}
+\begin{lemma}[Restatement]
+In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
+\end{lemma}
+
+\begin{proof}
+Let the \defn{depth} of a link $\link CD$ be a pair of integers $(n,m)$, where $n$ is the distance from $C$ to the root of $A$, and $m$ that from $D$ to $B$. We order link depth in the product order: $(i,j)\leq(n,m)$ if and only if $i\leq n$ and $j\leq m$. We will demonstrate that a link at maximal depth may always be coalesced, unless it is the unique link $\link[\varnothing]AB$ at $(0,0)$. 
+
+To see that a maximally deep link coalesces, first note that a link $\link C{D_i}$ where $D_i$ occurs in $D_0{\+}D_1$ may always coalesce, as may a link $\link CD$ where $D$ occurs in $\exists x.D$. This leaves the following cases:
+\begin{itemize}
+	\item 
+$\link A{D_i}$ with $D_i$ occurring in $D=D_1\*D_2$.
+\\ 
+Without loss of generality, let $i=1$. A slice $S_1$ of $\seq AB$ containing $\link A{D_1}$ has a counterpart $S_2$ containing $\link A{D_2}$. The depth of $\link A{D_2}$ is the same as that of $\link A{D_1}$. By correctness $S_2\cap \lambda_\Sigma$ is a singleton; by the assumption of maximality it may not contain a deeper link than $\link A{D_2}$; and it may not contain a shallower one since that would be shared with $S_1\cap\lambda_\Sigma$. Then $\net{\lambda_\Sigma}AB$ contains both $\link A{D_1}$ and $\link A{D_2}$, and these contract to $\link AD$.
+	
+	\item 
+$\link AD$ with $D$ in $\forall x.D$. 
+\\
+The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) If $x\in\sigma$ then $x\in\tau$, and in the column of $\link AD$ we would have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
+
+	\item
+$\link{C_i}{D_j}$ in $C=C_1\*C_2$ and $D=D_1\*D_2$.
+\\
+Without loss of generality, let $i=j=1$. By minimal depth and using similar reasoning to the first case above, the pre-net must contain one of the following three configurations.\\
+\begin{tabular}[c]{ll}
+	1. & $\link{C_1}{D_1},\link{C_1}{D_2},\link{C_2}{D_1},\link{C_2}{D_2}$
+\\	2. & $\link{C_1}{D_1},\link{C_1}{D_2},\link{C_2}{D}$
+\\	3. & $\link{C_1}{D_1},\link{C_2}{D_1},\link{C}{D_2}$
+\end{tabular}
+\hfill
+$
+\scriptstyle
+1:~\vc{
+\begin{tikzpicture}[net]
+	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
+	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
+	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[2]1,[-2]3}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{[2]3,[2]3}
+\end{tikzpicture}}
+\qquad
+2:~\vc{
+\begin{tikzpicture}[net]
+	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
+	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
+	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[2]1,[-2]3}\Vlink[red]{3,2}
+\end{tikzpicture}}
+\qquad
+3:~\vc{
+\begin{tikzpicture}[net]
+	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
+	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
+	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{2,3}
+\end{tikzpicture}}
+\qquad
+$
+In the second case, the step $\link{C_1}{D_1},\link{C_1}{D_2}\scoal\link{C_1}D$ applies; in the third case, $\link{C_1}{D_1},\link{C_2}{D_1}\scoal\link C{D_1}$; and in the first case, both.
+
+	\item 
+$\link{C_i}D$ in $C=C_1\*C_2$ and $\forall x.D$.
+\\
+Without loss of generality let $i=1$. If $x\notin\sigma$ the rewrite step $\link{C_1}D\scoal\link{C_1}{\forall x.D}$ applies. Otherwise, let $x\in\sigma$. The slice $S_1$ of $\seq AB$ containing $\link{C_1}D$ has a counterpart $S_2$ containing $\link{C_2}D$, which must include exactly one link of $\lambda_\Sigma$. By the assumption of minimal depth, it cannot have greater depth than $\link{C_2}D$. It cannot be $\link CD$ or any shallower link, since that would be shared with the slice $S_1$ which already contains $\link{C_1}D$. It cannot be $\link{C_2}{\forall x.D}$ or any shallower link $\link[\tau]{C_2}{X}$ (i.e.\ with $\forall x.D\leq X$) because $x\in\sigma$. This would mean either $x\in\tau$ which contradicts the \emph{eigenvariables not free} convention, or $x\in\fv(\sigma(y))$ where $\forall x.D<\exists y.Y\leq X$ which creates a cyclic column, as in the second case above. It follows that $S_2\cap\lambda_\Sigma=\{\link{C_2}{D}\}$, so that the rewrite step $\link{C_1}D,\link{C_2}D\scoal\link CD$ applies.
+
+	\item 
+$\link CD$ in $\forall x.C$ and $\forall y.D$.
+\\
+A rewrite step $\link CD\scoal\link{\forall x.C}D$ or $\link CD\scoal\link C{\forall y.D}$ applies unless $x,y\in\sigma$. But that would generate a cycle in the column of $\link CD$, in one of three ways. If $x\in\sigma_C$ or $y\in\sigma_D$ then, since $\sigma_C=\sigma_{\forall x.C}$ and $\sigma_D=\sigma_{\forall y.D}$, respectively:
+\[
+	(C,\sigma_C)\dep(\forall x.C,\sigma_C)\dep(C,\sigma_C)
+\qquad\quad
+	(D,\sigma_D)\dep(\forall y.D,\sigma_D)\dep(D,\sigma_D)~.
+\]
+Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
+\[
+	(C,\sigma_C)\dep(\forall x.C,\sigma_C)\dep(D,\sigma_D)\dep(\forall x.D,\sigma_D)\dep(C,\sigma_C)~.
+\qedhere
+\]
+\end{itemize}
+\end{proof}
+
+% ..................................................
+
+\end{document}
 
 
 
