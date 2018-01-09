@@ -736,44 +736,84 @@ A witness pre-net is \defn{correct} if
 
 \begin{lemma}
 If a pre-net coalesces, it has exact coverage.
-%Every pre-net on a coalescence path $\net{\lambda_\Sigma}AB \scoal^* \net{\{\link[\varnothing]AB^\pi\}}AB$ from a witness net satisfies the exact coverage property.
 \end{lemma}
 
 \begin{proof}
-By induction on the coalescence path. %, working backward from $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+By induction on the coalescence path.
 \end{proof}
 
+\newcounter{lemslicecorrect}
+\setcounter{lemslicecorrect}{\thetheorem}
 \begin{lemma}
-\label{lem:preservation}
-Strict coalescence preserves and reflects slice- and dependency-correctness.
+\label{lem:slice-correct}
+Strict coalescence preserves and reflects slice-correctness.
 \end{lemma}
 
-\willem{It looks like this can be split into separate lemmas for slice-correctness and dependency-correctness. Better?}
+\begin{proof}
+See appendix.
+\end{proof}
+
+\newcounter{lemdependencycorrect}
+\setcounter{lemdependencycorrect}{\thetheorem}
+\begin{lemma}
+\label{lem:dependency-correct}
+Strict coalescence preserves and reflects dependency-correctness.
+\end{lemma}
 
 \begin{proof}
-For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is slice- or dependency-correct if and only if $R$ is.
-%
-Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
-%
-%\begin{align}
-%  	\net{\{\link C{D_i}\}}C{D_0{\+}D_1} 
-% &~\scoal~
-%	\net{\{\link C{D_0{\+}D_1} \}}C{D_0{\+}D_1}
-%\tag{$\srr+i$}
-%\\	\net{\{\link C{D_0},\link C{D_1}\}}C{D_0{\*}D_1}
-% &~\scoal~ 
-%	\net{\{\link C{D_0{\*}D_1}\}}C{D_0{\*}D_1}
-%\tag{$\srr*$}
-%\\	\net{\{\link CD\}}C{\exists x.D}
-% &~\scoal~ 
-%	\net{\{\link[\sigma\minus x]C{\exists x.D}\}}C{\exists x.D}
-%\tag{$\srr?$}
-%\\	\net{\{\link CD\}}C{\forall a.D}
-% &~\scoal~
-%	\net{\{\link C{\forall a.D}\}}C{\forall a.D}
-%\tag{$\srr!$}
-%\end{align}
-%
+See appendix.
+\end{proof}
+
+\newcounter{lemcoalescenceapplies}
+\setcounter{lemcoalescenceapplies}{\thetheorem}
+\begin{lemma}
+\label{lem:coalescence applies}
+In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
+\end{lemma}
+
+\begin{proof}
+See appendix.
+\end{proof}
+
+\begin{theorem}
+\label{thm:correctness}
+A witness pre-net is correct if and only if it strict-coalesces. 
+\end{theorem}
+
+\begin{proof}
+From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:preservation} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
+
+From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:slice-correct} and Lemma~\ref{lem:dependency-correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
+\end{proof}
+
+\begin{corollary}
+A correct witness pre-net with axiom linking is a witness proof net.
+\end{corollary}
+
+\begin{corollary}
+A correct witness pre-net strongly strict-coalesces.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{lem:slice-correct} and Lemma~\ref{lem:dependency-correct} any coalescence step preserves correctness.
+\end{proof}
+
+
+\appendix
+
+\section{Postponed proofs}
+
+
+% ..................................................
+
+\setcounter{theorem}{\thelemslicecorrect}
+\begin{lemma}[Restatement]
+Strict coalescence preserves and reflects slice-correctness.
+\end{lemma}
+
+\begin{proof}
+For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is slice-correct if and only if $R$ is. Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. We will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
+
 \begin{itemize}
 	\item
 $\link C{D_i}\scoal\link C{D_1{\+}D_2}$
@@ -784,51 +824,71 @@ A slice $S_B$ of $B$ and $\varnothing$ containing one of $(D_1,\tau)$, $(D_2,\ta
 %
 \willem{Indeed. A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.}
 %
-A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
+A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is.
 
 	\item
 $\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
 \\
-A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Dependency-correctness is immediate, as above.
+A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
 
 	\item
 $\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
 \\
 The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
 
-For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
-
 	\item
 $\link CD\scoal\link C{\forall x.D}$
 \\
 A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall x.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. 
-
-For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall x.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $x\notin\sigma$; then $x$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
 \qedhere
 \end{itemize}
 \end{proof}
 
+% ..................................................
 
-\begin{lemma}
-\label{lem:coalescence applies}
+\setcounter{theorem}{\thelemdependencycorrect}
+\begin{lemma}[Restatement]
+Strict coalescence preserves and reflects dependency-correctness.
+\end{lemma}
+
+\begin{proof}
+For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is dependency-correct if and only if $R$ is. Again let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$.
+
+\begin{itemize}
+	\item
+$\link C{D_i}\scoal\link C{D_1{\+}D_2}$
+\\
+The column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
+
+	\item
+$\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
+\\
+Immediate, as above.
+
+	\item
+$\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
+\\
+The column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
+
+	\item
+$\link CD\scoal\link C{\forall x.D}$
+\\
+The column of $\link CD$ is that of $\link C{\forall x.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $x\notin\sigma$; then $x$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
+\qedhere
+\end{itemize}
+\end{proof}
+
+% ..................................................
+
+\setcounter{theorem}{\thelemcoalescenceapplies}
+\begin{lemma}[Restatement]
 In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
 \end{lemma}
 
 \begin{proof}
+Let the \defn{depth} of a link $\link CD$ be a pair of integers $(n,m)$, where $n$ is the distance from $C$ to the root of $A$, and $m$ that from $D$ to $B$. We order link depth in the product order: $(i,j)\leq(n,m)$ if and only if $i\leq n$ and $j\leq m$. We will demonstrate that a link at maximal depth may always be coalesced, unless it is the unique link $\link[\varnothing]AB$ at $(0,0)$. 
 
-\end{proof}
-
-
-\begin{theorem}
-A witness pre-net is correct if and only if it strict-coalesces. 
-\end{theorem}
-
-\begin{proof}
-From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:preservation} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
-
-From left to right, let $\net{\lambda_\Sigma}AB$ be correct. Let the \defn{depth} of a link $\link CD$ be a pair of integers $(n,m)$, where $n$ is the distance from $C$ to the root of $A$, and $m$ that from $D$ to $B$. We order link depth in the product order: $(i,j)\leq(n,m)$ if and only if $i\leq n$ and $j\leq m$. We will demonstrate that a link at maximal depth may always be coalesced, unless it is the unique link $\link[\varnothing]AB$ at $(0,0)$. By Lemma~\ref{lem:preservation} the result of this coalescence step is again correct, and it follows by induction on the decreasing depth of links that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
-
-To see that a maximally deep link coalesces, first note that a link $\link C{D_i}$ where $D_i$ occurs in $D_0{\+}D_1$ may always contract, as may a link $\link CD$ where $D$ occurs in $\exists x.D$. This leaves the following cases:
+To see that a maximally deep link coalesces, first note that a link $\link C{D_i}$ where $D_i$ occurs in $D_0{\+}D_1$ may always coalesce, as may a link $\link CD$ where $D$ occurs in $\exists x.D$. This leaves the following cases:
 \begin{itemize}
 	\item 
 $\link A{D_i}$ with $D_i$ occurring in $D=D_1\*D_2$.
@@ -898,16 +958,7 @@ Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
 \end{itemize}
 \end{proof}
 
-\begin{corollary}
-A correct witness pre-net with axiom linking is a witness proof net.
-\end{corollary}
-
-\begin{theorem}
-A correct witness pre-net strongly strict-coalesces.
-\end{theorem}
-
-\begin{
-
+% ..................................................
 
 \end{document}
 
