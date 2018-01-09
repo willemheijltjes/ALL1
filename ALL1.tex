@@ -18,6 +18,7 @@
 
 \newcommand{\lutz}[1]{{\color{blue}     \noindent[\![\![{\bf Lutz: }#1]\!]\!]}}
 \newcommand{\todo}[1]{{\color{red}     \noindent[\![\![{\bf TODO: }#1]\!]\!]}}
+\newcommand{\willem}[1]{{\color{green!50!black}     \noindent[\![\![{\bf Willem: }#1]\!]\!]}}
 
 % ============================== MACROS
 
@@ -127,7 +128,7 @@
   \ifx#11\mathrm{axS}\else
   #1\mathrm S  \fi\fi\fi\fi\fi
 }
-\newcommand\@srr[1]{+_{#1}\mathrm S}
+\newcommand\@srr[1]{+\mathrm S,{#1}}
 
 \newcommand\urr[1]{
   \ifx#1+\expandafter\@urr\else
@@ -307,7 +308,7 @@ In this paper we will not attempt to decisively settle the question of proof ide
 
 \begin{figure}
 \[
-	\infer[\Qrr1]{\seq P{\dual P}}{}
+	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
 \quad
 	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
 \quad
@@ -407,7 +408,7 @@ We will assume the following variable naming conventions.
 For a link $\link CD$, a universally quantified variable in $C$ or $D$ does not occur free in the range of $\sigma$.
 
 	\item[Freshness]
-For a link $\link CD$ in $\net{\lambda_\Sigma}AB$, variables in the range of $\sigma$ are fresh: distinct from any existentially quantified (as $\exists x$) variable in $\seq AB$.
+For a link $\link CD$ in $\net{\lambda_\Sigma}AB$, variables in the range of $\sigma$ are fresh: distinct from any existentially quantified variable in $\seq AB$.
 \end{description}
 
 
@@ -495,99 +496,177 @@ Then to recap, we have accumulated the following further notational conventions.
 \begin{tabular}{@{}lcll@{}}
 	$\pi,\phi,\psi$		& $\in$ & $\proofs$ & \all1 sequent proofs\\
 	$\kappa,\lambda$ 	& $\subset$ & $\form\times\form$ 	& linkings (sets of pairs of formulas)\\
-	$\rho,\sigma,\tau$	& $\colon$  & $\varE\rightharpoonup\terms$ & witness maps\\
-	$\Sigma,\Theta$		& $\colon$  & $(\form\times\form)\rightharpoonup\varE\rightharpoonup\terms$		& witness labellings on a linking \\
-	$\Pi,\Phi,\Psi$		& $\colon$  & $(\form\times\form)\rightharpoonup\proofs$		& proof labellings on a linking
+	$\rho,\sigma,\tau$	& $\colon$  & $\var\rightharpoonup\terms$ & witness maps\\
+	$\Sigma,\Theta$		& $\colon$  & $\lambda\to\var\rightharpoonup\terms$		& witness labellings on a linking $\lambda$ \\
+	$\Pi,\Phi,\Psi$		& $\colon$  & $\lambda\to\proofs$		& proof labellings on a linking $\lambda$
 \end{tabular}
 \]
 
+% ..................................................
+
+\begin{figure}
+\[
+\begin{array}{ccc@{\hspace{50pt}}ccc}
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{1,1}
+    \end{tikzpicture}}
+&\scoal& 
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}
+&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\exists x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{x\,\in\,\dom\sigma}\scoal&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\exists x.D}
+    	\Vlink[red,label={~$\scriptstyle{\sigma\minus x}$}]{1,1}
+    \end{tikzpicture}}   
+\\ \\   
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-1]1,1}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{[1]1,3}
+    \end{tikzpicture}}
+&\scoal&
+	\vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}   
+&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\forall x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{x\,\notin\,\sigma}\scoal&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\forall x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,1}
+    \end{tikzpicture}}
+\end{array}
+\]
+\caption{Coalescence rules}
+\label{fig:coalescence}
+\end{figure}
+
+%\begin{figure}
+%\[
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+%    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{1,1}
+%    \end{tikzpicture}}
+%\scoal 
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+%    \end{tikzpicture}}
+%\hfill% 
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+%    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-1]1,1}
+%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{[1]1,3}
+%    \end{tikzpicture}}
+%\scoal
+%	\vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+%    \end{tikzpicture}} 
+%\hfill%    
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{\exists x.D}
+%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+%    \end{tikzpicture}}
+%\stackrel{\begin{array}{@{}c@{}}\scriptstyle x\,\in\\[-1ex]\scriptstyle\dom\sigma\end{array}}\scoal
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{\exists x.D}
+%    	\Vlink[red,label={~$\scriptstyle{\sigma\minus x}$}]{1,1}
+%    \end{tikzpicture}}   
+%\hfill%
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{\forall x.D}
+%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+%    \end{tikzpicture}}
+%\stackrel{x\,\notin\,\sigma}\scoal
+%    \vc{\begin{tikzpicture}[net]
+%    	\formula[y=2]{C}
+%    	\formula[y=1]{\forall x.D}
+%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,1}
+%    \end{tikzpicture}}
+%\]
+%\caption{Coalescence rules}
+%\label{fig:coalescence}
+%\end{figure}
+
+
+% ..................................................
+
 \begin{definition}
- \defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules. \defn{Strict coalescence} is the same relation ignoring proof labels, on witness pre-nets, illustrated in Figure~\ref{fig:coalescence}.
 %
 \renewcommand{\+}{{+}}
 \renewcommand{\*}{{\times}}
-\begin{equation}
-  	\net{\{\link A{B_i}^\pi\}}A{B_1\+B_2} 
- ~\scoal~
-	\net{\{\link A{B_1\+B_2} ^\psi\}}A{B_1\+B_2}
-\tag{$\srr+i$}
-\end{equation}
+%
+\defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules, that replace one or two links by another in a pre-net $\net{\lambda_\Sigma^\Pi}AB$ (where $B$ has a subformula $D_1\+D_2$, $D_1\*D_2$, $\exists x.D$, and $\forall x.D$ respectively).
+%
+\begin{align*}
+%\tag{$\srr+i$}
+	\link C{D_i}^\pi
+	& \scoal
+	\link C{D_1\+D_2}^\psi
+	&& 
+ 	\psi=~\vc{\infer[\Qrr+i]{\seq{C\sigma}{D_1\sigma\,\+\,D_2\sigma}}  {\Prf \pi {C\sigma} {D_i\sigma}}}
+\\ \\[-8pt]
+%\tag{$\srr*$}
+	%\{\link C{D_1}^\pi\,,\,\link C{D_2}^\phi\}
+	\left.\begin{array}{@{}l@{\,}}\link C{D_1}^\pi \\ \link C{D_2}^\phi\end{array}\right\}
+	& \scoal
+	\link C{D_1\*D_2}^\psi
+	&&
+	\psi=~\vc{\infer[\Qrr*]{\seq{C\sigma}{D_1\sigma\,\*\,D_2\sigma}}  {
+      \Prf \pi {C\sigma} {D_1\sigma} & \Prf \phi {C\sigma} {D_2\sigma}    
+	}}
+\\ \\[-8pt]
+%\tag{$\srr?$}
+	\link CD^\pi
+	& \scoal
+	\link[\sigma\minus x]C{\exists x.D}^\psi
+	\quad{\scriptstyle(x\,\in\,\dom\sigma)}
+	&&
+	\psi=~\vc{\infer[\Qrr?{\sigma(x)}]{\seq{C(\sigma\minus x)}{\exists x.D(\sigma\minus x)}} {\Prf \pi {C\sigma} {D\sigma} }}	
+\\ \\[-8pt]
+%\tag{$\srr!$}
+	\link CD^\pi
+	& \scoal
+	\link C{\forall x.D}^\psi
+	\quad{\scriptstyle\phantom{\minus x}(x\,\notin\,\sigma)}
+	&&
+	\psi=~\vc{\infer[\Qrr!]{\seq{C\sigma}{\forall x.D\sigma}} {\Prf \pi {C\sigma} {D\sigma}}}
+\end{align*}
+%
+\defn{Strict coalescence} is the same relation on witness pre-nets, ignoring proof labels, illustrated in Figure~\ref{fig:coalescence}. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$. It \defn{strongly} strict-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
+\end{definition}
 
-\hfill $\text{where}\quad \psi=~
-  \vc{\infer  {\seq{A\sigma}{B_1\sigma\,\+\,B_2\sigma}}  {\Prf \pi {A\sigma} {B_i\sigma}}}
-$ \hspace*{20pt}
-
-\begin{equation}
-	\net{\{\link AB^\pi,\link AC^\phi\}}A{B\*C}
- ~\scoal~ 
-	\net{\{\link A{B\*C}^\psi\}}A{B\*C}
-\tag{$\srr*$}
-\end{equation}
-
-\hfill $\text{where}\quad \psi=~
-  \vc{
-   \infer  {\seq{A\sigma}{B\sigma\,\*\,C\sigma}}  {
-    \Prf \pi {A\sigma} {B\sigma}
-    &
-    \Prf \phi {A\sigma} {C\sigma}    
-  }}$ \hspace*{20pt}
-
-\begin{equation}
-	\net{\{\link AB^\pi\}}A{\exists x.B}
- ~\scoal~ 
-	\net{\{\link[\sigma\minus x]A{\exists x.B}^\psi\}}A{\exists x.B}
-\tag{$\srr?$}
-\end{equation}
-
-\hfill $\text{if}\quad\sigma(x)\,\neq\,\bot~,
-		\quad
-		\text{where}\quad \tau=\sigma\minus x
-		\quad
-		\text{and}\quad \psi=~
-  \vc{
-   \infer  {\seq{A\tau}{\exists x.B\tau}}  {
-    \Prf \pi {A\sigma} {B\sigma}
-  }}
-$ \hspace*{20pt}
-
-\begin{equation}
-	\net{\{\link AB\}}A{\forall a.B}
- ~\scoal~
-	\net{\{\link A{\forall a.B}\}}A{\forall a.B}
-\tag{$\srr!$}
-\end{equation}
-
-\hfill $\text{if}\quad a\notin\sigma~,
-		\quad
-		\text{where}\quad \psi=~
-  \vc{
-   \infer  {\seq{A\sigma}{\forall a.B\sigma}}  {
-    \Prf \pi {A\sigma} {B\sigma}
-  }}
-$ \hspace*{20pt}
-
-\medskip
-
-\noindent
-A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to a single link $\net{\{\link[\varnothing]AB\}}AB$.\end{definition}
-
-
-To be explicit, to generate coalescence as a rewrite relation means the following: a pre-net coalesces to another, $\net{\lambda_\Sigma} AB\scoal \net{{\lambda'_{\Sigma'}}}AB$ if and only if there is a rewrite rule
-\[
-	\net{\kappa_\Theta} CD\scoal\net{\kappa'_{\Theta'}} CD
-\] 
-such that 
-\[
-	C\leq A \qquad
-	D\leq B \qquad
-	\kappa_\Theta\subseteq\lambda_\Sigma \qquad
-	\kappa'_{\Theta'}\subseteq\lambda'_{\Sigma'} \quad
-	\text{and} \quad
-	\lambda_\Sigma-\kappa_\Theta=\lambda'_{\Sigma'}-\kappa'_{\Theta'}~.
-\]
 
 \begin{definition}
-An \all1 \defn{witnessing proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$, with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+An \all1 \defn{witness proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$ with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
 \end{definition}
 
 
@@ -596,10 +675,8 @@ For any \all1 proof $\pi$, the de-sequentialization $[\pi]$ is a witness net tha
 \end{theorem}
 
 \begin{proof}
-It follows by induction on $\prf\pi AB$ that if $\lambda_\Sigma=[\pi]_{A',B'}^\sigma$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the specific case $\sigma=\varnothing$.
+It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
 \end{proof}
-
-\end{document}
 
 % --------------------------------------------------
 
@@ -607,20 +684,17 @@ It follows by induction on $\prf\pi AB$ that if $\lambda_\Sigma=[\pi]_{A',B'}^\s
 
 A \defn{slice} is the fraction of a proof that depends on a given choice of one branch (or projection) on each product formula $A\*B$. Important to additive proof theory is that many operations can be performed on a per-slice basis, such as normalization, or proof net correctness. We will here use slices for the latter purpose.
 
-As in the propositional case, we define a slice of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$.
-
-For a witness linking $\lambda_\Sigma$ and an existential variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
+As in the propositional case, we define a slice of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$. For a witness linking $\lambda_\Sigma$ and variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
 \[
 	\Sigma(x) = \{~\sigma(x)~\mid~\link CD\in\lambda_\Sigma~\}~.
 \]
 
-
 \begin{definition}[Slice]
-Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'$ is a subformula of $A$ and $\sigma\subseteq\sigma'$, given by: $S=\{(A,\sigma)\}\cup S'$ where $S'$ is as follows.
+Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'\leq A$ and $\sigma'\supseteq\sigma$, given by $S=\{(A,\sigma)\}\cup S'$ where:
 %
 \begin{itemize}
 	\item
-\makebox[65pt][l]{If $A = P$}			then $S'=\varnothing$.
+\makebox[65pt][l]{If $A = a$}			then $S'=\varnothing$.
 	\item
 \makebox[65pt][l]{If $A = B\+C$} 		then $S'=S_B\uplus S_C$ with $S_B$ a slice of $B$ and $\sigma$, and $S_C$ one of $C$ and $\sigma$.
 	\item
@@ -628,7 +702,7 @@ Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ an
 	\item
 \makebox[65pt][l]{If $A = \exists x.B$}	then $S'=\uplus_{t\,\in\,\Sigma(x)}S_t$ where each $S_t$ is a slice of $B$ and $\sigma[t/x]$.
 	\item
-\makebox[65pt][l]{If $A = \forall a.B$}	then $S'$ is a slice of $B$ and $\sigma$.
+\makebox[65pt][l]{If $A = \forall x.B$}	then $S'$ is a slice of $B$ and $\sigma$.
 \end{itemize}
 %
 \noindent
@@ -639,21 +713,23 @@ A \defn{slice} of a sequent $\seq AB$ is a set of links
 where $S_A$ is a slice of $A$ and $\varnothing$, and $S_B$ a slice of $B$ and $\varnothing$.  A \defn{slice} of a witness pre-net $\net{\lambda_\Sigma} AB$ is the intersection $\lambda_\Sigma\cap S$ of $\lambda_\Sigma$ with a slice $S$ of $\seq AB$.
 \end{definition}
 
-As in the propositional case, for correctness we will require that each slice is a singleton. In addition, within each slice we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $a$ of the primary formula $\forall a.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect. For simplicity we will define the dependency condition on individual links rather than on slices (since each slice will be a singleton). 
+As in the propositional case, for correctness we will require that each slice is a singleton. In addition, within each slice we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $x$ of the formula $\forall x.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect. For simplicity we will define the dependency condition on individual links rather than on slices.
+% (since each slice will be a singleton). 
 
 In a pre-net $\net{\lambda_\Sigma}AB$, let the \defn{column} of a link $\link CD$ be the set of pairs 
 \[
-	\{~(X,\sigma\res{\ex AX})~\mid~C\sub X\sub A~\}\cup\{~(Y,\sigma\res{\ex BY})~\mid~D\sub Y\sub B~\}~,
+	\{~(X,\sigma\res{\ex[A]X})~\mid~C\sub X\sub A~\}\cup\{~(Y,\sigma\res{\ex[B]Y})~\mid~D\sub Y\sub B~\}~,
 \]
-with an order $(\dep)$ given by: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall a.Y$ and $a\in\rho$.
+with an order $(\dep)$ given by: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall x.Y$ and $x\in\rho$.
 
 %It is expected that for a more involved logic that includes multiplicative connectives, a dependency condition such as the below one needs to be applied to a slice instead.
 %
 \begin{definition}
-A witness pre-net is \defn{correct} if it is
+A witness pre-net is \defn{correct} if
 \begin{itemize}
-\item \defn{slice-correct}: every slice is a singleton, and
-\item \defn{dependency-correct}: every column is a partial order (i.e.\ is acyclic/antisymmetric).
+\item it has exact coverage,
+\item it is \defn{slice-correct}: every slice is a singleton, and
+\item it is \defn{dependency-correct}: every column is a partial order (i.e.\ is acyclic/antisymmetric).
 \end{itemize}
 \end{definition}
 
@@ -667,89 +743,173 @@ If a pre-net coalesces, it has exact coverage.
 By induction on the coalescence path. %, working backward from $\net{\{\link[\varnothing]AB^\pi\}}AB$.
 \end{proof}
 
-
-
-
 \begin{lemma}
 \label{lem:preservation}
-Strict coalescence preserves and reflects correctness: for a strict coalescence step $L\scoal R$, the witness pre-net $L$ is correct if and only if $R$ is.
+Strict coalescence preserves and reflects slice- and dependency-correctness.
 \end{lemma}
 
+\willem{It looks like this can be split into separate lemmas for slice-correctness and dependency-correctness. Better?}
+
 \begin{proof}
-Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. We will consider the four coalescence steps as shown below. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
+For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is slice- or dependency-correct if and only if $R$ is.
 %
-\begin{align}
-  	\net{\{\link C{D_i}\}}C{D_0{\+}D_1} 
- &~\scoal~
-	\net{\{\link C{D_0{\+}D_1} \}}C{D_0{\+}D_1}
-\tag{$\srr+i$}
-\\	\net{\{\link C{D_0},\link C{D_1}\}}C{D_0{\*}D_1}
- &~\scoal~ 
-	\net{\{\link C{D_0{\*}D_1}\}}C{D_0{\*}D_1}
-\tag{$\srr*$}
-\\	\net{\{\link CD\}}C{\exists x.D}
- &~\scoal~ 
-	\net{\{\link[\sigma\minus x]C{\exists x.D}\}}C{\exists x.D}
-\tag{$\srr?$}
-\\	\net{\{\link CD\}}C{\forall a.D}
- &~\scoal~
-	\net{\{\link C{\forall a.D}\}}C{\forall a.D}
-\tag{$\srr!$}
-\end{align}
+Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices.
 %
-\begin{description}
-	\item[$(\srr+i)$]
-A slice $S_B$ of $B$ and $\varnothing$ containing either of $(D_0,\tau)$, $(D_1,\tau)$, and $(D_0\+D_1,\tau)$ must also contain the other two. 
+%\begin{align}
+%  	\net{\{\link C{D_i}\}}C{D_0{\+}D_1} 
+% &~\scoal~
+%	\net{\{\link C{D_0{\+}D_1} \}}C{D_0{\+}D_1}
+%\tag{$\srr+i$}
+%\\	\net{\{\link C{D_0},\link C{D_1}\}}C{D_0{\*}D_1}
+% &~\scoal~ 
+%	\net{\{\link C{D_0{\*}D_1}\}}C{D_0{\*}D_1}
+%\tag{$\srr*$}
+%\\	\net{\{\link CD\}}C{\exists x.D}
+% &~\scoal~ 
+%	\net{\{\link[\sigma\minus x]C{\exists x.D}\}}C{\exists x.D}
+%\tag{$\srr?$}
+%\\	\net{\{\link CD\}}C{\forall a.D}
+% &~\scoal~
+%	\net{\{\link C{\forall a.D}\}}C{\forall a.D}
+%\tag{$\srr!$}
+%\end{align}
 %
-%\lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
+\begin{itemize}
+	\item
+$\link C{D_i}\scoal\link C{D_1{\+}D_2}$
+\\
+A slice $S_B$ of $B$ and $\varnothing$ containing one of $(D_1,\tau)$, $(D_2,\tau)$, and $(D_1\+D_2,\tau)$ must also contain the other two. 
 %
-% A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.
+\lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
 %
-A slice $S$ of $\seq AB$ then contains all three of $\link C{D_0}$, $\link C{D_1}$, and $\link C{D_0{\+}D_1}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_0{\+}D_1}$ plus $(D_i,\sigma|\ex B{D_i})$ itself, which is minimal in the order $\dep$.
+\willem{Indeed. A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.}
+%
+A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is. For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
 
-	\item[$(\srr*)$]
-A slice $S$ of $\seq AB$ contains $\link C{D_0\+D_1}$ if and only if it contains either of $\link C{D_0}$ or $\link C{D_1}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Dependency-correctness is immediate, as above.
+	\item
+$\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
+\\
+A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Dependency-correctness is immediate, as above.
 
-	\item[$(\srr?)$]
+	\item
+$\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
+\\
 The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
 
 For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
 
-	\item[$(\srr!)$]
-A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall a.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. 
+	\item
+$\link CD\scoal\link C{\forall x.D}$
+\\
+A slice $S$ of $\seq AB$ contains $\link CD$ if and only if it contains also $\link C{\forall x.D}$, and hence $S\cap\lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. 
 
-For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall a.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $a\notin\sigma$; then $a$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
+For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall x.D}$ plus a pair $(D,\tau)$. The side-condition of the coalescence step is that $x\notin\sigma$; then $x$ does not occur free in any $(X,\rho)$, and $(D,\tau)$ is minimal in $(\dep)$.
 \qedhere
-\end{description}
+\end{itemize}
 \end{proof}
 
 
 \begin{lemma}
-A witness pre-net is correct if and only if it strict-coalesces. 
+\label{lem:coalescence applies}
+In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
 \end{lemma}
 
 \begin{proof}
-From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:preservation} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
-
-From left to right, let $\net{\lambda_\Sigma}AB$ be correct. Let the \defn{depth} of a link $\link CD$ be a pair of integers $(n,m)$, where $n$ is the distance from $C$ to the root of $A$, and $m$ that from $D$ to $B$. We order link depth in the product order, $(i,j)\leq(n,m)$ if and only if $i\leq n$ and $j\leq m$. We will demonstrate that a link at maximal depth may always be coalesced, unless it is the unique link $\link[\varnothing]AB$ at $(0,0)$. By Lemma~\ref{lem:preservation} the result of this coalescence step is again correct, and it follows by induction on the decreasing depth of links that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
-
-To see that a maximally deep link coalesces, first note that a link $\link C{D_i}$ where $D_i$ occurs in $D_0{\+}D_1$ may always contract, as may a link $\link CD$ where $D$ occurs in $\exists x.D$. This leaves the following cases:
-\begin{itemize}
-	\item $\link A{D_i}$ with $D_i$ occurring in $D=D_0\*D_1$; without loss of generality, let $i=0$. A slice $S_i$ of $\seq AB$ containing $\link A{D_i}$ has a counterpart $S_j$ containing $\link A{D_j}$ with $j=1-i$. The depth of $\link A{D_i}$ is the same as that of $\link A{D_j}$. By correctness $S_j\cap \lambda_\Sigma$ is a singleton; by the assumption of maximality it may not contain a deeper link than $\link A{D_j}$; and it may not contain a shallower one since that would be shared with $S_i\cap\lambda_\Sigma$. Since $\net{\lambda_\Sigma}AB$ contains both $\link A{D_0}$ and $\link A{D_1}$, these contract by $\srr*$ to $\link AD$.
-	
-	\item $\link AD$ with $D$ in $\forall a.D$. 
-	
-	\item $\link{C_i}{D_j}$ in $C_0\*C_1$ and $D_0\*D_1$.
-
-	\item $\link{C_i}D$ in $C_0\*C_1$ and $\forall a.D$.
-	
-	\item $\link CD$ in $\forall a.C$ and $\forall b.D$.
-
-\end{itemize}
 
 \end{proof}
 
 
+\begin{theorem}
+A witness pre-net is correct if and only if it strict-coalesces. 
+\end{theorem}
+
+\begin{proof}
+From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:preservation} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
+
+From left to right, let $\net{\lambda_\Sigma}AB$ be correct. Let the \defn{depth} of a link $\link CD$ be a pair of integers $(n,m)$, where $n$ is the distance from $C$ to the root of $A$, and $m$ that from $D$ to $B$. We order link depth in the product order: $(i,j)\leq(n,m)$ if and only if $i\leq n$ and $j\leq m$. We will demonstrate that a link at maximal depth may always be coalesced, unless it is the unique link $\link[\varnothing]AB$ at $(0,0)$. By Lemma~\ref{lem:preservation} the result of this coalescence step is again correct, and it follows by induction on the decreasing depth of links that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
+
+To see that a maximally deep link coalesces, first note that a link $\link C{D_i}$ where $D_i$ occurs in $D_0{\+}D_1$ may always contract, as may a link $\link CD$ where $D$ occurs in $\exists x.D$. This leaves the following cases:
+\begin{itemize}
+	\item 
+$\link A{D_i}$ with $D_i$ occurring in $D=D_1\*D_2$.
+\\ 
+Without loss of generality, let $i=1$. A slice $S_1$ of $\seq AB$ containing $\link A{D_1}$ has a counterpart $S_2$ containing $\link A{D_2}$. The depth of $\link A{D_2}$ is the same as that of $\link A{D_1}$. By correctness $S_2\cap \lambda_\Sigma$ is a singleton; by the assumption of maximality it may not contain a deeper link than $\link A{D_2}$; and it may not contain a shallower one since that would be shared with $S_1\cap\lambda_\Sigma$. Then $\net{\lambda_\Sigma}AB$ contains both $\link A{D_1}$ and $\link A{D_2}$, and these contract to $\link AD$.
+	
+	\item 
+$\link AD$ with $D$ in $\forall x.D$. 
+\\
+The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) If $x\in\sigma$ then $x\in\tau$, and in the column of $\link AD$ we would have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
+
+	\item
+$\link{C_i}{D_j}$ in $C=C_1\*C_2$ and $D=D_1\*D_2$.
+\\
+Without loss of generality, let $i=j=1$. By minimal depth and using similar reasoning to the first case above, the pre-net must contain one of the following three configurations.\\
+\begin{tabular}[c]{ll}
+	1. & $\link{C_1}{D_1},\link{C_1}{D_2},\link{C_2}{D_1},\link{C_2}{D_2}$
+\\	2. & $\link{C_1}{D_1},\link{C_1}{D_2},\link{C_2}{D}$
+\\	3. & $\link{C_1}{D_1},\link{C_2}{D_1},\link{C}{D_2}$
+\end{tabular}
+\hfill
+$
+\scriptstyle
+1:~\vc{
+\begin{tikzpicture}[net]
+	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
+	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
+	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[2]1,[-2]3}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{[2]3,[2]3}
+\end{tikzpicture}}
+\qquad
+2:~\vc{
+\begin{tikzpicture}[net]
+	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
+	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
+	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[2]1,[-2]3}\Vlink[red]{3,2}
+\end{tikzpicture}}
+\qquad
+3:~\vc{
+\begin{tikzpicture}[net]
+	\formula[y=1]{C*{_1}{{\*}}C*{_2}}
+	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
+	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{2,3}
+\end{tikzpicture}}
+\qquad
+$
+In the second case, the step $\link{C_1}{D_1},\link{C_1}{D_2}\scoal\link{C_1}D$ applies; in the third case, $\link{C_1}{D_1},\link{C_2}{D_1}\scoal\link C{D_1}$; and in the first case, both.
+
+	\item 
+$\link{C_i}D$ in $C=C_1\*C_2$ and $\forall x.D$.
+\\
+Without loss of generality let $i=1$. If $x\notin\sigma$ the rewrite step $\link{C_1}D\scoal\link{C_1}{\forall x.D}$ applies. Otherwise, let $x\in\sigma$. The slice $S_1$ of $\seq AB$ containing $\link{C_1}D$ has a counterpart $S_2$ containing $\link{C_2}D$, which must include exactly one link of $\lambda_\Sigma$. By the assumption of minimal depth, it cannot have greater depth than $\link{C_2}D$. It cannot be $\link CD$ or any shallower link, since that would be shared with the slice $S_1$ which already contains $\link{C_1}D$. It cannot be $\link{C_2}{\forall x.D}$ or any shallower link $\link[\tau]{C_2}{X}$ (i.e.\ with $\forall x.D\leq X$) because $x\in\sigma$. This would mean either $x\in\tau$ which contradicts the \emph{eigenvariables not free} convention, or $x\in\fv(\sigma(y))$ where $\forall x.D<\exists y.Y\leq X$ which creates a cyclic column, as in the second case above. It follows that $S_2\cap\lambda_\Sigma=\{\link{C_2}{D}\}$, so that the rewrite step $\link{C_1}D,\link{C_2}D\scoal\link CD$ applies.
+
+	\item 
+$\link CD$ in $\forall x.C$ and $\forall y.D$.
+\\
+A rewrite step $\link CD\scoal\link{\forall x.C}D$ or $\link CD\scoal\link C{\forall y.D}$ applies unless $x,y\in\sigma$. But that would generate a cycle in the column of $\link CD$, in one of three ways. If $x\in\sigma_C$ or $y\in\sigma_D$ then, since $\sigma_C=\sigma_{\forall x.C}$ and $\sigma_D=\sigma_{\forall y.D}$, respectively:
+\[
+	(C,\sigma_C)\dep(\forall x.C,\sigma_C)\dep(C,\sigma_C)
+\qquad\quad
+	(D,\sigma_D)\dep(\forall y.D,\sigma_D)\dep(D,\sigma_D)~.
+\]
+Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
+\[
+	(C,\sigma_C)\dep(\forall x.C,\sigma_C)\dep(D,\sigma_D)\dep(\forall x.D,\sigma_D)\dep(C,\sigma_C)~.
+\qedhere
+\]
+\end{itemize}
+\end{proof}
+
+\begin{corollary}
+A correct witness pre-net with axiom linking is a witness proof net.
+\end{corollary}
+
+\begin{theorem}
+A correct witness pre-net strongly strict-coalesces.
+\end{theorem}
+
+\begin{
+
+
+\end{document}
 
 \subsection{Composition}
 
@@ -1166,7 +1326,6 @@ An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\n
 \end{definition}
 
 
-
 \begin{figure}
 \hrule
 \par\bigskip
@@ -1239,6 +1398,7 @@ An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\n
 \label{fig:coalescence}
 \end{figure}
 
+
 \[
 \begin{tikzpicture}[net]
 \formula[y=1.2]{\exists x.\forall y.~{\dual P}(x,y)}
@@ -1283,4 +1443,68 @@ An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\n
 \bibliography{ALL1}
 
 \end{document}
+
+
+
+
+\begin{equation}
+  	\net{\{\link A{B_i}^\pi\}}A{B_1\+B_2} 
+ ~\scoal~
+	\net{\{\link A{B_1\+B_2} ^\psi\}}A{B_1\+B_2}
+\tag{$\srr+i$}
+\end{equation}
+
+\hfill $\text{where}\quad \psi=~
+  \vc{\infer  {\seq{A\sigma}{B_1\sigma\,\+\,B_2\sigma}}  {\Prf \pi {A\sigma} {B_i\sigma}}}
+$ \hspace*{20pt}
+
+\begin{equation}
+	\net{\{\link AB^\pi,\link AC^\phi\}}A{B\*C}
+ ~\scoal~ 
+	\net{\{\link A{B\*C}^\psi\}}A{B\*C}
+\tag{$\srr*$}
+\end{equation}
+
+\hfill $\text{where}\quad \psi=~
+  \vc{
+   \infer  {\seq{A\sigma}{B\sigma\,\*\,C\sigma}}  {
+    \Prf \pi {A\sigma} {B\sigma}
+    &
+    \Prf \phi {A\sigma} {C\sigma}    
+  }}$ \hspace*{20pt}
+
+\begin{equation}
+	\net{\{\link AB^\pi\}}A{\exists x.B}
+ ~\scoal~ 
+	\net{\{\link[\sigma\minus x]A{\exists x.B}^\psi\}}A{\exists x.B}
+\tag{$\srr?$}
+\end{equation}
+
+\hfill $\text{if}\quad\sigma(x)\,\neq\,\bot~,
+		\quad
+		\text{where}\quad \tau=\sigma\minus x
+		\quad
+		\text{and}\quad \psi=~
+  \vc{
+   \infer  {\seq{A\tau}{\exists x.B\tau}}  {
+    \Prf \pi {A\sigma} {B\sigma}
+  }}
+$ \hspace*{20pt}
+
+\begin{equation}
+	\net{\{\link AB\}}A{\forall a.B}
+ ~\scoal~
+	\net{\{\link A{\forall a.B}\}}A{\forall a.B}
+\tag{$\srr!$}
+\end{equation}
+
+\hfill $\text{if}\quad a\notin\sigma~,
+		\quad
+		\text{where}\quad \psi=~
+  \vc{
+   \infer  {\seq{A\sigma}{\forall a.B\sigma}}  {
+    \Prf \pi {A\sigma} {B\sigma}
+  }}
+$ \hspace*{20pt}
+
 
