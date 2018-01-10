@@ -9,6 +9,9 @@
 
 \usepackage{graphicx}
 
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+
 \usepackage{willemtools}
 \usepackage{proofnet}
 
@@ -69,6 +72,9 @@
 
 \newcommand\prf[3]{#1\vdash\!#2,#3}
 
+\newcommand\Seq{\vphantom(\seq}
+\newcommand\Prf[3]{\deduce{\Seq{#2}{#3}}{\vphantom(#1}}
+
 % ===== Nets
 
 \newcommand\net[3]{#1\triangleright #2,#3}
@@ -89,7 +95,7 @@
 
 
 \newcommand\res[1]{|_{#1}}
-\newcommand\fix[1]{\overrightharpoon{#1}}
+\newcommand\fix[2][2pt]{\overrightharpoon[#1]{#2}}
 \newcommand\dcom{\mathbin\cdot}
 
 \newcommand\init[2]{#1\star #2}
@@ -184,6 +190,12 @@
 \DeclareMathSymbol{\rightharpoonup}{\mathrel}{MnSyA}{'100}
 \DeclareMathSymbol{\mn@relbar}{\mathrel}{MnSyA}{'320}
 
+\renewcommand\overrightharpoon[2][2pt]{
+\begin{tikzpicture}[baseline=0]
+	\node[inner sep=0pt,outer sep=0pt,anchor=base] (x) at (0,0) {$#2$};
+	\draw[-left to] ($(x.north west) + (0pt,#1)$) -- ($(x.north east) + (0pt,#1)$);
+\end{tikzpicture}}
+
 
 \makeatother
 
@@ -211,8 +223,6 @@
 
 % ============================== CONTENT
 
-\newcommand\Seq{\vphantom(\seq}
-\newcommand\Prf[3]{\deduce{\Seq{#2}{#3}}{\vphantom(#1}}
 
 \begin{document}
 
@@ -733,10 +743,10 @@ A witness pre-net is \defn{correct} if
 \end{itemize}
 \end{definition}
 
-\newcounter{lemcorrectness}
-\setcounter{lemcorrectness}{\thetheorem}
+\newcounter{lemcorrect}
+\setcounter{lemcorrect}{\thetheorem}
 \begin{lemma}
-\label{lem:correctness}
+\label{lem:correct}
 Strict coalescence preserves and reflects correctness.
 \end{lemma}
 
@@ -748,7 +758,7 @@ See appendix.
 \setcounter{lemcoalescenceapplies}{\thetheorem}
 \begin{lemma}
 \label{lem:coalescence applies}
-In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
+To a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
 \end{lemma}
 
 \begin{proof}
@@ -761,7 +771,7 @@ A witness pre-net is correct if and only if it strict-coalesces.
 \end{theorem}
 
 \begin{proof}
-From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:preservation} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
+From right to left, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:correct} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
 
 From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
 \end{proof}
@@ -782,6 +792,7 @@ By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{
 
 \subsection{Composition}
 
+\begin{figure}
 \[
 \begin{array}{ccc}
 	\vc{
@@ -801,19 +812,20 @@ By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{
 	}}
 	&\Rightarrow&
 	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf\pi A{B[t/x]} && \Prf{\phi[t/x]}{\dual B[t/x]}C}}
-	
 \end{array}
 \]
+\caption{\all1 cut-elimination steps}
+\label{fig:cut-elim}
+\end{figure}
+
 
 
 The \defn{domain-preserving composition} of two witness maps $\sigma\dcom\tau$ is the map $(\sigma\tau)\res{\dom\sigma}$.
 
 The \defn{least fixed point} $\fix\sigma$ of a witness map $\sigma$ is the least map $\rho$ satisfying $\rho = \rho\sigma$. It is the shortest sequence $\fix\sigma=\sigma\sigma\dots\sigma$ such that no variable is both in the domain and range of $\fix\sigma$. Where it is used, in the composition of the witness maps of two links, we will need to demonstrate that it is well defined.
 
-
-
 \begin{definition}
-The \defn{composition} of two proof links $\link AB^\pi\comp\link[\tau]{\dual B}C^\phi$ is $\link[\rho]AC^\psi$ where
+The \defn{composition} $\link AB^\pi\comp\link[\tau]{\dual B}C^\phi$ of two proof links is $\link[\rho]AC^\psi$ where
 \[
 	\rho = \sigma_A\tau_C\dcom\fix{\sigma_B\tau\subdual B}
 \qquad\text{and}\qquad
@@ -834,6 +846,8 @@ The \defn{composition} of two labelled pre-nets $(\net{\lambda_\Sigma^\Pi}AB)\co
 \]
 The composition of two witness pre-nets omits the proof annotations.
 \end{definition}
+
+The composition of two links is strongly related to composition of strategies in game semantics. There, two strategies on $\seq AB$ and $\seq{\dual B}C$ are composed by \emph{interaction} on the interface of $B$ and $\dual B$, and subsequently \emph{hiding} that interaction. 
 
 %	\net{\{~\link[\rho]XZ~\mid~\link XY\in{\lambda_\Sigma}~,~\link[\tau]{\dual Y}Z\in\kappa_\Theta~,~\rho = (\sigma\cyc\tau)\res{\ex AX\,\cup\,\ex CZ}~\}~}AC
 %~\rho=\sigma_A\tau_{\smash{\,\dual{\!B}}\vphantom B}\cup\tau_C\sigma_B~
@@ -989,7 +1003,7 @@ The next critical pair is the following.
 	\rule{25pt}{0pt}
 \end{array}
 \]
-Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
+Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix[1pt]{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
 
 
 \[
@@ -1111,7 +1125,7 @@ If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\du
 
 % ..................................................
 
-\setcounter{theorem}{\thelemcorrectness}
+\setcounter{theorem}{\thelemcorrect}
 \begin{lemma}[Restatement]
 Strict coalescence preserves and reflects correctness.
 \end{lemma}
