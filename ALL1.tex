@@ -756,13 +756,11 @@ Strict coalescence preserves and reflects correctness.
 See appendix.
 \end{proof}
 
-\lutz{why in the appendix? is it too long such that it does not fit in the page limit?}
-
 \newcounter{lemcoalescenceapplies}
 \setcounter{lemcoalescenceapplies}{\thetheorem}
 \begin{lemma}
 \label{lem:coalescence applies}
-To a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
+To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies, unless it is fully coalesced already, $\lambda_\Sigma=\{\link[\varnothing]AB\}$.
 \end{lemma}
 
 \lutz{that statement is not clear?}
@@ -781,8 +779,6 @@ From right to left, we proceed by induction on the coalescence path from $\net{\
 
 From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
 \end{proof}
-
-\lutz{labels: preservation and correctness one or two lemmas?}
 
 \begin{corollary}
 A correct witness pre-net with axiom linking is a witness proof net.
@@ -865,6 +861,8 @@ The composition of two links is strongly related to composition of strategies in
 \cite{Mimram-2011}
 
 \lutz{why the fixpoint?}
+
+\todo{example: $\forall x.\exists y.\forall z.P$ with $[f(x)/y]$ cut against $\exists x.\forall y.\exists z.\dual P$ with $[a/x,g(y)/z]$.}
 
 
 In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization with composition, and demonstrate that how they are resolved.
@@ -1018,11 +1016,10 @@ The next critical pair is the following.
 	\rule{25pt}{0pt}
 \end{array}
 \]
-<<<<<<< HEAD
+
 Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix[1pt]{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
-=======
-Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor \lutz{not?} in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
->>>>>>> origin/master
+
+\willem{Dominic:plz check grammar above.}
 
 
 \[
@@ -1175,7 +1172,7 @@ For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1
 	\item
 $\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
 \\
-A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not\lutz{may not or cannot?} contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
+A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and cannot contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
 
 Dependency-correctness is immediate, as above.
 
@@ -1184,6 +1181,7 @@ $\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
 \\
 The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
 \lutz{?}
+\todo{Explain the witness sets better; refer to 1st case above; }
 
 For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
 
@@ -1217,7 +1215,7 @@ Without loss of generality, let $i=1$. A slice $S_1$ of $\seq AB$ containing $\l
 	\item 
 $\link AD$ with $D$ in $\forall x.D$. 
 \\
-The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) If $x\in\sigma$ then $x\in\tau$, and in the column of $\link AD$ we would have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
+The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. By way of contradiction, assume $x\in\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) Since $x\in\sigma$ we have $x\in\tau$, and in the column of $\link AD$ we have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
 
 	\item
 $\link{C_i}{D_j}$ in $C=C_1\*C_2$ and $D=D_1\*D_2$.
