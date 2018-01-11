@@ -296,7 +296,7 @@ In this paper we will not attempt to decisively settle the question of proof ide
 \cite{Girard-1987}
 \cite{Galmiche-Marion-1995} % ALL proof search
 \cite{Girard-1996}
-\cite{Hu-99}
+\cite{Hu-1999}
 \cite{Galmiche-2000} % ALL connection net (Def 6.11.)
 \cite{Hughes-VanGlabbeek-2005}
 \cite{Cockett-Santocanale-2009}
@@ -388,7 +388,7 @@ A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda
 
 A \defn{witness map} $\sigma\colon\var\rightharpoonup\terms$ is a substitution map which assigns terms to variables, given as a (finite) partial function. We define it as $\sigma=[t_1/x_1,\dots,t_n/x_n]$, where its \defn{domain} $\dom\sigma$ is $\{x_1,\dots,x_n\}$. We abbreviate by $y\in\sigma$ that a variable $y$ occurs free in the range of~$\sigma$, i.e., $y\in\fv(t_i)$ for some $i\leq n$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, we write $\sigma\res V$ for the restriction of $\sigma$ to a set of variables $V$, and $\varnothing$ for the \defn{empty} witness map.
 %
-We write $A\sigma$ for the application of the substitutions in $\sigma$ to the formula $A$, and $\pi\sigma$ for its application to the proof $\pi$, where it is applied to each formula in the proof \lutz{also to the existential witnesses?}. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
+We write $A\sigma$ for the application of the substitutions in $\sigma$ to the formula $A$, and $\pi\sigma$ for its application to the proof $\pi$, where it is applied to each formula in the proof, and to each existential witness $t$ recorded with a rule $\qrr?t$. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
 
 %\[
 %\begin{tabular}{@{}ll@{}} 
