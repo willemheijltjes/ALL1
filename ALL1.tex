@@ -386,9 +386,9 @@ A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda
 
 \subsection{Witness maps}
 
-A \defn{witness map} $\sigma\colon\var\rightharpoonup\terms$ is a substitution map which assigns terms to variables, given as a (finite) partial function. We define it as $\sigma=[t_1/x_1,\dots,t_n/x_n]$, where its \defn{domain} $\dom\sigma$ is $\{x_1,\dots,x_n\}$. We abbreviate by $y\in\sigma$ that a variable $y$ occurs free in its the range, $y\in\fv(t_i)$ for some $i\leq n$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, we write $\sigma\res V$ for the restriction of $\sigma$ to a set of variables $V$, and $\varnothing$ is the \defn{empty} witness map.
+A \defn{witness map} $\sigma\colon\var\rightharpoonup\terms$ is a substitution map which assigns terms to variables, given as a (finite) partial function. We define it as $\sigma=[t_1/x_1,\dots,t_n/x_n]$, where its \defn{domain} $\dom\sigma$ is $\{x_1,\dots,x_n\}$. We abbreviate by $y\in\sigma$ that a variable $y$ occurs free in the range of~$\sigma$, i.e., $y\in\fv(t_i)$ for some $i\leq n$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, we write $\sigma\res V$ for the restriction of $\sigma$ to a set of variables $V$, and $\varnothing$ for the \defn{empty} witness map.
 %
-We write $A\sigma$ for the application of the substitutions in $\sigma$ to the formula $A$, and $\pi\sigma$ for its application to the proof $\pi$, where it is applied to each formula in the proof. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
+We write $A\sigma$ for the application of the substitutions in $\sigma$ to the formula $A$, and $\pi\sigma$ for its application to the proof $\pi$, where it is applied to each formula in the proof \lutz{also to the existential witnesses?}. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
 
 %\[
 %\begin{tabular}{@{}ll@{}} 
@@ -465,6 +465,7 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 
 A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$: the translation separates a sequent $\seq AB$ into subformulas $A'$, $B'$ of the ultimate conclusion of the proof, and the accumulated existential witnesses $\sigma$.
 %While a sequent proof instantiates existential witnesses immedately into the premise of the existential quantifier rule, for proof nets we delay the substitutions $\sigma$. Hence we need to maintain the separation of the conclusion $\seq AB$ into the substitutions $\sigma$ and the subformulas $A'$ and $B'$ of the conclusion of the proof net.
+\lutz{every referee will ask for an example here.}
 
 We will conclude this section by discussing two further essential notions. First, a witness link $\link ab$ on two atomic formulas $a$ and $b$ is an \defn{axiom} link if $a\sigma=\dual b\sigma$. A witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
 
@@ -674,6 +675,7 @@ Then to recap, we have accumulated the following further notational conventions.
 \defn{Strict coalescence} is the same relation on witness pre-nets, ignoring proof labels, illustrated in Figure~\ref{fig:coalescence}. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$. It \defn{strongly} strict-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
 \end{definition}
 
+\lutz{I guess there should be an example here.}
 
 \begin{definition}
 An \all1 \defn{witness proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$ with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
@@ -754,12 +756,16 @@ Strict coalescence preserves and reflects correctness.
 See appendix.
 \end{proof}
 
+\lutz{why in the appendix? is it too long such that it does not fit in the page limit?}
+
 \newcounter{lemcoalescenceapplies}
 \setcounter{lemcoalescenceapplies}{\thetheorem}
 \begin{lemma}
 \label{lem:coalescence applies}
 To a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
 \end{lemma}
+
+\lutz{that statement is not clear?}
 
 \begin{proof}
 See appendix.
@@ -775,6 +781,8 @@ From right to left, we proceed by induction on the coalescence path from $\net{\
 
 From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
 \end{proof}
+
+\lutz{labels: preservation and correctness one or two lemmas?}
 
 \begin{corollary}
 A correct witness pre-net with axiom linking is a witness proof net.
@@ -853,9 +861,15 @@ The composition of two links is strongly related to composition of strategies in
 %~\rho=\sigma_A\tau_{\smash{\,\dual{\!B}}\vphantom B}\cup\tau_C\sigma_B~
 %(\sigma\res{\ex AX})(\tau\res{\ex{\dual B}{\dual Y}})\cup(\tau\res{\ex CZ})(\sigma\res{\ex BY})
 
+
 \cite{Mimram-2011}
 
+\lutz{why the fixpoint?}
+
+
 In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization with composition, and demonstrate that how they are resolved.
+
+\lutz{some itemizing environment?}
 
 The first critical pair of composition (downward as $\Rightarrow$) and sequentialization is the following. We consider the composition of pre-nets on $\seq AB$ and $\seq{\dual B}C$ where $B=B_1\*B_2$, with a synchronized sequentialization step on both pre-nets.
 \[
@@ -1004,7 +1018,11 @@ The next critical pair is the following.
 	\rule{25pt}{0pt}
 \end{array}
 \]
+<<<<<<< HEAD
 Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix[1pt]{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
+=======
+Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor \lutz{not?} in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
+>>>>>>> origin/master
 
 
 \[
@@ -1085,7 +1103,9 @@ Observe that since $x$ occurs in $C$ but not $B$, it is not in the domain of $\t
 	}
 \]
 
-There are three further critical pairs 
+There are three further critical pairs
+
+\todo{add them}
 
 %\end{document}
 
@@ -1098,6 +1118,7 @@ If $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ both coalesce, s
 By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{\link[\varnothing]AB\}$ and $\kappa_\Theta=\{\link[\varnothing]{\dual B}C\}$, and the composition is $\net{\{\link[\varnothing]AC\}}AC$.
 
 If
+\todo{}
 \end{proof}
 
 \begin{proposition}
@@ -1111,6 +1132,10 @@ If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\du
 \]
 \end{proposition}
 
+\
+\begin{proof}
+  \todo{}
+\end{proof}
 % --------------------------------------------------
 
 
@@ -1140,9 +1165,9 @@ $\link C{D_i}\scoal\link C{D_1{\+}D_2}$
 \\
 A slice $S_B$ of $B$ and $\varnothing$ containing one of $(D_1,\tau)$, $(D_2,\tau)$, and $(D_1\+D_2,\tau)$ must also contain the other two. 
 %
-\lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
-%
-\willem{Indeed. A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.}
+%% \lutz{something is confusing here. It seems you are using different notions of slice. Above it says that correctness means that slices are singletons, and here you imply that slices contain more than one element.}
+%% %
+%% \willem{Indeed. A slice of a NET is singleton; a slice of FORMULA or SEQUENT need not be.}
 %
 A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is.
 
@@ -1151,7 +1176,7 @@ For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1
 	\item
 $\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
 \\
-A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
+A slice $S$ of $\seq AB$ contains $\link C{D_1{\*}D_2}$ if and only if it contains either of $\link C{D_1}$ or $\link C{D_2}$, and may not\lutz{may not or cannot?} contain both. Then $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is.
 
 Dependency-correctness is immediate, as above.
 
@@ -1159,6 +1184,7 @@ Dependency-correctness is immediate, as above.
 $\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
 \\
 The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
+\lutz{?}
 
 For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
 
