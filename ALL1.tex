@@ -217,8 +217,8 @@
 
 \Copyright{Willem B.\ Heijltjes, Dominic J.D.\ Hughes, and Lutz Stra\ss burger}
 
-\subjclass{Dummy classification -- please refer to \url{http://www.acm.org/about/class/ccs98-html}}% mandatory: Please choose ACM 1998 classifications from http://www.acm.org/about/class/ccs98-html . E.g., cite as "F.1.1 Models of Computation". 
-\keywords{Linear logic, Proof nets}
+\subjclass{F.4.1 [Mathematical logic and formal languages]: Mathematical logic--Proof theory}
+\keywords{Linear logic, First-order logic, Proof nets}
 
 
 % ============================== CONTENT
@@ -229,7 +229,12 @@
 \maketitle
 
 \begin{abstract}
+We extend proof nets for additive linear logic with first-order quantification. 
 
+We present two versions of our proof nets. One, called witness nets, retains explicit witnessing information to existential quantification. For the other, called unification nets, this information is absent but can be reconstructed through unification. Unification nets embody a main contribution of the paper: the observation that first-order witnessing information can be left implicit, and reconstructed effectively. 
+
+Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. 
+Both notions of proof net are defined through coalescence (the additive version of multiplicative contractibility), and for witness nets a geometric correctness criterion is provided. Both feature a global, one-shot composition operation.
 \end{abstract}
 
 
@@ -763,8 +768,6 @@ See appendix.
 To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies, unless it is fully coalesced already, $\lambda_\Sigma=\{\link[\varnothing]AB\}$.
 \end{lemma}
 
-\lutz{that statement is not clear?}
-
 \begin{proof}
 See appendix.
 \end{proof}
@@ -785,6 +788,7 @@ A correct witness pre-net with axiom linking is a witness proof net.
 \end{corollary}
 
 \begin{corollary}
+\label{cor:strong coalescence}
 A correct witness pre-net strongly strict-coalesces.
 \end{corollary}
 
@@ -865,7 +869,7 @@ The composition of two links is strongly related to composition of strategies in
 \todo{example: $\forall x.\exists y.\forall z.P$ with $[f(x)/y]$ cut against $\exists x.\forall y.\exists z.\dual P$ with $[a/x,g(y)/z]$.}
 
 
-In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization with composition, and demonstrate that how they are resolved.
+In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization with composition, and demonstrate how they are resolved.
 
 \lutz{some itemizing environment?}
 
@@ -1019,7 +1023,7 @@ The next critical pair is the following.
 
 Since $x$ is not free in the range of $\tau$, and (by the freshness convention) nor in the range of $\sigma$, we have that $\fix{\sigma_B\tau\subdual B}$ is $\fix[1pt]{(\sigma_B\minus x)\tau\subdual B}$ plus the substitution $[\sigma(x)/x]$. Then $\rho=\rho'$ (as $x$ does not occur in the range of $\sigma_A\tau_C$) and $\psi'$ reduces to $\psi$ in a single cut-elimination step.
 
-\willem{Dominic:plz check grammar above.}
+\willem{Dominic: plz check grammar above.}
 
 
 \[
@@ -1100,39 +1104,51 @@ Observe that since $x$ occurs in $C$ but not $B$, it is not in the domain of $\t
 	}
 \]
 
-There are three further critical pairs
-
-\todo{add them}
-
-%\end{document}
-
+There are three further critical pairs, for a proof net on $\seq AB$ composed with one on $\seq {\dual B}{C_1{\+}C_2}$, one on $\seq {\dual B}{C_1{\*}C_2}$, and one on $\seq {\dual B}{\forall x.C}$. These converge as the one above.
 
 \begin{proposition}
-If $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ both coalesce, so does their composition.
-\end{proposition}
-
-\begin{proof}
-By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{\link[\varnothing]AB\}$ and $\kappa_\Theta=\{\link[\varnothing]{\dual B}C\}$, and the composition is $\net{\{\link[\varnothing]AC\}}AC$.
-
-If
-\todo{}
-\end{proof}
-
-\begin{proposition}
-If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$ then the composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ sequentializes to a normal form $\psi$ of the proof
+If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ sequentialize to $\pi$ and $\phi$ respectively, then their composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ sequentializes to a normal form $\psi$ of the proof
 \[
 	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{
-	 %\prf\pi AB & \prf\phi{\dual B}C
-	 \deduce{\seq AB\vphantom{\dual B}}{\pi}
-	&\deduce{\seq{\dual B}C}{\phi}
+	 \Prf\pi AB & \Prf\phi{\dual B}C
 	}
 \]
 \end{proposition}
 
-\
 \begin{proof}
-  \todo{}
+By Corollary~\ref{cor:strong coalescence} the proof nets $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}{\dual B}C$ strongly coalesce. We may then interleave their coalescence sequences as follows: if a synchronized step in $L$ and $R$ on the interface $B$ and $\dual B$ is available, apply it; otherwise perform steps in $L$ on $A$ and in $R$ on $C$ until it is. This gives the following combined sequence.
+\[
+\begin{array}{c@{~}c@{~}c@{~}l@{~}c@{~}l@{~}c@{~}l@{~}c}
+	L &{}={}& L_1 & ~\scoal^?~ & L_2 & ~\scoal^?~ & \dots & ~\scoal^?~ & L_n 
+\\
+	R &{}={}& R_1 & ~\scoal^?~ & R_2 & ~\scoal^?~ & \dots & ~\scoal^?~ & R_n 
+\\[5pt]
+	\Downarrow && \Downarrow && \Downarrow &&&& \Downarrow 
+\\[5pt]
+	L\comp R & = & L_1\comp R_1 & ~\scoal~ & L_2\comp R_2 & ~\scoal~ & \dots & ~\scoal~ & L_n\comp R_n
+\end{array}
+\]
+(Here, $(\scoal^?)$ is the relation $(\scoal)\cup(=)$, but we assume that at least $L_i\scoal L_{i+1}$ or $R_i\scoal R_{i+1}$.)
+%
+The path along the top and right of this diagram sequentializes $L$ to $\pi'$ and $R$ to $\phi'$ (equivalent to $\pi$ and $\phi$ respectively), and then composes to $L_n\comp R_n = \net{\{\link[\varnothing]AC^{\psi'}\}}AC$ with
+%
+\[
+	\psi' = \vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{\Prf{\pi'}AB & \Prf{\phi'}{\dual B}C}}~.
+\]
+
+Each square of the diagram converges as one of the critical pairs of sequentialization and composition discussed above. Then each path along the diagram from top left ($L$ and $R$) to bottom right $(L_n\comp R_n)$ gives a sequentialization, with cuts, of $L_n\comp R_n$. Let the path taking the vertical step from $L_i$ and $R_i$ to $L_i\comp R_i$ sequentialize to $\psi_i$, so that $\psi_n=\psi'$. By the way each square converges, we have that $\psi_i$ is reached from $\psi_{i+1}$ by a cut-elimination or permutation step. 
+
+Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is composed from two links $\link ab$ in $L$ and $\link[\tau]{\dual b}c$ in $R$, which yields $\link[\rho]ac$ where $\rho = \sigma_a\tau_c\dcom\fix{\sigma_b\tau\subdual b}$. This sequentializes to the axiom $\infer{\seq{a\rho}{c\rho}}{}$, which is in normal form. Then $L\comp R$ is a proof net (it has an axiom linking and it coalesces), and it sequentializes to a proof in normal form which sequentializes (up to permutations) to $\psi'$.
+%
+%which sequentialize respectively to. 
+%\[
+%	\infer{\seq{a\sigma}{b\sigma}}{} 
+%	\qquad\text{and}\qquad
+%	\infer{\seq{\dual b\tau}{c\tau}}{}~.
+%\]
+%We have the link 
 \end{proof}
+
 % --------------------------------------------------
 
 
@@ -1199,7 +1215,7 @@ For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall
 
 \setcounter{theorem}{\thelemcoalescenceapplies}
 \begin{lemma}[Restatement]
-In a correct witness pre-net a coalescence step applies, unless it has already been coalesced.
+To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies, unless it is fully coalesced already, $\lambda_\Sigma=\{\link[\varnothing]AB\}$.
 \end{lemma}
 
 \begin{proof}
@@ -1559,3 +1575,14 @@ $ \hspace*{20pt}
 $ \hspace*{20pt}
 
 
+
+\begin{proposition}
+If $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ both coalesce, so does their composition.
+\end{proposition}
+
+\begin{proof}
+By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{\link[\varnothing]AB\}$ and $\kappa_\Theta=\{\link[\varnothing]{\dual B}C\}$, and the composition is $\net{\{\link[\varnothing]AC\}}AC$.
+
+If
+\todo{}
+\end{proof}
