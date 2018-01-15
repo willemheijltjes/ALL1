@@ -303,8 +303,9 @@ In this paper we will not attempt to decisively settle the question of proof ide
 \cite{Girard-1996}
 \cite{Hu-1999}
 \cite{Galmiche-2000} % ALL connection net (Def 6.11.)
+\cite{Cockett-Seely-2001}
 \cite{Hughes-VanGlabbeek-2005}
-\cite{Cockett-Santocanale-2009}
+%\cite{Cockett-Santocanale-2009}
 \cite{Heijltjes-2011, Heijltjes-2012}
 \cite{Heijltjes-Hughes-2015}
 
@@ -419,11 +420,11 @@ We will assume the following variable naming conventions.
 	\item
 [Barendregt's convention] All quantifiers in a sequent $\seq AB$ have a distinct binding variable, and no bound variable shares a name with a free one.
 
-	\item[Eigenvariables not free]
-For a link $\link CD$, a universally quantified variable in $C$ or $D$ does not occur free in the range of $\sigma$.
-
 	\item[Freshness]
-For a link $\link CD$ in $\net{\lambda_\Sigma}AB$, variables in the range of $\sigma$ are fresh: distinct from any existentially quantified variable in $\seq AB$.
+For a link $\link CD$ over $\seq AB$, variables in the range of $\sigma$ are \emph{fresh}: distinct from any existentially quantified variable in $\seq AB$.
+
+	\item[Eigenvariables not free]
+For a link $\link CD$ over $\seq AB$, if a variable $x$ in the range of $\sigma$ is universally quantified as $\forall x.X$ in $\seq AB$ (an \emph{eigenvariable}), then $C\leq X$ or $D\leq X$.
 \end{description}
 
 
@@ -1138,7 +1139,7 @@ The path along the top and right of this diagram sequentializes $L$ to $\pi'$ an
 
 Each square of the diagram converges as one of the critical pairs of sequentialization and composition discussed above. Then each path along the diagram from top left ($L$ and $R$) to bottom right $(L_n\comp R_n)$ gives a sequentialization, with cuts, of $L_n\comp R_n$. Let the path taking the vertical step from $L_i$ and $R_i$ to $L_i\comp R_i$ sequentialize to $\psi_i$, so that $\psi_n=\psi'$. By the way each square converges, we have that $\psi_i$ is reached from $\psi_{i+1}$ by a cut-elimination or permutation step. 
 
-Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is composed from two links $\link ab$ in $L$ and $\link[\tau]{\dual b}c$ in $R$, which yields $\link[\rho]ac$ where $\rho = \sigma_a\tau_c\dcom\fix{\sigma_b\tau\subdual b}$. This sequentializes to the axiom $\infer{\seq{a\rho}{c\rho}}{}$, which is in normal form. Then $L\comp R$ is a proof net (it has an axiom linking and it coalesces), and it sequentializes to a proof in normal form which sequentializes (up to permutations) to $\psi'$.
+Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is composed from two links $\link ab$ in $L$ and $\link[\tau]{\dual b}c$ in $R$, which yields $\link[\rho]ac$ where $\rho = \sigma_a\tau_c\dcom\fix{\sigma_b\tau\subdual b}$. This sequentializes to the axiom $\infer{\seq{a\rho}{c\rho}}{}$, which is in normal form. Then $L\comp R$ is a proof net (it has an axiom linking and it coalesces), and it sequentializes to a normal form of $\psi$.
 %
 %which sequentialize respectively to. 
 %\[
@@ -1151,6 +1152,98 @@ Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is c
 
 % --------------------------------------------------
 
+\section{Unification nets}
+
+We define the following further operations on witness maps.
+\[
+\begin{tabular}{@{}lp{.75\textwidth}@{}}
+	$\sigma\gen\tau$
+&
+	A witness map is \defn{more general} than another, 
+	$\sigma\gen\tau$, if there is a map $\rho$ such that 
+	$\sigma\rho=\tau$.
+\\[5pt]	
+	$\sigma\coh\tau$
+&
+	Two witness maps are \defn{coherent}, $\sigma\coh\tau$,
+	if there is a map $\rho$ such that $\sigma\rho=\tau\rho$.
+\\[5pt]
+	$\sigma\join\tau$
+&
+	The \defn{join} of two witness maps $\sigma\join\tau$ is defined
+	if they are coherent, and is the least map $\rho$ such that
+	$\sigma\gen\rho$ and $\tau\gen\rho$.
+\end{tabular}%
+\]
+
+A clean link $(P,Q)$ on two atomic formulas $P$ and $Q$ is an \defn{axiom} link if there exists a witness map $\sigma$ such that $P\sigma=\dual Q\sigma$. A clean \defn{axiom} linking is one consisting only of axiom links. 
+
+The \defn{clean} de-sequentialization $\floor\pi$ of a proof $\pi$ is the pre-net $\net\lambda AB$ where the de-sequentialization $[\pi]=\net{\lambda_\Sigma}AB$. Observe that $\lambda$ is then an axiom linking.
+
+To an axiom link $(P,Q)$ we assign an \defn{initial witness map} $\sigma=\init PQ$ as the least witness map in $(\gen)$ such that $P\sigma=\dual Q\sigma$. In other words, $\init PQ$ is the most general unifier ($\textsc{mgu}$) of $P$ and $\dual Q$. An axiom linking $\lambda$ with the initial witness map assigned to each link will be written $\lambda_\star$:
+\[
+	\lambda_\star = \{~\link PQ~\mid~(P,Q)\in\lambda~,~\sigma=\init PQ~\}~.
+\]
+For a pre-net $\net{\lambda_\star}AB$ we assume the \defn{exact coverage} convention, that the domain of each $\sigma(P,Q)$ is $\ex AP\cup\ex BQ$. This means a variable $x\in\varE$ in $P$ or $Q$ will be assigned at least a fresh variable name $y$.
+
+%Together with the convention that existential variables in the range of $\sigma(P,Q)$ are fresh, 
+
+For two witness labellings $\Sigma$ and $\Theta$ on the same linking $\lambda$, one is \defn{more general} than the other, $\Sigma\gen\Theta$, \lutz{say which one is more general} if $\Sigma(C,D)\gen\Theta(C,D)$ for every link $(C,D)\in\lambda$. We extend this to the linkings themselves: $\lambda_\Sigma\gen\lambda_\Theta$. Observe that for an axiom linking $\lambda$, the initial linking $\lambda_\star$ is the most general among the witness linkings $\lambda_\Sigma$ for any $\Sigma$.
+
+We write $\Sigma\tau$ for the composition of every map in $\Sigma$ with $\tau$:	$\Sigma\tau(C,D) = \Sigma(C,D)\tau$. Because of the exact coverage convention, we have that, if $\lambda_\star=\lambda_\Sigma\gen\lambda_\Theta$, then $\Theta=\Sigma\tau$ for some $\tau$.
+
+
+
+\begin{definition}
+\defn{Unifying coalescence} ($\ucoal$) is the rewrite relation generated by the rules:
+\[
+	(\urr+i)~,~(\urr?)~,~(\urr!)
+	\quad
+	\text{are respectively as}
+	\quad
+	(\srr+i)~,~(\srr?)~,~(\srr!)
+\]
+except that ($\urr?$) does not require that $\sigma(x)$ is defined, plus the rule
+\begin{equation}
+	\net{\{\link AB^\pi,\link[\tau]AC^\phi\}}A{B\*C}
+ ~\ucoal~ 
+	\net{\{\link[\sigma\join\tau]A{B\*C}^\psi\}}A{B\*C}
+\tag{$\urr*$}
+\end{equation}
+
+\hfill $\text{if}\quad\sigma\coh\tau~,
+		\quad
+		\text{where}\quad \sigma\join\tau=\sigma\rho=\tau\rho
+		\quad
+		\text{and}\quad \psi=~
+  \vc{
+   \infer  {\seq{A\sigma\rho}{B\sigma\rho\,\*\,C\sigma\rho}}  {
+    \left( \vc{\deduce  [\rule{0pt}{2pt}]  {\seq{A\sigma}{B\sigma}}  \pi} \right)\rho
+    &
+    \left( \vc{\deduce  [\rule{0pt}{2pt}]  {\seq{A\tau}{C\tau}}  \phi} \right)\rho   
+  }}~.
+$ \hspace*{20pt}
+
+\medskip
+
+\noindent
+A pre-net $\net\lambda AB$ \defn{unifying-coalesces} if it reduces in $(\ucoal)$ to a single link $\net{\{\link[\varnothing]AB\}}AB$.
+\end{definition}
+
+
+%A pre-net $\net\lambda AB$ \defn{strict-} or \defn{unifying-coalesces} if it reduces in $(\scoal)$ respectively $(\ucoal)$ to a single link $\net{\link[\varnothing]AB}AB$. Here, we ignore the labelling with proofs, which means in particular that we need not instate a labelling to initiate coalescence.
+
+
+%A pre-net $\net\lambda AB$ \defn{coalesces}, in either relation , if it coalesces to a single clean link $\net{(A,B)^\pi}AB$. In that case, it \defn{sequentializes} It \defn{strongly coalesces} if every coalescence sequence can be extended to reach $\net{(A,B)}AB$.
+
+
+
+\begin{definition}
+An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\net\lambda AB$ with clean axiom linking $\lambda$ such that its initial witness assignment $\net{\lambda_\star}AB$ unifying-coalesces. It \defn{sequentializes} to $\pi$ if the initial labelling $\net{\lambda^\star_\star}AB$ reduces in $(\ucoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+\end{definition}
+
+
+% --------------------------------------------------
 
 \bibliography{ALL1}
 
@@ -1300,98 +1393,6 @@ Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
 %\end{document}
 
 
-
-\section{Unification nets}
-
-
-
-We define the following further operations on witness maps.
-\[
-\begin{tabular}{@{}lp{.75\textwidth}@{}}
-	$\sigma\gen\tau$
-&
-	A witness map is \defn{more general} than another, 
-	$\sigma\gen\tau$, if there is a map $\rho$ such that 
-	$\sigma\rho=\tau$.
-\\[5pt]	
-	$\sigma\coh\tau$
-&
-	Two witness maps are \defn{coherent}, $\sigma\coh\tau$,
-	if there is a map $\rho$ such that $\sigma\rho=\tau\rho$.
-\\[5pt]
-	$\sigma\join\tau$
-&
-	The \defn{join} of two witness maps $\sigma\join\tau$ is defined
-	if they are coherent, and is the least map $\rho$ such that
-	$\sigma\gen\rho$ and $\tau\gen\rho$.
-\end{tabular}%
-\]
-
-A clean link $(P,Q)$ on two atomic formulas $P$ and $Q$ is an \defn{axiom} link if there exists a witness map $\sigma$ such that $P\sigma=\dual Q\sigma$. A clean \defn{axiom} linking is one consisting only of axiom links. 
-
-The \defn{clean} de-sequentialization $\floor\pi$ of a proof $\pi$ is the pre-net $\net\lambda AB$ where the de-sequentialization $[\pi]=\net{\lambda_\Sigma}AB$. Observe that $\lambda$ is then an axiom linking.
-
-To an axiom link $(P,Q)$ we assign an \defn{initial witness map} $\sigma=\init PQ$ as the least witness map in $(\gen)$ such that $P\sigma=\dual Q\sigma$. In other words, $\init PQ$ is the most general unifier ($\textsc{mgu}$) of $P$ and $\dual Q$. An axiom linking $\lambda$ with the initial witness map assigned to each link will be written $\lambda_\star$:
-\[
-	\lambda_\star = \{~\link PQ~\mid~(P,Q)\in\lambda~,~\sigma=\init PQ~\}~.
-\]
-For a pre-net $\net{\lambda_\star}AB$ we assume the \defn{exact coverage} convention, that the domain of each $\sigma(P,Q)$ is $\ex AP\cup\ex BQ$. This means a variable $x\in\varE$ in $P$ or $Q$ will be assigned at least a fresh variable name $y$.
-
-%Together with the convention that existential variables in the range of $\sigma(P,Q)$ are fresh, 
-
-For two witness labellings $\Sigma$ and $\Theta$ on the same linking $\lambda$, one is \defn{more general} than the other, $\Sigma\gen\Theta$, \lutz{say which one is more general} if $\Sigma(C,D)\gen\Theta(C,D)$ for every link $(C,D)\in\lambda$. We extend this to the linkings themselves: $\lambda_\Sigma\gen\lambda_\Theta$. Observe that for an axiom linking $\lambda$, the initial linking $\lambda_\star$ is the most general among the witness linkings $\lambda_\Sigma$ for any $\Sigma$.
-
-We write $\Sigma\tau$ for the composition of every map in $\Sigma$ with $\tau$:	$\Sigma\tau(C,D) = \Sigma(C,D)\tau$. Because of the exact coverage convention, we have that, if $\lambda_\star=\lambda_\Sigma\gen\lambda_\Theta$, then $\Theta=\Sigma\tau$ for some $\tau$.
-
-
-
-\begin{definition}
-\defn{Unifying coalescence} ($\ucoal$) is the rewrite relation generated by the rules:
-\[
-	(\urr+i)~,~(\urr?)~,~(\urr!)
-	\quad
-	\text{are respectively as}
-	\quad
-	(\srr+i)~,~(\srr?)~,~(\srr!)
-\]
-except that ($\urr?$) does not require that $\sigma(x)$ is defined, plus the rule
-\begin{equation}
-	\net{\{\link AB^\pi,\link[\tau]AC^\phi\}}A{B\*C}
- ~\ucoal~ 
-	\net{\{\link[\sigma\join\tau]A{B\*C}^\psi\}}A{B\*C}
-\tag{$\urr*$}
-\end{equation}
-
-\hfill $\text{if}\quad\sigma\coh\tau~,
-		\quad
-		\text{where}\quad \sigma\join\tau=\sigma\rho=\tau\rho
-		\quad
-		\text{and}\quad \psi=~
-  \vc{
-   \infer  {\seq{A\sigma\rho}{B\sigma\rho\,\*\,C\sigma\rho}}  {
-    \left( \vc{\deduce  [\rule{0pt}{2pt}]  {\seq{A\sigma}{B\sigma}}  \pi} \right)\rho
-    &
-    \left( \vc{\deduce  [\rule{0pt}{2pt}]  {\seq{A\tau}{C\tau}}  \phi} \right)\rho   
-  }}~.
-$ \hspace*{20pt}
-
-\medskip
-
-\noindent
-A pre-net $\net\lambda AB$ \defn{unifying-coalesces} if it reduces in $(\ucoal)$ to a single link $\net{\{\link[\varnothing]AB\}}AB$.
-\end{definition}
-
-
-%A pre-net $\net\lambda AB$ \defn{strict-} or \defn{unifying-coalesces} if it reduces in $(\scoal)$ respectively $(\ucoal)$ to a single link $\net{\link[\varnothing]AB}AB$. Here, we ignore the labelling with proofs, which means in particular that we need not instate a labelling to initiate coalescence.
-
-
-%A pre-net $\net\lambda AB$ \defn{coalesces}, in either relation , if it coalesces to a single clean link $\net{(A,B)^\pi}AB$. In that case, it \defn{sequentializes} It \defn{strongly coalesces} if every coalescence sequence can be extended to reach $\net{(A,B)}AB$.
-
-
-
-\begin{definition}
-An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\net\lambda AB$ with clean axiom linking $\lambda$ such that its initial witness assignment $\net{\lambda_\star}AB$ unifying-coalesces. It \defn{sequentializes} to $\pi$ if the initial labelling $\net{\lambda^\star_\star}AB$ reduces in $(\ucoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
-\end{definition}
 
 
 \begin{figure}
