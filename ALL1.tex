@@ -65,7 +65,7 @@
 \newcommand\sub{\leq}
 \newcommand\dep{\preccurlyeq}
 
-\newcommand\seq[3][]{{\vdash_{#1}}#2,#3}
+\newcommand\seq[2]{{\vdash}#1,#2}
 \newcommand\fv{\textsc{fv}}
 
 % ===== Proofs
@@ -98,7 +98,7 @@
 \newcommand\fix[2][2pt]{\overrightharpoon[#1]{#2}}
 \newcommand\dcom{\mathbin\cdot}
 
-\newcommand\init[2]{#1\star #2}
+\newcommand\init[2]{\mgu(#1,#2)}
 
 \newcommand\subdual[1]{_{\smash{\,\dual{\!#1}}}}
 
@@ -120,8 +120,9 @@
   \ifx#1!\forall\mathrm R\else
   \ifx#1?\expandafter\@@qrr\else
   \ifx#11\mathrm{ax}\else
+  \ifx#1.\mathrm{cut}\else
   #1\mathrm R
-  \fi\fi\fi\fi\fi
+  \fi\fi\fi\fi\fi\fi
 }
 \newcommand\@qrr[1]{+\mathrm R,#1}
 \newcommand\@@qrr[1]{\exists\mathrm R,#1}
@@ -145,7 +146,7 @@
   #1\mathrm U
   \fi\fi\fi\fi\fi
 }
-\newcommand\@urr[1]{+_{#1}\mathrm U}
+\newcommand\@urr[1]{+\mathrm U,{#1}}
 
 % ===== Derivations
 
@@ -196,6 +197,193 @@
 	\draw[-left to] ($(x.north west) + (0pt,#1)$) -- ($(x.north east) + (0pt,#1)$);
 \end{tikzpicture}}
 
+% ===== Permutations
+
+\newcommand\downperm{\sim\rule[-8pt]{0pt}{22pt}}
+
+\newcommand\permAB{
+ \infer[\Qrr!]{\Seq{\forall x.A}{\forall y.B}}{
+  \infer[\Qrr!]{\Seq A{\forall y.B}}{
+   \Seq AB
+}}}
+\newcommand\permBA{
+ \infer[\Qrr!]{\Seq{\forall x.A}{\forall y.B}}{
+  \infer[\Qrr!]{\Seq{\forall x.A}B}{
+   \Seq AB
+}}}
+\newcommand\permAE{
+ \infer[\Qrr!]{\Seq{\forall x.A}{\exists y.B}}{
+  \infer[\Qrr?t]{\Seq A{\exists y.B}}{
+   \Seq A{B[t/y]}
+}}}
+\newcommand\permEA{
+ \infer[\Qrr?t]{\Seq{\forall x.A}{\forall y.B}}{
+  \infer[\Qrr!]{\Seq{\forall x.A}{B[t/y]}}{
+   \Seq A{B[t/y]}
+}}}
+\newcommand\permEF{
+ \infer[\Qrr?s]{\Seq{\exists x.A}{\exists y.B}}{
+  \infer[\Qrr?t]{\Seq{A[s/x]}{\exists y.B}}{
+   \Seq{A[s/x]}{B[t/y]}
+}}}
+\newcommand\permFE{
+ \infer[\Qrr?t]{\Seq{\exists x.A}{\exists y.B}}{
+  \infer[\Qrr?s]{\Seq{\exists x.A}B[t/y]}{
+   \Seq{A[s/x]}{B[t/y]}
+}}}
+\newcommand\permAP{
+ \infer[\Qrr!]{\Seq{\forall x.A}{B_1\+B_2}}{
+  \infer[\Qrr+i]{\Seq A{B_1\+B_2}}{
+   \Seq A{B_i}
+}}}
+\newcommand\permPA{
+ \infer[\Qrr+i]{\Seq{\forall x.A}{B_1\+B_2}}{
+  \infer[\Qrr!]{\Seq{\forall x.A}{B_i}}{
+   \Seq A{B_i}
+}}}
+\newcommand\permEP{
+ \infer[\Qrr?t]{\Seq{\exists x.A}{B_1\+B_2}}{
+  \infer[\Qrr+i]{\Seq{A[t/x]}{B_1\+B_2}}{
+   \Seq{A[t/x]}{B_i}
+}}}
+\newcommand\permPE{
+ \infer[\Qrr+i]{\Seq{\exists x.A}{B_1\+B_2}}{
+  \infer[\Qrr?t]{\Seq{\exists x.A}{B_i}}{
+   \Seq{A[t/x]}{B_i}
+}}}
+\newcommand\permPQ{
+ \infer[\Qrr+i]{\Seq{A_1\+A_2}{B_1\+B_2}}{
+  \infer[\Qrr+j]{\Seq{A_i}{B_1\+B_2}}{
+   \Seq{A_i}{B_j}
+}}}
+\newcommand\permQP{
+ \infer[\Qrr+j]{\Seq{A_1\+A_2}{B_1\+B_2}}{
+  \infer[\Qrr+i]{\Seq{A_1\+A_2}{B_j}}{
+   \Seq{A_i}{B_j}
+}}}
+\newcommand\permAX{
+ \infer[\Qrr!]{\Seq{\forall x.A}{B\*C}}{
+  \infer[\Qrr*]{\Seq A{B\*C}}{
+   \Seq AB & \Seq AC
+}}}
+\newcommand\permXA{
+ \infer[\Qrr*]{\Seq{\forall x.A}{B\*C}}{
+  \infer[\Qrr!]{\Seq{\forall x.A}B}{
+   \Seq AB 
+  }& 
+  \infer[\Qrr!]{\Seq{\forall x.A}C}{
+   \Seq AC
+}}}
+\newcommand\permEX{
+ \infer[\Qrr?t]{\Seq{\exists x.A}{B\*C}}{
+  \infer[\Qrr*]{\Seq{A[t/x]}{B\*C}}{
+   \Seq{A[t/x]}B & \Seq{A[t/x]}C
+}}}
+\newcommand\permXE{
+ \infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
+  \infer[\Qrr?t]{\Seq{\exists x.A}B}{
+   \Seq{A[t/x]}B 
+  }& 
+  \infer[\Qrr?t]{\Seq{\exists x.A}C}{
+   \Seq{A[t/x]}C
+}}}
+\newcommand\permPX{
+ \infer[\Qrr+i]{\Seq{A_1\+A_2}{B\*C}}{
+  \infer[\Qrr*]{\Seq{A_i}{B\*C}}{
+   \Seq{A_i}B & \Seq{A_i}C
+}}}
+\newcommand\permXP{
+ \infer[\Qrr*]{\Seq{A_1\+A_2}{B\*C}}{
+  \infer[\Qrr+i]{\Seq{A_1\+A_2}B}{
+   \Seq{A_i}B 
+  }& 
+  \infer[\Qrr+i]{\Seq{A_1\+A_2}C}{
+   \Seq{A_i}C
+}}}
+\newcommand\permXY{
+ \infer[\Qrr*]{\Seq{A\*B}{C\*D}}{
+  \infer[\Qrr*]{\Seq A{C\*D}}{
+   \Seq AC & \Seq AD
+  }&
+  \infer[\Qrr*]{\Seq B{C\*D}}{
+   \Seq BC & \Seq BD
+}}}
+\newcommand\permYX{
+ \infer[\Qrr*]{\Seq{A\*B}{C\*D}}{
+  \infer[\Qrr*]{\Seq{A\*B}C}{
+   \Seq AC & \Seq BC
+  }&
+  \infer[\Qrr*]{\Seq{A\*B}D}{
+   \Seq AD & \Seq BD
+}}}
+
+% ===== Cut-permutations
+
+\newcommand\permAC{
+ \infer[\Qrr.]{\Seq{\forall x.A}C}{
+  \infer[\Qrr!]{\Seq{\forall x.A}B}{
+   \Seq AB 
+  }& 
+  \Seq{\dual B}C
+}}
+\newcommand\permCA{
+ \infer[\Qrr!]{\Seq{\forall x.A}C}{
+  \infer[\Qrr.]{\Seq AC}{
+   \Seq AB & \Seq{\dual B}C
+}}}
+\newcommand\permEC{
+ \infer[\Qrr.]{\Seq{\exists x.A}C}{
+  \infer[\Qrr?t]{\Seq{\exists x.A}B}{
+   \Seq{A[t/x]}B 
+  }& 
+  \Seq{\dual B}C
+}}
+\newcommand\permCE{
+ \infer[\Qrr?t]{\Seq{\exists x.A}C}{
+  \infer[\Qrr.]{\Seq{A[t/x]}C}{
+   \Seq{A[t/x]}B & \Seq{\dual B}C
+}}}
+\newcommand\permPC{
+ \infer[\Qrr.]{\Seq{{A_1\+A_2}}C}{
+  \infer[\Qrr+i]{\Seq{{A_1\+A_2}}B}{
+   \Seq {A_i}B 
+  }& 
+  \Seq{\dual B}C
+}}
+\newcommand\permCP{
+ \infer[\Qrr+i]{\Seq{{A_1\+A_2}}C}{
+  \infer[\Qrr.]{\Seq {A_i}C}{
+   \Seq {A_i}B & \Seq{\dual B}C
+}}}
+\newcommand\permXC{
+ \infer[\Qrr.]{\Seq{{A_1\*A_2}}C}{
+  \infer[\Qrr*]{\Seq{{A_1\*A_2}}B}{
+   \Seq {A_1}B & \Seq{A_2}B
+  }& 
+  \Seq{\dual B}C
+}}
+\newcommand\permCX{
+ \infer[\Qrr*]{\Seq{{A_1\*A_2}}C}{
+  \infer[\Qrr.]{\Seq {A_i}C}{
+   \Seq {A_1}B & \Seq{\dual B}C
+  }&
+  \infer[\Qrr.]{\Seq {A_i}C}{
+   \Seq {A_2}B & \Seq{\dual B}C
+}}}
+\newcommand\permCD{
+ \infer[\Qrr.]{\Seq AD}{
+  \infer[\Qrr.]{\Seq AC}{
+   \Seq AB & \Seq{\dual B}C
+  }& 
+  \Seq{\dual C}D
+}}
+\newcommand\permDC{
+ \infer[\Qrr.]{\Seq{{A_1\*A_2}}C}{
+  \Seq A{\dual B}
+  &
+  \infer[\Qrr.]{\Seq BD}{
+   \Seq B{\dual C} & \Seq CD
+}}}
 
 \makeatother
 
@@ -221,10 +409,29 @@
 \keywords{Linear logic, First-order logic, Proof nets}
 
 
+
 % ============================== CONTENT
 
 
 \begin{document}
+
+\begin{lemma}
+For $\link ab$ in a proof net $\net{\lambda_\star}AB$ and $\link[\tau]{\dual b}c$ in $\net{\kappa_\star}{\dual B}C$ the composition $\sigma_a\tau_c\dcom\fix{\sigma_b\tau\subdual b}=\mgu(a,c)$.
+\end{lemma}
+
+\begin{proof}
+Let $\rho=\mgu(a,c)$ and $\rho'=\sigma_a\tau_c\dcom\fix{\sigma_b\tau\subdual b}$. Define the \defn{basis} $\floor{s,t}$ of the $\mgu$ of $s$ and $t$ to be the substitution map defined by $\floor{x,t}=\floor{t,x} = [t/x]$ and
+\[
+	\floor{P(s_1,\dots,s_n),P(t_1,\dots,t_n)} =
+	\floor{f(s_1,\dots,s_n),f(t_1,\dots,t_n)} =
+	\floor{s_1,t_1}\dots\floor{s_n,t_n}~.
+\]
+Write $\floor\sigma$ for the basis $\floor{a,b}$ of $\sigma$, $\floor\tau$ for that of $\tau$, and $\floor\rho$ for that of $\rho$.
+\end{proof}
+
+\end{document}
+
+
 
 \maketitle
 
@@ -370,7 +577,7 @@ Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$, as a m
 \end{tabular}
 \]
 %
-A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart that applies to the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$.
+A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart that applies to the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations (Appendix, Figure~\ref{fig:permutations}.
 
 By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
 \[
@@ -383,6 +590,8 @@ By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance
 
 A \defn{link} $(C,D)$ on a sequent $\seq AB$ is a pair of subformulas $C\leq A$ and $D\leq B$. 
 A \defn{linking} $\lambda$ on the sequent $\seq AB$ is a set of links on it.
+
+% ..................................................
 
 \begin{definition}
 A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda$ on it.
@@ -408,11 +617,14 @@ We write $A\sigma$ for the application of the substitutions in $\sigma$ to the f
 %\]
 
 A \defn{witness linking} $\lambda_\Sigma$ is a linking $\lambda$ with a \defn{witness labelling} $\Sigma\colon\lambda\to\var\rightharpoonup\terms$ that assigns each link $(C,D)$ a witness map. We may use and define $\lambda_\Sigma$ as a set of \defn{witness links} $\link CD$, where $(C,D)\in\lambda$ and $\Sigma(C,D)=\sigma$.
-% When a link is not a witness link, this may be emphasized by calling it \defn{clean}.
+
+% ..................................................
 
 \begin{definition}
 A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a witness linking $\lambda_\Sigma$.
 \end{definition}
+
+% ..................................................
 
 We will assume the following variable naming conventions.
 %
@@ -420,21 +632,17 @@ We will assume the following variable naming conventions.
 	\item
 [Barendregt's convention] All quantifiers in a sequent $\seq AB$ have a distinct binding variable, and no bound variable shares a name with a free one.
 
-	\item[Freshness]
-For a link $\link CD$ over $\seq AB$, variables in the range of $\sigma$ are \emph{fresh}: distinct from any existentially quantified variable in $\seq AB$.
-
 	\item[Eigenvariables not free]
 For a link $\link CD$ over $\seq AB$, if a variable $x$ in the range of $\sigma$ is universally quantified as $\forall x.X$ in $\seq AB$ (an \emph{eigenvariable}), then $C\leq X$ or $D\leq X$.
+
+	\item[Freshness]
+For a link $\link CD$ over $\seq AB$, other variables in the range of $\sigma$ are \emph{fresh}: distinct from any existentially quantified variable in $\seq AB$.
 \end{description}
 
+% ..................................................
 
 \begin{definition}
 The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\deseq[\varnothing]\pi AB}AB$ where the function $\deseq-AB$ is defined inductively as follows.
-%
-% $\net{\lambda_\Sigma}AB$ where $\lambda_\Sigma=\deseq[\varnothing]\pi AB$ and the function $\deseq-AB$ is defined as follows.
-%
-%\newlength\deseqwidth
-%\settowidth\deseqwidth{$\scriptstyle{A'\,,\,B'_0\+B'_1}$}
 %
 \newcommand\XDeseq[4][\sigma]{
  \left[\vcenter{#2}\right]%
@@ -469,6 +677,8 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 \end{align*}
 \end{definition}
 
+% ..................................................
+
 A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$: the translation separates a sequent $\seq AB$ into subformulas $A'$, $B'$ of the ultimate conclusion of the proof, and the accumulated existential witnesses $\sigma$.
 %While a sequent proof instantiates existential witnesses immedately into the premise of the existential quantifier rule, for proof nets we delay the substitutions $\sigma$. Hence we need to maintain the separation of the conclusion $\seq AB$ into the substitutions $\sigma$ and the subformulas $A'$ and $B'$ of the conclusion of the proof net.
 \lutz{every referee will ask for an example here.}
@@ -482,12 +692,16 @@ For a subformula $C$ of $A$, let the \defn{existential variables} $\ex[A]C$ of $
 	\ex[A]C = \{\,x \mid C < \exists x.X \sub A\,\}~.
 \]
 
+% ..................................................
+
 \begin{definition}
 A witness pre-net $\net{\lambda_\Sigma}AB$ has \defn{exact coverage} if for every link $\link CD$ in $\lambda_\Sigma$ the domain of $\sigma$ is exactly the existential variables of $C$ and $D$:
 \[
 	\dom\sigma = \ex[A]C\cup\ex[B]D~.
 \]
 \end{definition}
+%
+% ..................................................
 %
 The witness map $\sigma$ of a link $\link CD$ then has two natural components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we will abbreviate by $\sigma_C$ and $\sigma_D$ respectively.
 
@@ -578,62 +792,6 @@ Then to recap, we have accumulated the following further notational conventions.
 \label{fig:coalescence}
 \end{figure}
 
-%\begin{figure}
-%\[
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
-%    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{1,1}
-%    \end{tikzpicture}}
-%\scoal 
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
-%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
-%    \end{tikzpicture}}
-%\hfill% 
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
-%    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-1]1,1}
-%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{[1]1,3}
-%    \end{tikzpicture}}
-%\scoal
-%	\vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
-%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
-%    \end{tikzpicture}} 
-%\hfill%    
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{\exists x.D}
-%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
-%    \end{tikzpicture}}
-%\stackrel{\begin{array}{@{}c@{}}\scriptstyle x\,\in\\[-1ex]\scriptstyle\dom\sigma\end{array}}\scoal
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{\exists x.D}
-%    	\Vlink[red,label={~$\scriptstyle{\sigma\minus x}$}]{1,1}
-%    \end{tikzpicture}}   
-%\hfill%
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{\forall x.D}
-%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
-%    \end{tikzpicture}}
-%\stackrel{x\,\notin\,\sigma}\scoal
-%    \vc{\begin{tikzpicture}[net]
-%    	\formula[y=2]{C}
-%    	\formula[y=1]{\forall x.D}
-%    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,1}
-%    \end{tikzpicture}}
-%\]
-%\caption{Coalescence rules}
-%\label{fig:coalescence}
-%\end{figure}
-
-
 % ..................................................
 
 \begin{definition}
@@ -644,14 +802,14 @@ Then to recap, we have accumulated the following further notational conventions.
 \defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules, that replace one or two links by another in a pre-net $\net{\lambda_\Sigma^\Pi}AB$ (where $B$ has a subformula $D_1\+D_2$, $D_1\*D_2$, $\exists x.D$, and $\forall x.D$ respectively).
 %
 \begin{align*}
-%\tag{$\srr+i$}
+\tag{$\srr+i$}
 	\link C{D_i}^\pi
 	& \scoal
 	\link C{D_1\+D_2}^\psi
 	&& 
  	\psi=~\vc{\infer[\Qrr+i]{\seq{C\sigma}{D_1\sigma\,\+\,D_2\sigma}}  {\Prf \pi {C\sigma} {D_i\sigma}}}
 \\ \\[-8pt]
-%\tag{$\srr*$}
+\tag{$\srr*$}
 	%\{\link C{D_1}^\pi\,,\,\link C{D_2}^\phi\}
 	\left.\begin{array}{@{}l@{\,}}\link C{D_1}^\pi \\ \link C{D_2}^\phi\end{array}\right\}
 	& \scoal
@@ -661,7 +819,7 @@ Then to recap, we have accumulated the following further notational conventions.
       \Prf \pi {C\sigma} {D_1\sigma} & \Prf \phi {C\sigma} {D_2\sigma}    
 	}}
 \\ \\[-8pt]
-%\tag{$\srr?$}
+\tag{$\srr?$}
 	\link CD^\pi
 	& \scoal
 	\link[\sigma\minus x]C{\exists x.D}^\psi
@@ -669,7 +827,7 @@ Then to recap, we have accumulated the following further notational conventions.
 	&&
 	\psi=~\vc{\infer[\Qrr?{\sigma(x)}]{\seq{C(\sigma\minus x)}{\exists x.D(\sigma\minus x)}} {\Prf \pi {C\sigma} {D\sigma} }}	
 \\ \\[-8pt]
-%\tag{$\srr!$}
+\tag{$\srr!$}
 	\link CD^\pi
 	& \scoal
 	\link C{\forall x.D}^\psi
@@ -681,19 +839,40 @@ Then to recap, we have accumulated the following further notational conventions.
 \defn{Strict coalescence} is the same relation on witness pre-nets, ignoring proof labels, illustrated in Figure~\ref{fig:coalescence}. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$. It \defn{strongly} strict-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
 \end{definition}
 
+% ..................................................
+
 \lutz{I guess there should be an example here.}
 
 \begin{definition}
 An \all1 \defn{witness proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$ with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
 \end{definition}
 
+% ..................................................
 
 \begin{theorem}
-For any \all1 proof $\pi$, the de-sequentialization $[\pi]$ is a witness net that sequentializes to $\pi$. 
+\label{thm:proof->net->proof}
+For any \all1 proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
 \end{theorem}
 
 \begin{proof}
 It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
+\end{proof}
+
+% ..................................................
+
+\begin{theorem}
+\label{thm:net->proof->net}
+If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$, then $[\pi]$ is $\net{\lambda_\Sigma}AB$. 
+\end{theorem}
+
+\begin{proof}
+By induction on the sequentialization path 
+$\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
+it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
+\[
+	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
+\]
+The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
 \end{proof}
 
 % --------------------------------------------------
@@ -706,6 +885,8 @@ As in the propositional case, we define a slice of a sequent $\seq AB$ as a set 
 \[
 	\Sigma(x) = \{~\sigma(x)~\mid~\link CD\in\lambda_\Sigma~\}~.
 \]
+
+% ..................................................
 
 \begin{definition}[Slice]
 Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'\leq A$ and $\sigma'\supseteq\sigma$, given by $S=\{(A,\sigma)\}\cup S'$ where:
@@ -731,6 +912,8 @@ A \defn{slice} of a sequent $\seq AB$ is a set of links
 where $S_A$ is a slice of $A$ and $\varnothing$, and $S_B$ a slice of $B$ and $\varnothing$.  A \defn{slice} of a witness pre-net $\net{\lambda_\Sigma} AB$ is the intersection $\lambda_\Sigma\cap S$ of $\lambda_\Sigma$ with a slice $S$ of $\seq AB$.
 \end{definition}
 
+% ..................................................
+
 As in the propositional case, for correctness we will require that each slice is a singleton. In addition, within each slice we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $x$ of the formula $\forall x.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect. For simplicity we will define the dependency condition on individual links rather than on slices.
 % (since each slice will be a singleton). 
 
@@ -742,6 +925,9 @@ with an order $(\dep)$ given by: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occu
 
 %It is expected that for a more involved logic that includes multiplicative connectives, a dependency condition such as the below one needs to be applied to a slice instead.
 %
+
+% ..................................................
+
 \begin{definition}
 A witness pre-net is \defn{correct} if
 \begin{itemize}
@@ -750,6 +936,8 @@ A witness pre-net is \defn{correct} if
 \item it is \defn{dependency-correct}: every column is a partial order (i.e.\ is acyclic/antisymmetric).
 \end{itemize}
 \end{definition}
+
+% ..................................................
 
 \newcounter{lemcorrect}
 \setcounter{lemcorrect}{\thetheorem}
@@ -762,6 +950,8 @@ Strict coalescence preserves and reflects correctness.
 See appendix.
 \end{proof}
 
+% ..................................................
+
 \newcounter{lemcoalescenceapplies}
 \setcounter{lemcoalescenceapplies}{\thetheorem}
 \begin{lemma}
@@ -772,6 +962,8 @@ To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies
 \begin{proof}
 See appendix.
 \end{proof}
+
+% ..................................................
 
 \begin{theorem}
 \label{thm:correctness}
@@ -784,9 +976,13 @@ From right to left, we proceed by induction on the coalescence path from $\net{\
 From left to right, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of this coalescence step is again correct. It follows that the pre-net $\net{\lambda_\Sigma}AB$ strict-coalesces.
 \end{proof}
 
+% ..................................................
+
 \begin{corollary}
 A correct witness pre-net with axiom linking is a witness proof net.
 \end{corollary}
+
+% ..................................................
 
 \begin{corollary}
 \label{cor:strong coalescence}
@@ -797,10 +993,21 @@ A correct witness pre-net strongly strict-coalesces.
 By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{lem:correct} any coalescence step preserves correctness.
 \end{proof}
 
+% ..................................................
+
+\begin{theorem}
+Proof nets are canonical: $[\pi]=[\phi]$ if and only if $\pi\sim\phi$.
+\end{theorem}
+
+\begin{proof}
+From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in the Appendix.
+\end{proof}
+
 % --------------------------------------------------
 
 \subsection{Composition}
 
+% ..................................................
 \begin{figure}
 \[
 \begin{array}{ccc}
@@ -826,13 +1033,13 @@ By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{
 \caption{\all1 cut-elimination steps}
 \label{fig:cut-elim}
 \end{figure}
-
-
+% ..................................................
 
 The \defn{domain-preserving composition} of two witness maps $\sigma\dcom\tau$ is the map $(\sigma\tau)\res{\dom\sigma}$.
 
 The \defn{least fixed point} $\fix\sigma$ of a witness map $\sigma$ is the least map $\rho$ satisfying $\rho = \rho\sigma$. It is the shortest sequence $\fix\sigma=\sigma\sigma\dots\sigma$ such that no variable is both in the domain and range of $\fix\sigma$. Where it is used, in the composition of the witness maps of two links, we will need to demonstrate that it is well defined.
 
+% ..................................................
 \begin{definition}
 The \defn{composition} $\link AB^\pi\comp\link[\tau]{\dual B}C^\phi$ of two proof links is $\link[\rho]AC^\psi$ where
 \[
@@ -855,6 +1062,7 @@ The \defn{composition} of two labelled pre-nets $(\net{\lambda_\Sigma^\Pi}AB)\co
 \]
 The composition of two witness pre-nets omits the proof annotations.
 \end{definition}
+% ..................................................
 
 The composition of two links is strongly related to composition of strategies in game semantics. There, two strategies on $\seq AB$ and $\seq{\dual B}C$ are composed by \emph{interaction} on the interface of $B$ and $\dual B$, and subsequently \emph{hiding} that interaction. 
 
@@ -1107,14 +1315,15 @@ Observe that since $x$ occurs in $C$ but not $B$, it is not in the domain of $\t
 
 There are three further critical pairs, for a proof net on $\seq AB$ composed with one on $\seq {\dual B}{C_1{\+}C_2}$, one on $\seq {\dual B}{C_1{\*}C_2}$, and one on $\seq {\dual B}{\forall x.C}$. These converge as the one above.
 
-\begin{proposition}
+% ..................................................
+\begin{theorem}
 If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ sequentialize to $\pi$ and $\phi$ respectively, then their composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ sequentializes to a normal form $\psi$ of the proof
 \[
 	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{
 	 \Prf\pi AB & \Prf\phi{\dual B}C
 	}
 \]
-\end{proposition}
+\end{theorem}
 
 \begin{proof}
 By Corollary~\ref{cor:strong coalescence} the proof nets $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}{\dual B}C$ strongly coalesce. We may then interleave their coalescence sequences as follows: if a synchronized step in $L$ and $R$ on the interface $B$ and $\dual B$ is available, apply it; otherwise perform steps in $L$ on $A$ and in $R$ on $C$ until it is. This gives the following combined sequence.
@@ -1132,7 +1341,6 @@ By Corollary~\ref{cor:strong coalescence} the proof nets $L=\net{\lambda_\Sigma}
 (Here, $(\scoal^?)$ is the relation $(\scoal)\cup(=)$, but we assume that at least $L_i\scoal L_{i+1}$ or $R_i\scoal R_{i+1}$.)
 %
 The path along the top and right of this diagram sequentializes $L$ to $\pi'$ and $R$ to $\phi'$ (equivalent to $\pi$ and $\phi$ respectively), and then composes to $L_n\comp R_n = \net{\{\link[\varnothing]AC^{\psi'}\}}AC$ with
-%
 \[
 	\psi' = \vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\seq AC}{\Prf{\pi'}AB & \Prf{\phi'}{\dual B}C}}~.
 \]
@@ -1154,96 +1362,183 @@ Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is c
 
 \section{Unification nets}
 
+%\[
+%	\vc{
+%	 \infer[\Qrr*]{\seq{A\*B}{\exists x.C}}{
+%	  \infer[\Qrr?y]{\seq A{\exists x.C}}{\seq AC}
+%	  &
+%	  \infer[\Qrr?z]{\seq B{\exists x.C}}{\seq BC}
+%	}}
+%	\quad\sim\quad
+%	\vc{
+%	 \infer[\Qrr?y]{\seq{A\*B}C}{
+%	  \infer[\Qrr*]{\seq{A\*B}{\exists x.C}}{
+%	   \seq AC
+%	   &
+%	   \seq BC
+%	}}}
+%\]
+
+
+
+A proof $\pi$ is \defn{more general} than $\pi'$, written $\pi\leq\pi'$, if there is a substitution map $\rho$ such that $\pi\rho=\pi'$.
+
+\[
+	\vc{
+	 \infer[\Qrr*]{\seq{A\*B}{\exists x.C}}{
+	  \infer[\Qrr?s]{\seq A{\exists x.C}}{\seq AC}
+	  &
+	  \infer[\Qrr?t]{\seq B{\exists x.C}}{\seq BC}
+	}}
+	\quad\sim\quad
+	\vc{
+	 \infer[\Qrr?u]{\seq{A\*B}C}{
+	  \infer[\Qrr*]{\seq{A\*B}{\exists x.C}}{
+	   \seq AC
+	   &
+	   \seq BC
+	}}}
+\]
+
+
+
 We define the following further operations on witness maps.
 \[
-\begin{tabular}{@{}lp{.75\textwidth}@{}}
-	$\sigma\gen\tau$
+\begin{tabular}{@{}p{.10\textwidth}@{}p{.90\textwidth}@{}}
+	\quad$\sigma\gen\tau$
 &
-	A witness map is \defn{more general} than another, 
+	A witness map $\sigma$ is \defn{more general} than $\tau$,  
 	$\sigma\gen\tau$, if there is a map $\rho$ such that 
 	$\sigma\rho=\tau$.
-\\[5pt]	
-	$\sigma\coh\tau$
+\\[4pt]	
+	\quad$\sigma\coh\tau$
 &
-	Two witness maps are \defn{coherent}, $\sigma\coh\tau$,
+	Two witness maps $\sigma$ and $\tau$ are \defn{coherent}, $\sigma\coh\tau$,
 	if there is a map $\rho$ such that $\sigma\rho=\tau\rho$.
-\\[5pt]
-	$\sigma\join\tau$
+\\[4pt]
+	\quad$\sigma\join\tau$
 &
-	The \defn{join} of two witness maps $\sigma\join\tau$ is defined
-	if they are coherent, and is the least map $\rho$ such that
-	$\sigma\gen\rho$ and $\tau\gen\rho$.
+	The \defn{join} $\sigma\join\tau$ of two coherent witness maps is the least map $\rho$ such that $\sigma\gen\rho$ and $\tau\gen\rho$.
 \end{tabular}%
 \]
-
-A clean link $(P,Q)$ on two atomic formulas $P$ and $Q$ is an \defn{axiom} link if there exists a witness map $\sigma$ such that $P\sigma=\dual Q\sigma$. A clean \defn{axiom} linking is one consisting only of axiom links. 
-
-The \defn{clean} de-sequentialization $\floor\pi$ of a proof $\pi$ is the pre-net $\net\lambda AB$ where the de-sequentialization $[\pi]=\net{\lambda_\Sigma}AB$. Observe that $\lambda$ is then an axiom linking.
-
-To an axiom link $(P,Q)$ we assign an \defn{initial witness map} $\sigma=\init PQ$ as the least witness map in $(\gen)$ such that $P\sigma=\dual Q\sigma$. In other words, $\init PQ$ is the most general unifier ($\textsc{mgu}$) of $P$ and $\dual Q$. An axiom linking $\lambda$ with the initial witness map assigned to each link will be written $\lambda_\star$:
+%
+A link $\link[]ab$ on two atomic formulas is an \defn{axiom} link if there exists a witness map $\sigma$ such that $a\sigma=\dual b\sigma$. To an axiom link $\link[]ab$ over $\seq AB$ we assign an \defn{initial witness map}, which is the least witness map $\sigma$ over the domain $\ex[\!A]a\cup\ex[\!B]b$ such that $a\sigma=\dual b\sigma$. In other words, $\sigma$ is the most general unifier of $a$ and $\dual b$, over the given domain, written $\init ab$. For an axiom linking $\lambda$ over $\seq AB$ the \defn{initial witness pre-net} $\net{\lambda_\star}AB$ is given by
 \[
-	\lambda_\star = \{~\link PQ~\mid~(P,Q)\in\lambda~,~\sigma=\init PQ~\}~.
+	\lambda_\star = \{~\link ab~\mid~\link[]ab\in\lambda~,~\sigma=\init ab~\}~.
 \]
-For a pre-net $\net{\lambda_\star}AB$ we assume the \defn{exact coverage} convention, that the domain of each $\sigma(P,Q)$ is $\ex AP\cup\ex BQ$. This means a variable $x\in\varE$ in $P$ or $Q$ will be assigned at least a fresh variable name $y$.
+Observe that the initial witness pre-net satisfies the \emph{exact coverage} condition.
 
-%Together with the convention that existential variables in the range of $\sigma(P,Q)$ are fresh, 
-
-For two witness labellings $\Sigma$ and $\Theta$ on the same linking $\lambda$, one is \defn{more general} than the other, $\Sigma\gen\Theta$, \lutz{say which one is more general} if $\Sigma(C,D)\gen\Theta(C,D)$ for every link $(C,D)\in\lambda$. We extend this to the linkings themselves: $\lambda_\Sigma\gen\lambda_\Theta$. Observe that for an axiom linking $\lambda$, the initial linking $\lambda_\star$ is the most general among the witness linkings $\lambda_\Sigma$ for any $\Sigma$.
-
-We write $\Sigma\tau$ for the composition of every map in $\Sigma$ with $\tau$:	$\Sigma\tau(C,D) = \Sigma(C,D)\tau$. Because of the exact coverage convention, we have that, if $\lambda_\star=\lambda_\Sigma\gen\lambda_\Theta$, then $\Theta=\Sigma\tau$ for some $\tau$.
-
-
-
+% ..................................................
 \begin{definition}
-\defn{Unifying coalescence} ($\ucoal$) is the rewrite relation generated by the rules:
-\[
-	(\urr+i)~,~(\urr?)~,~(\urr!)
-	\quad
-	\text{are respectively as}
-	\quad
-	(\srr+i)~,~(\srr?)~,~(\srr!)
-\]
-except that ($\urr?$) does not require that $\sigma(x)$ is defined, plus the rule
+%
+\renewcommand{\+}{{+}}
+\renewcommand{\*}{{\times}}
+%
+\defn{Unifying sequentialization} ($\ucoal$) is the rewrite relation on labelled pre-nets generated by the rules
+$(\urr+i)$, $(\urr?)$, $(\urr!)$, which are respectively as $(\srr+i)$, $(\srr?)$, and $(\srr!)$, and the rule
 \begin{equation}
-	\net{\{\link AB^\pi,\link[\tau]AC^\phi\}}A{B\*C}
- ~\ucoal~ 
-	\net{\{\link[\sigma\join\tau]A{B\*C}^\psi\}}A{B\*C}
 \tag{$\urr*$}
-\end{equation}
-
-\hfill $\text{if}\quad\sigma\coh\tau~,
-		\quad
-		\text{where}\quad \sigma\join\tau=\sigma\rho=\tau\rho
-		\quad
-		\text{and}\quad \psi=~
-  \vc{
-   \infer  {\seq{A\sigma\rho}{B\sigma\rho\,\*\,C\sigma\rho}}  {
-    \left( \vc{\deduce  [\rule{0pt}{2pt}]  {\seq{A\sigma}{B\sigma}}  \pi} \right)\rho
+	\left.\begin{array}{@{}l@{\,}}\link C{D_1}^\pi \\ \link[\tau]C{D_2}^\phi\end{array}\right\}
+	\ucoal
+	\link[\sigma\join\tau\,=\,\sigma\rho\,=\,\tau\rho]C{D_1\*D_2}^\psi
+	\quad~
+	{\scriptstyle(\sigma\coh\tau)}
+	\quad~
+	\psi=~
+  \vc{\scalebox{0.9}{$
+   \infer  {\seq{A(\sigma{\join}\tau)}{B\sigma\rho\,\*\,C\tau\rho}}  {
+    \left( \vc{\Prf \pi {A\sigma} {B\sigma}} \right)\rho
     &
-    \left( \vc{\deduce  [\rule{0pt}{2pt}]  {\seq{A\tau}{C\tau}}  \phi} \right)\rho   
-  }}~.
-$ \hspace*{20pt}
-
-\medskip
-
-\noindent
-A pre-net $\net\lambda AB$ \defn{unifying-coalesces} if it reduces in $(\ucoal)$ to a single link $\net{\{\link[\varnothing]AB\}}AB$.
+    \left( \vc{\Prf \phi {A\tau} {C\tau}} \right)\rho   
+  }$}}
+\end{equation} 
+%
+\defn{Unifying coalescence} is the relation ($\ucoal$) on witness pre-nets, ignoring proof labels. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{unifying-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$ and \defn{strongly} unifying-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
 \end{definition}
+% ..................................................
 
+Observe that unifying coalescence includes strict coalescence, $(\scoal)\subseteq(\ucoal)$.
 
-%A pre-net $\net\lambda AB$ \defn{strict-} or \defn{unifying-coalesces} if it reduces in $(\scoal)$ respectively $(\ucoal)$ to a single link $\net{\link[\varnothing]AB}AB$. Here, we ignore the labelling with proofs, which means in particular that we need not instate a labelling to initiate coalescence.
-
-
-%A pre-net $\net\lambda AB$ \defn{coalesces}, in either relation , if it coalesces to a single clean link $\net{(A,B)^\pi}AB$. In that case, it \defn{sequentializes} It \defn{strongly coalesces} if every coalescence sequence can be extended to reach $\net{(A,B)}AB$.
-
-
-
+% ..................................................
 \begin{definition}
-An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\net\lambda AB$ with clean axiom linking $\lambda$ such that its initial witness assignment $\net{\lambda_\star}AB$ unifying-coalesces. It \defn{sequentializes} to $\pi$ if the initial labelling $\net{\lambda^\star_\star}AB$ reduces in $(\ucoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\net\lambda AB$ with axiom linking $\lambda$ such that the initial witness pre-net $\net{\lambda_\star}AB$ unifying-coalesces. It \defn{sequentializes} to $\pi$ if $\net{\lambda^\star_\star}AB$ reduces in $(\ucoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
 \end{definition}
+% ..................................................
+
+In the above definition, note that $\lambda_\star^\star=(\lambda_\star)^*$ is the initial proof labelling of $\lambda_\star$, which assigns an axiom rule to each axiom link.
+
+% ..................................................
+\begin{lemma}
+\label{lem:ucoal generality}
+In ($\ucoal$), if $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ then $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
+\end{lemma}
+
+\begin{proof}
+The sequentialization path
+$
+	\net{\lambda_\Sigma^\star}AB = 
+	L_1 \ucoal L_2 \ucoal \dots \ucoal L_n = 
+	\net{\link[\varnothing]AB^\pi}AB
+$
+has a corresponding path
+$
+	\net{\lambda_\star^\star}AB = 
+	R_1 \ucoal R_2 \ucoal \dots \ucoal R_n =
+	\net{\link[\varnothing]AB^{\pi'}}AB
+$
+where the same links (but with potentially different witness maps) are coalesced. It follows by induction on this path (where the base case is $L_1$ and $R_1$) that for every corresponding pair of links $\link CD^\phi$ in $L_i$ and $\link[\tau]CD^\psi$ in $R_i$ we have $\tau\leq\sigma$ and $\psi\leq\phi$.
+\end{proof}
+% ..................................................
+
+% ..................................................
+\begin{theorem}
+If $[\prf\pi AB]$ is $\net{\lambda_\Sigma}AB$ then $\net\lambda AB$ unifying-sequentializes to $\pi'\leq \pi$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:proof->net->proof}, $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ in $(\scoal)$, and hence also in $(\ucoal)$. Then by Lemma~\ref{lem:ucoal generality} $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
+\end{proof}
+% ..................................................
+
+\begin{theorem}
+If $\net\lambda AB$ sequentializes to $\pi$, then $[\pi]=\net{\lambda_\Sigma} AB$ for some $\Sigma$.
+\end{theorem}
 
 
-% --------------------------------------------------
+
+% ..................................................
+\begin{lemma}
+If $\net{\lambda_\star}AB$ unifying-sequentializes to $\pi$ then there exists a witness assignment $\Sigma$ and substitution $\rho$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\lambda_\Sigma=\lambda_\star\rho$.
+\end{lemma}
+
+\begin{proof}
+By induction on the sequentialization path $\net{\lambda_\star}AB\ucoal^*\net{\link[\varnothing]AB^\pi}AB$. For the end result, the statement holds with $\rho=\varnothing$. For the inductive step, consider a step $L\ucoal R$. We show the case ($\urr*$); the other cases are immediate.
+%
+\begin{itemize}
+	\item
+$\link C{D_1},\link[\tau]C{D_2}\ucoal\link[\sigma\join\tau]C{D_1{\*}D_2}$
+\\
+By the inductive hypothesis, $R\rho'$ strict-sequentializes to $\pi$. Let $\sigma\join\tau=\sigma\rho''=\tau\rho''$ and let $\rho=\rho''\rho'$. Then $L\rho$ strict-sequentializes to $\pi$ by 
+\[
+	\link[\sigma\rho]C{D_1},\link[\tau\rho]C{D_2}\scoal\link[(\sigma\join\tau)\rho']C{D_1{\*}D_2}~.
+\qedhere
+\]
+\end{itemize}
+\end{proof}
+
+% ..................................................
+
+\begin{lemma}
+If a labelled pre-net $\net{\lambda_\Sigma^\Pi}AB$ strict-sequentializes to $\pi$, then $(\net{\lambda_\Sigma^\Pi}AB)\rho$ strict-sequentializes to $\pi\rho$.
+\end{lemma}
+
+\begin{proof}
+By induction on the sequentialization sequence.
+\end{proof}
+
+
+
+
 
 \bibliography{ALL1}
 
@@ -1276,7 +1571,7 @@ A slice $S_B$ of $B$ and $\varnothing$ containing one of $(D_1,\tau)$, $(D_2,\ta
 %
 A slice $S$ of $\seq AB$ then contains all three of $\link C{D_1}$, $\link C{D_2}$, and $\link C{D_1{\+}D_2}$, or none. It follows that $S\cap \lambda_\Sigma$ is a singleton if and only if $S\cap\kappa_\Theta$ is. Since other slices are unaffected, $L$ is slice-correct if and only if $R$ is.
 
-For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
+For dependency-correctness, the column of $\link C{D_i}$ is that of $\link C{D_1{\+}D_2}$ plus the pair $(D_i,\sigma\res{\ex[B]{D_i}})$ itself, which is minimal in the order $\dep$.
 
 	\item
 $\link C{D_1},\link C{D_2}\scoal\link C{D_1{\*}D_2}$
@@ -1358,7 +1653,7 @@ $
 	\formula[y=0]{D*{_1}{{\*}}D*{_2}}
 	\Vlink[red]{[-2]1,[-2]1}\Vlink[red]{[-2]3,[2]1}\Vlink[red]{2,3}
 \end{tikzpicture}}
-\qquad
+\quad
 $
 In the second case, the step $\link{C_1}{D_1},\link{C_1}{D_2}\scoal\link{C_1}D$ applies; in the third case, $\link{C_1}{D_1},\link{C_2}{D_1}\scoal\link C{D_1}$; and in the first case, both.
 
@@ -1384,7 +1679,64 @@ Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
 \end{itemize}
 \end{proof}
 
+% --------------------------------------------------
+
+\newpage
+\section{Permutations}
+
 % ..................................................
+
+\begin{figure}[h!]
+\[
+\renewcommand\+{{+}}
+\renewcommand\*{{\times}}
+\scalebox{0.85}{$
+\begin{array}{@{}c@{\qquad}c@{\qquad}c@{\qquad}c@{}}
+	\permAB   & \permAE   & \permAP   & \permAX 
+\\	\downperm & \downperm & \downperm & \downperm \\
+	\permBA   & \permEA   & \permPA   & \permXA
+\\ \\[20pt]
+ 			  & \permEF   & \permEP   & \permEX
+\\			  & \downperm & \downperm & \downperm \\
+ 			  & \permFE   & \permPE   & \permXE
+\\ \\[20pt]
+ 			  &			  & \permPQ   & \permPX
+\\			  &			  & \downperm & \downperm \\
+ 			  &			  & \permQP   & \permXP
+\\ \\[20pt]
+ 			  &			  &			  & \permPX
+\\			  &			  &			  & \downperm \\
+ 			  &			  &			  & \permXP
+\end{array}$}
+\]
+\caption{Cut-free rule permutations}
+\label{fig:permutations}
+\end{figure}
+
+% ..................................................
+
+\begin{figure}
+\[
+\renewcommand\+{{+}}
+\renewcommand\*{{\times}}
+\scalebox{0.85}{$
+\begin{array}{c@{\qquad}c}
+	\permAC   & \permEC   
+\\	\downperm & \downperm \\
+	\permCA   & \permCE
+\\ \\[20pt]
+	\permPC   & \permXC 
+\\	\downperm & \downperm \\
+	\permCP   & \permCX
+\end{array}
+\begin{array}{c}
+	\permCD \\ \downperm \\ \permDC
+\end{array}
+$}
+\]
+\caption{Cut-permutations}
+\end{figure}
+
 
 \end{document}
 
