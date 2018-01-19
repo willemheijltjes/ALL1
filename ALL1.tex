@@ -53,6 +53,7 @@
 \newcommand\form{\textsc{form}}
 \newcommand\proofs{\textsc{proof}}
 \newcommand\all{\textsc{all}}
+\newcommand\mall{\textsc{mall}}
 
 \newcommand\ex[2][{}]{\textsc{ev}_{#1}(#2)}
 
@@ -444,7 +445,7 @@ Both notions of proof net are defined through coalescence (the additive version 
 %One approach, perfect for the multiplicative fragment, is to create proof nets from sequent proofs by separating rules from their context: each sequent rule becomes a node in the graph, connected only to the primary formulas of the rule, in this case $A$, $B$, and $A\*B$. The benefit is a direct interpretation from sequent calculus; 
 
 
-Additive linear logic is the logic of product $(\*)$ and sum $(\+)$. Proofs, over a sequent $A\vdash B$ or, here, $\seq{\dual A}B$, are built from the canonical morphisms: projections, injections, and diagonals. These are captured naturally in \emph{proof nets}, which consist of a set of \emph{links} between subformulas in $\dual A$ and in $B$, satisfying a simple geometric correctness condition.
+Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$. Proofs, over a sequent $A\vdash B$ or, here, $\seq{\dual A}B$, are built from the canonical morphisms: projections, injections, and diagonals. These are captured naturally in \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which consist of a set of \emph{links} between subformulas in $\dual A$ and in $B$, satisfying a simple geometric correctness condition.
 \[
 \begin{array}{c@{\qquad}c@{\qquad}c@{\qquad}c}
 	\begin{tikzpicture}[net]
@@ -486,11 +487,11 @@ Additive linear logic is the logic of product $(\*)$ and sum $(\+)$. Proofs, ove
 \end{array}
 \]
 
-The logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{} and proof net correctness \cite{} are linear in $|A|\times|B|$ (where $|A|$ is the size of the syntax tree of $A$); proof nets remain canonical and equally tractable when extended with the two units \cite{,}; and the first-order case is merely NP-complete \cite{}.
+The logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995,Galmiche-2000} and proof net correctness \cite{Heijltjes-Hughes-2015} are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$); proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}; and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
 
-At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{}; it demonstrated the \emph{Blass problem} \cite{Abramsky} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale}. 
+At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and as such is a core part of \emph{session types}~\cite{Honda-1993}.
 
-The logic is of course part of MALL (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek} for that fragment, as well as the first and second author's locally canonical \emph{conflict nets} \cite{Hughes-Heijltjes-2016}. But its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic \cite{Hughes-}, and in the third authors study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the extension of \emph{combinatorial proofs} to first-order classical logic is one motivation for the current presentation.
+{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek-2005} for that fragment, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. But its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}, and in the third authors study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the extension of \emph{combinatorial proofs} to first-order classical logic is one motivation for the current presentation.
 
 The main content of first-order proof, and the central challenge for first-order additive proof nets, is the \emph{witness assignment} to existential quantifiers. There are two, related obstacles in particular. First, the standard approach to evaluate a formula $\exists x.A$ is by a substitution $A[t/x]$, which destroys the subformula $A$.%
 %
@@ -525,76 +526,20 @@ We advance two solutions, both simple and radical. \defn{Witness nets} replace t
 	\Vlink[blue]{5,4}
 \end{tikzpicture}
 \]
-%
-%\[
-%\begin{array}{@{}ccc@{}}
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
-%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-%  \end{tikzpicture}}
-%& \stackrel{\srr+1}\scoal &
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
-%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-%  \end{tikzpicture}}
-%\\ \\[-5pt] && \downarrow\scriptstyle\srr?,f(x) \\ \\[-5pt]
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
-%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
-%  \end{tikzpicture}}
-%& \stackrel{\srr+2}\leftarrow &
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
-%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-%  \end{tikzpicture}}
-%\\ \\[-5pt] \downarrow\scriptstyle\srr?,t \\ \\[-5pt]  
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
-%	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
-%  \end{tikzpicture}}
-%& \stackrel{\srr*}\scoal & 
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
-%  \end{tikzpicture}}
-%\\ \\[-5pt] && \downarrow\scriptstyle\srr?,x \\ \\[-5pt]
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
-%  \end{tikzpicture}}
-%& \stackrel{\srr!}\leftarrow &
-%  \vc{
-%  \begin{tikzpicture}[net]
-%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-%	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
-%  \end{tikzpicture}}
-%\end{array}
-%\]
+
+Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, the additive counterpart to \defn{contractibility} for multiplicative linear logic~\cite{Danos-1990}. It is a simple graph rewrite relation that pushes links from the leaves towards the roots of a sequent, that is effectively top-down sequentialization (like its multiplicative counterpart~\cite{Guerrini-Masini-2001}). Figure~\ref{fig:main example} illustrates the process for the witness net above. In the example, a link between subformulas $A$ and $B$ carrying a substitution map $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each step (labelled $\star S$) corresponds to a proof rule (labelled $\star R$), by which the coalescence sequence generates the sequent proof.
+
+In addition, we will present a geometric correctness condition for witness nets, and define composition as direct, 
+
+
+
+%In the former, to join two slices the witness assignment must be the same; in the latter, witness assignments must be compatible, so that a common, more general witness map exists. 
+
 
 \begin{figure}
 \[
 \begin{array}{c}
-\begin{array}{@{}ccc@{}}
+\begin{array}{@{}c@{~}c@{\qquad}c@{}}
   \vc{
   \begin{tikzpicture}[net]
 	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
@@ -674,75 +619,6 @@ We advance two solutions, both simple and radical. \defn{Witness nets} replace t
 \label{fig:example}
 \end{figure}
 
-* EXAMPLE *
-\end{document}
-
-\subsection{Expansion trees}
-
-We observe that the presented solution is not the only one possible. In fact, a reasonable alternative could be the approach of \emph{expansion tree proofs} for higher-order classical logic \cite{Miller}. In this formulation, a formula $\exists x.A$ is interpreted, effectively, as the sum over all its instantiations $A[t/x]$ in the proof; e.g.\ $A[s/x]\+A[t/x]$ for the above proof fragment.
-
-We will use this approach implicitly to define a geometric correctness condition, in Section~\ref{sec:correctness}. The idea is as follows: for an existential formula $\exists x.A$ we collect all witnesses $t$ to $x$ present in the links of the proof, and then interpret $\exists x.A$ as the sum of all $A[t/x]$ to generate the \emph{slices} on which the criterion is based.
-
-The idea is closely related to Herbrand's Theorem \cite{Herbrand} and the \emph{compactness theorem}: semantically, $\exists x.A$ is equivalent to the infinite sum over all $A[t/x]$ for all terms $t$ in the language, or all elements $t$ of a model; for any individual proof, a finite set of terms (or finitely generated set of elements) suffices.
-
-For the definition of proof nets, we did not pursue this direction, and consider the present choice preferable for the following reasons. They retain the original structure of links between formulas, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links.
-
-
-
-
-
-
-\[
-\begin{tikzpicture}[net]
-\formula[y=1.2]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$\scriptstyle{[y/z,s/x]}~~$},l]{[-2]8,5}
-\Vlink[red,label={$~\scriptstyle{[y/z,t/x]}$}]{[2]8,12}
-\end{tikzpicture}
-\]
-
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$~\scriptstyle{[y/z,s/x]\mgu(s,t)}$}]{8,11}
-\end{tikzpicture}
-\]
-
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$\quad\scriptstyle{[s/x]\mgu(s,t)}$}]{8,1}
-\end{tikzpicture}
-\]
-
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$~~\scriptstyle{[s/x]\mgu(s,t)}$}]{4,1}
-\end{tikzpicture}
-\]
-
-\[
-\begin{tikzpicture}[net]
-\formula[y=1]{\exists x.\forall y.~{\dual P}(x,y)}
-\formula[y=0]{\exists z.~P(s,z)\*P(t,z)}
-\Vlink[red,label={$~\scriptstyle{\mgu(s,t)}$}]{1,1}
-\end{tikzpicture}
-\]
-
-
-
-
-Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}. This is a simple graph rewriting relation that gives top-down sequentialization, from the axioms to the conclusion of a proof. It is the additive counterpart to Danos \defn{contractibility} for multiplicative linear logic. 
-
-We will define two coalescence relations, one \defn{strict} $(\scoal)$, for witness nets, and one \defn{unifying} $(\ucoal)$, for unification nets, in a later section. In the former, to join two slices the witness assignment must be the same; in the latter, witness assignments must be compatible, so that a common, more general witness map exists. 
-
-
-
-
 % --------------------------------------------------
 
 \subsection{Proof identity}
@@ -783,31 +659,43 @@ Below right is an interesting intermediate variant: the witness $s$ or $t$ can b
 In this paper we will not attempt to decisively settle the question of proof identity. Rather, we will present two natural and coherent notions of proof net, that represent two extremes. One, \defn{witness nets}, takes the choice of existential witnesses to be essential proof content, and rejects all three equivalences above. The other, \defn{unification nets}, removes any redundancy by rejecting explicit witnessing information altogether; instead, a most general witness for every quantifier is reconstructed by unification.
 
 
+\subsection{Expansion trees}
+
+We observe that the presented solution is not the only one possible. In fact, a reasonable alternative could be the approach of \emph{expansion tree proofs} for higher-order classical logic \cite{Miller}. In this formulation, a formula $\exists x.A$ is interpreted, effectively, as the sum over all its instantiations $A[t/x]$ in the proof; e.g.\ $A[s/x]\+A[t/x]$ for the above proof fragment.
+
+We will use this approach implicitly to define a geometric correctness condition, in Section~\ref{sec:correctness}. The idea is as follows: for an existential formula $\exists x.A$ we collect all witnesses $t$ to $x$ present in the links of the proof, and then interpret $\exists x.A$ as the sum of all $A[t/x]$ to generate the \emph{slices} on which the criterion is based.
+
+The idea is closely related to Herbrand's Theorem \cite{Herbrand} and the \emph{compactness theorem}: semantically, $\exists x.A$ is equivalent to the infinite sum over all $A[t/x]$ for all terms $t$ in the language, or all elements $t$ of a model; for any individual proof, a finite set of terms (or finitely generated set of elements) suffices.
+
+For the definition of proof nets, we did not pursue this direction, and consider the present choice preferable for the following reasons. They retain the original structure of links between formulas, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links.
+
+
+
 %$\seq{\,\exists x.P(x,x,s)\,}{\,\exists y.\dual P(t,y,y)}$ 
 
 % --------------------------------------------------
 
-\subsection{Background and related work}
+%\subsection{Background and related work}
 
-
-\cite{Whitman-1941}
-\cite{Girard-1987}
-\cite{Galmiche-Marion-1995} % ALL proof search
-\cite{Girard-1996}
-\cite{Hu-1999}
-\cite{Galmiche-2000} % ALL connection net (Def 6.11.)
-\cite{Cockett-Seely-2001}
-\cite{Hughes-VanGlabbeek-2005}
-%\cite{Cockett-Santocanale-2009}
-\cite{Heijltjes-2011, Heijltjes-2012}
-\cite{Heijltjes-Hughes-2015}
-
-\cite{Danos-1990}
-\cite{Guerrini-Masini-2001}
-\cite{Guerrini-2011}
-
-\cite{Herbrand-1930}
-\cite{Heijltjes-2010}
+%
+%\cite{Whitman-1941}
+%\cite{Girard-1987}
+%\cite{Galmiche-Marion-1995} % ALL proof search
+%\cite{Girard-1996}
+%\cite{Hu-1999}
+%\cite{Galmiche-2000} % ALL connection net (Def 6.11.)
+%\cite{Cockett-Seely-2001}
+%\cite{Hughes-VanGlabbeek-2005}
+%%\cite{Cockett-Santocanale-2009}
+%\cite{Heijltjes-2011, Heijltjes-2012}
+%\cite{Heijltjes-Hughes-2015}
+%
+%\cite{Danos-1990}
+%\cite{Guerrini-Masini-2001}
+%\cite{Guerrini-2011}
+%
+%\cite{Herbrand-1930}
+%\cite{Heijltjes-2010}
 
 % ==================================================
 
@@ -2309,3 +2197,68 @@ If
 %	     \infer[\Qrr1]{\Seq{\dual Q(x,t)}{Q(x,t)}}{}
 %	}}}}}
 
+%
+%\[
+%\begin{array}{@{}ccc@{}}
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%  \end{tikzpicture}}
+%& \stackrel{\srr+1}\scoal &
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%  \end{tikzpicture}}
+%\\ \\[-5pt] && \downarrow\scriptstyle\srr?,f(x) \\ \\[-5pt]
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
+%  \end{tikzpicture}}
+%& \stackrel{\srr+2}\leftarrow &
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%  \end{tikzpicture}}
+%\\ \\[-5pt] \downarrow\scriptstyle\srr?,t \\ \\[-5pt]  
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+%	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
+%  \end{tikzpicture}}
+%& \stackrel{\srr*}\scoal & 
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
+%  \end{tikzpicture}}
+%\\ \\[-5pt] && \downarrow\scriptstyle\srr?,x \\ \\[-5pt]
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
+%  \end{tikzpicture}}
+%& \stackrel{\srr!}\leftarrow &
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
+%  \end{tikzpicture}}
+%\end{array}
+%\]
