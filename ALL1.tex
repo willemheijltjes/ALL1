@@ -509,9 +509,173 @@ Second, the same existential quantification $\exists x.A$ may occur in different
 ~.
 \]
 
-We advance two solutions, both simple and radical. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. An example is given below left. Second, \defn{unification nets} omit existential witnesses altogether, and reconstruct them by unification.
+We advance two solutions, both simple and radical. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. An example is given below left. Second, \defn{unification nets} omit existential witnesses altogether, and reconstruct them by unification. The example is below right.
+\[
+\begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red]{3,2}
+	\Vlink[blue]{5,4}
+\end{tikzpicture}
+\]
+%
+%\[
+%\begin{array}{@{}ccc@{}}
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%  \end{tikzpicture}}
+%& \stackrel{\srr+1}\scoal &
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%  \end{tikzpicture}}
+%\\ \\[-5pt] && \downarrow\scriptstyle\srr?,f(x) \\ \\[-5pt]
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
+%  \end{tikzpicture}}
+%& \stackrel{\srr+2}\leftarrow &
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%  \end{tikzpicture}}
+%\\ \\[-5pt] \downarrow\scriptstyle\srr?,t \\ \\[-5pt]  
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+%	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
+%  \end{tikzpicture}}
+%& \stackrel{\srr*}\scoal & 
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
+%  \end{tikzpicture}}
+%\\ \\[-5pt] && \downarrow\scriptstyle\srr?,x \\ \\[-5pt]
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
+%  \end{tikzpicture}}
+%& \stackrel{\srr!}\leftarrow &
+%  \vc{
+%  \begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
+%  \end{tikzpicture}}
+%\end{array}
+%\]
+
+\begin{figure}
+\[
+\begin{array}{c}
+\begin{array}{@{}ccc@{}}
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+&&
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
+  \end{tikzpicture}}
+\\ \\[-5pt] \downarrow\scriptstyle{\srr+1} && \uparrow\scriptstyle\srr! \\ \\[-5pt]
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+&&
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
+  \end{tikzpicture}}  
+\\ \\[-5pt] \downarrow\scriptstyle\srr?,f(x) && \uparrow\scriptstyle\srr?,x \\ \\[-5pt]  
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}} 
+&&  
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
+  \end{tikzpicture}}
+\\ \\[-5pt] \downarrow\scriptstyle{\srr+2} && \uparrow\scriptstyle\srr* \\ \\[-5pt]
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
+  \end{tikzpicture}}
+& \stackrel{\srr?,t}\scoal & 
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
+  \end{tikzpicture}}
+\end{array}
+\\ \\[20pt]
+	\color{violet}\infer[\color{black}\Qrr!]{\color{black}\Seq{\forall x.\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+	 \color{violet}\infer[\color{black}\Qrr?,x]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+	  \color{violet}\infer[\color{black}\Qrr*]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))\*Q(x,t)}}{
+	   \color{red}\infer[\color{black}\Qrr?{f(x)}]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))}}{
+	    \color{red}\infer[\color{black}\Qrr+1]{\color{black}\Seq{\dual P(f(x))\+\dual Q(x,f(x))}{P(f(x))}}{
+	     \color{red}\infer[\color{black}\Qrr1]{\color{black}\Seq{\dual P(f(x))}{P(f(x))}}{}
+	   }}&
+	   \color{blue}\infer[\color{black}\Qrr?t]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{Q(x,t)}}{
+	    \color{blue}\infer[\color{black}\Qrr+2]{\color{black}\Seq{\dual P(t)\+\dual Q(x,t)}{Q(x,t)}}{
+	     \color{blue}\infer[\color{black}\Qrr1]{\color{black}\Seq{\dual Q(x,t)}{Q(x,t)}}{}
+	}}}}}
+\end{array}
+\]
+\caption{A coalescence and sequentialization example}
+\label{fig:example}
+\end{figure}
 
 * EXAMPLE *
+\end{document}
 
 \subsection{Expansion trees}
 
@@ -2065,3 +2229,83 @@ By induction on both coalescence sequences. In the base case, $\lambda_\Sigma=\{
 If
 \todo{}
 \end{proof}
+
+
+\[
+\begin{array}{@{}ccccc@{}}
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+& \scoal &
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+& \scoal &
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+\\ \\[-10pt] &&&& \downarrow \\ \\[-10pt]
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
+  \end{tikzpicture}}
+& \leftarrow &
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
+  \end{tikzpicture}}
+& \leftarrow &
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
+  \end{tikzpicture}}
+\\ \\[-10pt] \downarrow &&&& \\ \\[-10pt]
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
+  \end{tikzpicture}}
+& \scoal &
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
+  \end{tikzpicture}}
+\end{array}
+\]
+
+%\vc{\scalebox{0.5}{$
+%	\infer[\Qrr!]{\Seq{\forall x.\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+%	 \infer[\Qrr?,x]{\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+%	  \infer[\Qrr*]{\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))\*Q(x,t)}}{
+%	   \infer[\Qrr?{f(x)}]{\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))}}{
+%	    \infer[\Qrr+1]{\Seq{\dual P(f(x))\+\dual Q(x,f(x))}{P(f(x))}}{
+%	     \infer[\Qrr1]{\Seq{\dual P(f(x))}{P(f(x))}}{}
+%	   }}&
+%	   \infer[\Qrr?t]{\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{Q(x,t)}}{
+%	    \infer[\Qrr+2]{\Seq{\dual P(t)\+\dual Q(x,t)}{Q(x,t)}}{
+%	     \infer[\Qrr1]{\Seq{\dual Q(x,t)}{Q(x,t)}}{}
+%	}}}}}
+
