@@ -410,7 +410,7 @@
 
 \Copyright{Willem B.\ Heijltjes, Dominic J.D.\ Hughes, and Lutz Stra\ss burger}
 
-\subjclass{F.4.1 [Mathematical logic and formal languages]: Mathematical logic--Proof theory}
+\subjclass{F.4.1: Mathematical logic--Proof theory}
 \keywords{Linear logic, First-order logic, Proof nets}
 
 
@@ -428,7 +428,7 @@ We extend proof nets for additive linear logic with first-order quantification.
 We present two versions of our proof nets. One, called witness nets, retains explicit witnessing information to existential quantification. For the other, called unification nets, this information is absent but can be reconstructed through unification. Unification nets embody a main contribution of the paper: the observation that first-order witnessing information can be left implicit, and reconstructed effectively. 
 
 Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. 
-Both notions of proof net are defined through coalescence (the additive version of multiplicative contractibility), and for witness nets a geometric correctness criterion is provided. Both feature a global, one-shot composition operation.
+Both notions of proof net are defined through coalescence (the additive version of multiplicative contractibility), and for witness nets a geometric correctness criterion is provided. Both feature a global composition operation.
 \end{abstract}
 
 
@@ -486,20 +486,22 @@ Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$. Pr
 &	\text{\small associativity}
 \end{array}
 \]
-
+%
 The logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995,Galmiche-2000} and proof net correctness \cite{Heijltjes-Hughes-2015} are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$); proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}; and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
 
-At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and as such is a core part of \emph{session types}~\cite{Honda-1993}.
+At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and is a core part of \emph{session types}~\cite{Honda-1993}.
 
-{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek-2005} for that fragment, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. But its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}, and in the third authors study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the extension of \emph{combinatorial proofs} to first-order classical logic is one motivation for the current presentation.
+{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek-2005} for that fragment, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. But its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}, and in the third authors study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the extension of \emph{combinatorial proofs} to first-order classical logic is one motivation for the% current presentation.
 
-The main content of first-order proof, and the central challenge for first-order additive proof nets, is the \emph{witness assignment} to existential quantifiers. There are two, related obstacles in particular. First, the standard approach to evaluate a formula $\exists x.A$ is by a substitution $A[t/x]$, which destroys the subformula $A$.%
+We present proof nets for first-order additive linear logic (\all1). The main content of first-order proof, and our central challenge, is the \emph{witness assignment} to existential quantifiers. 
+%
+The standard approach to evaluate a formula $\exists x.A$ is by a substitution $A[t/x]$, which destroys the subformula $A$.%
 %
 \footnote{Given $A[t/x]$ and $t$, it is not possible to unambiguously recover $A$, which may contain other occurrences of $t$ not originating in the substitution $[t/x]$.}
 %
-But the current, successful formulation of proof nets, as a set of links over a two-formula sequent, requires subformulas to remain intact.
-
-Second, the same existential quantification $\exists x.A$ may occur in different \emph{slices} (branches of a proof above a product), with different witnesses, as in the below proof. But the formulas--plus--links design has exactly one instance of $\exists x.A$.
+But the current, successful formulation of additive proof nets, as a set of links over a two-formula sequent, requires subformulas to remain intact.
+%
+Moreover, the same quantification $\exists x.A$ may occur in different \emph{slices} (branches of a proof above a product), with different witnesses, as below. But the \emph{formulas + links} design has only one instance of $\exists x.A$.
 \[
 \vc{
 	\infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
@@ -509,8 +511,8 @@ Second, the same existential quantification $\exists x.A$ may occur in different
    }}
 ~.
 \]
-
-We advance two solutions, both simple and radical. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. An example is given below left. Second, \defn{unification nets} omit existential witnesses altogether, and reconstruct them by unification. The example is below right.
+%
+We advance two solutions. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. \defn{Unification nets} omit existential witnesses altogether, and reconstruct them by unification. Respective examples are below.
 \[
 \begin{tikzpicture}[net]
 	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
@@ -526,15 +528,18 @@ We advance two solutions, both simple and radical. \defn{Witness nets} replace t
 	\Vlink[blue]{5,4}
 \end{tikzpicture}
 \]
+%
+Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, the additive counterpart to \defn{contractibility} for multiplicative linear logic~\cite{Danos-1990}. It is a simple graph rewrite relation that pushes links from the leaves towards the roots of a sequent, that is effectively top-down sequentialization (like its multiplicative counterpart~\cite{Guerrini-Masini-2001}). Figure~\ref{fig:main example} illustrates the process for the witness net above. In the example, a link between subformulas $A$ and $B$ carrying a substitution map $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each coalescence step ($\star S$) corresponds to a proof rule ($\star R$), by which the sequence generates the sequent proof.
 
-Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, the additive counterpart to \defn{contractibility} for multiplicative linear logic~\cite{Danos-1990}. It is a simple graph rewrite relation that pushes links from the leaves towards the roots of a sequent, that is effectively top-down sequentialization (like its multiplicative counterpart~\cite{Guerrini-Masini-2001}). Figure~\ref{fig:main example} illustrates the process for the witness net above. In the example, a link between subformulas $A$ and $B$ carrying a substitution map $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each step (labelled $\star S$) corresponds to a proof rule (labelled $\star R$), by which the coalescence sequence generates the sequent proof.
+In unification nets, existential witnesses are reconstructed during coalescence. The initial substitution map assigned to a link on atomic formulas $a=P(s_1,\dots,s_n)$ and $b=\dual P(t_1,\dots,t_n)$ is the most general unifier (\mgu) of $a$ and $\dual b$ (the first step in Figure~\ref{fig:unification example}). Coalescence then proceeds as for witness nets, except when joining two links from different slices with a product step, ($\urr*$) in Figure~\ref{fig:unification example}. Here, witness nets require both links to carry the same substitution map, while for unification nets a common, more general map is generated by unification.
 
-In addition, we will present a geometric correctness condition for witness nets, and define composition as direct, 
+We include the following results for our \all1 proof nets. Witness nets are \emph{canonical} for the permutations of the sequent calculus, and we provide a geometric correctness condition. \emph{Composition} of unification nets (over $\seq AB$ and $\seq{\dual BC}$ into one over $\seq AC$) is remarkedly simple, as the relational composition of both sets of links. For composition of witness nets, in addition the witness assignments of links must be composed, which is done through a simple process of \emph{interaction + hiding} similar to those of game semantics \cite{Mimram-2011}.
 
+A companion paper \cite{Hughes-2018} explores unification nets for first-order \emph{multiplicative} linear logic, reporting drastic complexity improvements and equally straightforward proof net composition.
 
+% Hyland-Ong-2000,Abramsky-Jagadeesan-Malacaria-2000
 
-%In the former, to join two slices the witness assignment must be the same; in the latter, witness assignments must be compatible, so that a common, more general witness map exists. 
-
+% ..................................................
 
 \begin{figure}
 \[
@@ -552,8 +557,8 @@ In addition, we will present a geometric correctness condition for witness nets,
   \begin{tikzpicture}[net]
 	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
 	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
-  \end{tikzpicture}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
+  \end{tikzpicture}} 
 \\ \\[-5pt] \downarrow\scriptstyle{\srr+1} && \uparrow\scriptstyle\srr! \\ \\[-5pt]
   \vc{
   \begin{tikzpicture}[net]
@@ -567,8 +572,8 @@ In addition, we will present a geometric correctness condition for witness nets,
   \begin{tikzpicture}[net]
 	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
 	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
-  \end{tikzpicture}}  
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
+  \end{tikzpicture}} 
 \\ \\[-5pt] \downarrow\scriptstyle\srr?,f(x) && \uparrow\scriptstyle\srr?,x \\ \\[-5pt]  
   \vc{
   \begin{tikzpicture}[net]
@@ -616,18 +621,44 @@ In addition, we will present a geometric correctness condition for witness nets,
 \end{array}
 \]
 \caption{A coalescence and sequentialization example}
-\label{fig:example}
+\label{fig:main example}
 \end{figure}
+
+% ..................................................
+
+\begin{figure}
+\[
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.2]{{\dual P}*{(x,x)}}
+	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
+	\Vlink[red]{[-2]1,1}
+	\Vlink[blue]{[2]1,3}
+\end{tikzpicture}}
+\quad\ucoal\quad
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.2]{{\dual P}*{(x,x)}}
+	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
+	\Vlink[red,l,label={$\scriptstyle[s/y,s/x]$~~}]{[-2]1,1}
+	\Vlink[blue,r,label={~~$\scriptstyle[t/z,t/x]$}]{[2]1,3}
+\end{tikzpicture}}
+\quad\stackrel{\urr*}\ucoal\quad
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.2]{{\dual P}*{(x,x)}}
+	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
+	\Vlink[violet,r,label={~~$\scriptstyle[u/z,u/y,u/x]$}]{1,2}
+\end{tikzpicture}}
+\]
+\caption{Coalescence with unification; $u$ is the smallest term unifying $s$ and $t$} 
+\label{fig:unification example}
+\end{figure}
+
+% ..................................................
 
 % --------------------------------------------------
 
 \subsection{Proof identity}
 
-At the heart of a theory of proof nets is the question of proof identity, of when two proofs should be considered equivalent, and should thus map onto the same proof net. 
-%
-%It can be approached semantically, by asking whether two proofs are identified in every model; 
-%
-The introduction of quantifiers creates an interesting issue: if two proofs differ by an immaterial choice of existential witness, should they be equivalent? For example, to prove the sequent $\seq{\exists x.P(x)}{\exists y.\dual P(y)}$ both quantifiers must receive \emph{the same} witness, as in the following two proofs, but any witness will do.
+At the heart of a theory of proof nets is the question of \emph{proof identity}: when are two proofs equivalent? The answer determines which proofs should map onto the same proof net. The introduction of quantifiers creates an interesting issue: if two proofs differ by an immaterial choice of existential witness, should they be equivalent? For example, to prove the sequent $\seq{\exists x.P(x)}{\exists y.\dual P(y)}$ both quantifiers must receive \emph{the same} witness, as in the following two proofs, but any witness will do.
 \[
 	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(s)}{\dual P(s)}}{}}}
 	\quad
@@ -635,9 +666,7 @@ The introduction of quantifiers creates an interesting issue: if two proofs diff
 	\quad
 	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(t)}{\dual P(t)}}{}}}
 \]
-The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ where $x$ is not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists R$-rule makes the instantiating witness explicit.
-%
-Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists R$-rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
+The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ where $x$ is not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists R$-rule makes the instantiating witness explicit. Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists R$-rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
 \[
 	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
 	\quad
@@ -656,18 +685,17 @@ Below right is an interesting intermediate variant: the witness $s$ or $t$ can b
 	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(t)}{\dual P}}{\infer{\seq P{\dual P}}{}}
 	}}
 \]
-In this paper we will not attempt to decisively settle the question of proof identity. Rather, we will present two natural and coherent notions of proof net, that represent two extremes. One, \defn{witness nets}, takes the choice of existential witnesses to be essential proof content, and rejects all three equivalences above. The other, \defn{unification nets}, removes any redundancy by rejecting explicit witnessing information altogether; instead, a most general witness for every quantifier is reconstructed by unification.
+In this paper we will not attempt to settle the question of proof identity. Rather, our two notions of proof net each represent a natural and coherent perspective, at either end of the spectrum. \emph{Witness nets} make all existential witnesses explicit, including those to vacuous quantifiers, rejecting all three equivalences above. \emph{Unification nets} leave all witnesses implicit, thus identifying all proofs modulo witness assignment, and validating all three equivalences.
 
+\subsection{Monomial nets and Expansion Trees}
 
-\subsection{Expansion trees}
+Proof nets with additives and quantifiers exist as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}. We believe (though have not technically verified) that additive monomial nets include, and could be restricted to, canonical forms. These would be equivalent to the following approach.
 
-We observe that the presented solution is not the only one possible. In fact, a reasonable alternative could be the approach of \emph{expansion tree proofs} for higher-order classical logic \cite{Miller}. In this formulation, a formula $\exists x.A$ is interpreted, effectively, as the sum over all its instantiations $A[t/x]$ in the proof; e.g.\ $A[s/x]\+A[t/x]$ for the above proof fragment.
+\emph{Expansion tree proofs} for classical logic \cite{Miller-1987,Heijltjes-2010} provide another approach to canonicity for first-order quantification. In this formulation, a formula $\exists x.A$ is interpreted as the sum (or classically, \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. The idea can be traced to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices.
 
-We will use this approach implicitly to define a geometric correctness condition, in Section~\ref{sec:correctness}. The idea is as follows: for an existential formula $\exists x.A$ we collect all witnesses $t$ to $x$ present in the links of the proof, and then interpret $\exists x.A$ as the sum of all $A[t/x]$ to generate the \emph{slices} on which the criterion is based.
+We use this approach implicitly for our geometric correctness condition for witness nets (Section~\ref{sec:correctness}), which generalizes the existing \emph{slice-based} criterion for additive proof nets \cite{Hughes-vanGlabbeek-2005}. In constructing the slices over a formula, we interpret $\exists x.A$ by an \emph{expansion} $A[t_1/x]\+\dots\+A[t_n/x]$, where the witnesses $t_1$ through $t_n$ are collected from the substitution maps of the links in the proof net.
 
-The idea is closely related to Herbrand's Theorem \cite{Herbrand} and the \emph{compactness theorem}: semantically, $\exists x.A$ is equivalent to the infinite sum over all $A[t/x]$ for all terms $t$ in the language, or all elements $t$ of a model; for any individual proof, a finite set of terms (or finitely generated set of elements) suffices.
-
-For the definition of proof nets, we did not pursue this direction, and consider the present choice preferable for the following reasons. They retain the original structure of links between formulas, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links.
+For the definition of proof nets, we did not pursue this direction, and consider the present choice preferable. Witness nets and unification nets retain the original structure of \emph{formulas + links}, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links. Finally, available space does not permit a detailed exposition, which we defer to a journal version.
 
 
 
@@ -738,7 +766,7 @@ First-order terms and the formulas of first-order $\all$ are generated by the fo
 \end{array}
 \]
 %
-Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$, as a matter of convenience. The \defn{dual} $\dual A$ of an arbitrary formula $A$ is given by DeMorgan. We use the following notational conventions.
+Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a matter of convenience. The \defn{dual} $\dual A$ of an arbitrary formula $A$ is given by DeMorgan. We use the following notational conventions.
 %
 \[
 \begin{tabular}{@{}lll@{}} 
@@ -751,7 +779,7 @@ Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$, as a m
 \end{tabular}
 \]
 %
-A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart that applies to the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations (Appendix, Figure~\ref{fig:permutations}.
+A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart for the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations (Appendix, Figure~\ref{fig:permutations}.
 
 By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
 \[
@@ -775,7 +803,7 @@ A \defn{pre-net} $\net\lambda AB$ is a sequent $\seq AB$ with a linking $\lambda
 
 \subsection{Witness maps}
 
-A \defn{witness map} $\sigma\colon\var\rightharpoonup\terms$ is a substitution map which assigns terms to variables, given as a (finite) partial function. We define it as $\sigma=[t_1/x_1,\dots,t_n/x_n]$, where its \defn{domain} $\dom\sigma$ is $\{x_1,\dots,x_n\}$. We abbreviate by $y\in\sigma$ that a variable $y$ occurs free in the range of~$\sigma$, i.e., $y\in\fv(t_i)$ for some $i\leq n$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, we write $\sigma\res V$ for the restriction of $\sigma$ to a set of variables $V$, and $\varnothing$ for the \defn{empty} witness map.
+A \defn{witness map} $\sigma\colon\var\rightharpoonup\terms$ is a substitution map which assigns terms to variables, given as a (finite) partial function. We define it as $\sigma=[t_1/x_1,\dots,t_n/x_n]$, where its \defn{domain} $\dom\sigma$ is $\{x_1,\dots,x_n\}$. We abbreviate by $y\in\sigma$ that a variable $y$ occurs free in the range of~$\sigma$, i.e., $y\in\fv(t_i)$ for some $i\leq n$. The map $\sigma\minus x$ is undefined on $x$ and otherwise as $\sigma$, we write $\sigma\res V$ for the restriction of $\sigma$ to a set of variables $V$, and $\varnothing$ for the empty witness map.
 %
 We write $A\sigma$ for the application of the substitutions in $\sigma$ to the formula $A$, and $\pi\sigma$ for its application to the proof $\pi$, where it is applied to each formula in the proof, and to each existential witness $t$ recorded with a rule $\qrr?t$. The \defn{composition} of two maps is written $\sigma\tau$, where $A(\sigma\tau)=(A\sigma)\tau$.
 
@@ -810,7 +838,7 @@ We will assume the following variable naming conventions.
 For a link $\link CD$ over $\seq AB$, if a variable $x$ in the range of $\sigma$ is universally quantified as $\forall x.X$ in $\seq AB$ (an \emph{eigenvariable}), then $C\leq X$ or $D\leq X$.
 
 	\item[Freshness]
-For a link $\link CD$ over $\seq AB$, other variables in the range of $\sigma$ are \emph{fresh}: distinct from any existentially quantified variable in $\seq AB$.
+For a link $\link CD$ over $\seq AB$, other variables in the range of $\sigma$ are \emph{fresh}: distinct from existentially quantified variables in $\seq AB$, and from those of other links.
 \end{description}
 
 % ..................................................
@@ -855,7 +883,8 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 
 A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$: the translation separates a sequent $\seq AB$ into subformulas $A'$, $B'$ of the ultimate conclusion of the proof, and the accumulated existential witnesses $\sigma$.
 %While a sequent proof instantiates existential witnesses immedately into the premise of the existential quantifier rule, for proof nets we delay the substitutions $\sigma$. Hence we need to maintain the separation of the conclusion $\seq AB$ into the substitutions $\sigma$ and the subformulas $A'$ and $B'$ of the conclusion of the proof net.
-\lutz{every referee will ask for an example here.}
+%
+For an example, we refer to Figure~\ref{fig:main example}: the de-sequentialization of the sequent proof is the first pre-net of the coalescence sequence.
 
 We will conclude this section by discussing two further essential notions. First, a witness link $\link ab$ on two atomic formulas $a$ and $b$ is an \defn{axiom} link if $a\sigma=\dual b\sigma$. A witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
 
@@ -906,9 +935,91 @@ Then to recap, we have accumulated the following further notational conventions.
 	$\Pi,\Phi,\Psi$		& $\colon$  & $\lambda\to\proofs$		& proof labellings on a linking $\lambda$
 \end{tabular}
 \]
-
+\begin{definition}
+%
+\renewcommand{\+}{{+}}
+\renewcommand{\*}{{\times}}
+%
+\defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules, that replace one or two links by another in a pre-net $\net{\lambda_\Sigma^\Pi}AB$ (where $B$ has a subformula $D_1\+D_2$, $D_1\*D_2$, $\exists x.D$, and $\forall x.D$ respectively).
+%
+\begin{align*}
+\tag{$\srr+i$}
+	\link C{D_i}^\pi
+	& \scoal
+	\link C{D_1\+D_2}^\psi
+	&& 
+ 	\psi=~\vc{\infer[\Qrr+i]{\seq{C\sigma}{D_1\sigma\,\+\,D_2\sigma}}  {\Prf \pi {C\sigma} {D_i\sigma}}}
+\\ \\[-8pt]
+\tag{$\srr*$}
+	%\{\link C{D_1}^\pi\,,\,\link C{D_2}^\phi\}
+	\left.\begin{array}{@{}l@{\,}}\link C{D_1}^\pi \\ \link C{D_2}^\phi\end{array}\right\}
+	& \scoal
+	\link C{D_1\*D_2}^\psi
+	&&
+	\psi=~\vc{\infer[\Qrr*]{\seq{C\sigma}{D_1\sigma\,\*\,D_2\sigma}}  {
+      \Prf \pi {C\sigma} {D_1\sigma} & \Prf \phi {C\sigma} {D_2\sigma}    
+	}}
+\\ \\[-8pt]
+\tag{$\srr?$}
+	\link CD^\pi
+	& \scoal
+	\link[\sigma\minus x]C{\exists x.D}^\psi
+	\quad{\scriptstyle(x\,\in\,\dom\sigma)}
+	&&
+	\psi=~\vc{\infer[\Qrr?{\sigma(x)}]{\seq{C(\sigma\minus x)}{\exists x.D(\sigma\minus x)}} {\Prf \pi {C\sigma} {D\sigma} }}	
+\\ \\[-8pt]
+\tag{$\srr!$}
+	\link CD^\pi
+	& \scoal
+	\link C{\forall x.D}^\psi
+	\quad{\scriptstyle\phantom{\minus x}(x\,\notin\,\sigma)}
+	&&
+	\psi=~\vc{\infer[\Qrr!]{\seq{C\sigma}{\forall x.D\sigma}} {\Prf \pi {C\sigma} {D\sigma}}}
+\end{align*}
+%
+\defn{Strict coalescence} is the same relation on witness pre-nets, ignoring proof labels, illustrated in Figure~\ref{fig:coalescence}. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$. It \defn{strongly} strict-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
+\end{definition}
 % ..................................................
 
+For an example of coalescence, see Figure~\ref{fig:main example} in the introduction.
+
+% ..................................................
+\begin{definition}
+An \all1 \defn{witness proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$ with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
+\end{definition}
+% ..................................................
+
+We conclude this section by establishing that sequentialization and de-sequentialization for witness nets are inverses.
+
+% ..................................................
+\begin{theorem}
+\label{thm:proof->net->proof}
+For any \all1 proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
+\end{theorem}
+
+\begin{proof}
+It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
+\end{proof}
+% ..................................................
+
+% ..................................................
+\begin{theorem}
+\label{thm:net->proof->net}
+If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$, then $[\pi]$ is $\net{\lambda_\Sigma}AB$. 
+\end{theorem}
+
+\begin{proof}
+By induction on the sequentialization path 
+$\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
+it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
+\[
+	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
+\]
+The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
+\end{proof}
+% ..................................................
+
+% ..................................................
 \begin{figure}
 \[
 \begin{array}{ccc@{\hspace{50pt}}ccc}
@@ -965,103 +1076,47 @@ Then to recap, we have accumulated the following further notational conventions.
 \caption{Coalescence rules}
 \label{fig:coalescence}
 \end{figure}
-
 % ..................................................
 
-\begin{definition}
-%
-\renewcommand{\+}{{+}}
-\renewcommand{\*}{{\times}}
-%
-\defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules, that replace one or two links by another in a pre-net $\net{\lambda_\Sigma^\Pi}AB$ (where $B$ has a subformula $D_1\+D_2$, $D_1\*D_2$, $\exists x.D$, and $\forall x.D$ respectively).
-%
-\begin{align*}
-\tag{$\srr+i$}
-	\link C{D_i}^\pi
-	& \scoal
-	\link C{D_1\+D_2}^\psi
-	&& 
- 	\psi=~\vc{\infer[\Qrr+i]{\seq{C\sigma}{D_1\sigma\,\+\,D_2\sigma}}  {\Prf \pi {C\sigma} {D_i\sigma}}}
-\\ \\[-8pt]
-\tag{$\srr*$}
-	%\{\link C{D_1}^\pi\,,\,\link C{D_2}^\phi\}
-	\left.\begin{array}{@{}l@{\,}}\link C{D_1}^\pi \\ \link C{D_2}^\phi\end{array}\right\}
-	& \scoal
-	\link C{D_1\*D_2}^\psi
-	&&
-	\psi=~\vc{\infer[\Qrr*]{\seq{C\sigma}{D_1\sigma\,\*\,D_2\sigma}}  {
-      \Prf \pi {C\sigma} {D_1\sigma} & \Prf \phi {C\sigma} {D_2\sigma}    
-	}}
-\\ \\[-8pt]
-\tag{$\srr?$}
-	\link CD^\pi
-	& \scoal
-	\link[\sigma\minus x]C{\exists x.D}^\psi
-	\quad{\scriptstyle(x\,\in\,\dom\sigma)}
-	&&
-	\psi=~\vc{\infer[\Qrr?{\sigma(x)}]{\seq{C(\sigma\minus x)}{\exists x.D(\sigma\minus x)}} {\Prf \pi {C\sigma} {D\sigma} }}	
-\\ \\[-8pt]
-\tag{$\srr!$}
-	\link CD^\pi
-	& \scoal
-	\link C{\forall x.D}^\psi
-	\quad{\scriptstyle\phantom{\minus x}(x\,\notin\,\sigma)}
-	&&
-	\psi=~\vc{\infer[\Qrr!]{\seq{C\sigma}{\forall x.D\sigma}} {\Prf \pi {C\sigma} {D\sigma}}}
-\end{align*}
-%
-\defn{Strict coalescence} is the same relation on witness pre-nets, ignoring proof labels, illustrated in Figure~\ref{fig:coalescence}. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$. It \defn{strongly} strict-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
-\end{definition}
 
-% ..................................................
-
-\lutz{I guess there should be an example here.}
-
-\begin{definition}
-An \all1 \defn{witness proof net} or \defn{witness net} is a witness pre-net $\net{\lambda_\Sigma}AB$ with $\lambda_\Sigma$ an axiom linking, that strict-coalesces. It \defn{sequentializes} to a proof $\pi$ if its initial labelling $\net{\lambda_\Sigma^\star}AB$ reduces in $(\scoal)$ to $\net{\{\link[\varnothing]AB^\pi\}}AB$.
-\end{definition}
-
-% ..................................................
-
-\begin{theorem}
-\label{thm:proof->net->proof}
-For any \all1 proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
-\end{theorem}
-
-\begin{proof}
-It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
-\end{proof}
-
-% ..................................................
-
-\begin{theorem}
-\label{thm:net->proof->net}
-If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$, then $[\pi]$ is $\net{\lambda_\Sigma}AB$. 
-\end{theorem}
-
-\begin{proof}
-By induction on the sequentialization path 
-$\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
-it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
-\[
-	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
-\]
-The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
-\end{proof}
 
 % --------------------------------------------------
 
 \section{Geometric correctness}
+\label{sec:correctness}
 
 A \defn{slice} is the fraction of a proof that depends on a given choice of one branch (or projection) on each product formula $A\*B$. Important to additive proof theory is that many operations can be performed on a per-slice basis, such as normalization, or proof net correctness. We will here use slices for the latter purpose.
 
-As in the propositional case, we define a slice of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$. For a witness linking $\lambda_\Sigma$ and variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
+As in the propositional case \cite{Hughes-vanGlabbeek-2005}, we define a \defn{slice} of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$. We extend the propositional criterion in two ways:
+\begin{itemize}
+	\item
+When defining slices, we interpret an existential quantification $\exists x.A$ as a sum over all witnesses $t_i$ to $x$ that occur in the pre-net,  $A[t_1/x]\+\dots\+A[t_n/x]$. This captures the non-permutability of a product rule over distinct existential instantiations, as below left.
+
+	\item
+We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists x.B$ where the \defn{eigenvariable} $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we require the dependency to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
+\end{itemize}
+
+\[
+\vc{
+	\infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.A}B}{\Seq{A[s/x]}B}
+	 &
+	 \infer[\Qrr?t]{\Seq{\exists x.A}C}{\Seq{A[t/x]}C}
+   }}
+\qquad\qquad
+\vc{
+	\infer[\Qrr!]{\Seq{\forall x.A}{\exists y.B}}{
+	 \infer[\Qrr?t]{\Seq A{\exists x.B}}{\Seq AB[t/y]}
+   }}
+   \quad\text{where }x\in\fv(t)
+\]
+
+For a witness linking $\lambda_\Sigma$ and variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
 \[
 	\Sigma(x) = \{~\sigma(x)~\mid~\link CD\in\lambda_\Sigma~\}~.
 \]
 
 % ..................................................
-
 \begin{definition}[Slice]
 Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'\leq A$ and $\sigma'\supseteq\sigma$, given by $S=\{(A,\sigma)\}\cup S'$ where:
 %
@@ -1085,23 +1140,21 @@ A \defn{slice} of a sequent $\seq AB$ is a set of links
 \]
 where $S_A$ is a slice of $A$ and $\varnothing$, and $S_B$ a slice of $B$ and $\varnothing$.  A \defn{slice} of a witness pre-net $\net{\lambda_\Sigma} AB$ is the intersection $\lambda_\Sigma\cap S$ of $\lambda_\Sigma$ with a slice $S$ of $\seq AB$.
 \end{definition}
-
 % ..................................................
 
-As in the propositional case, for correctness we will require that each slice is a singleton. In addition, within each slice we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $x$ of the formula $\forall x.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect. For simplicity we will define the dependency condition on individual links rather than on slices.
-% (since each slice will be a singleton). 
+As in the propositional case, for correctness we will require that each slice is a singleton. We will further define a \defn{dependency} condition to ensure that the order in which quantifiers are instantiated is sound, corresponding to the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus. For simplicity, we define the condition on individual links rather than slices.
 
+%As in the propositional case, for correctness we will require that each slice is a singleton. In addition, within each slice we need to ensure that the order in which quantifiers are instantiated is sound. That is, we need to have an analogue of the \emph{eigenvariable condition} on the $\qrr!$-rule of sequent calculus, that the quantified variable $x$ of the formula $\forall x.A$ does not occur free in the context. We will define a \defn{dependency} condition to this effect. For simplicity we will define the dependency condition on individual links rather than on slices.
+
+\begin{definition}
 In a pre-net $\net{\lambda_\Sigma}AB$, let the \defn{column} of a link $\link CD$ be the set of pairs 
 \[
 	\{~(X,\sigma\res{\ex[A]X})~\mid~C\sub X\sub A~\}\cup\{~(Y,\sigma\res{\ex[B]Y})~\mid~D\sub Y\sub B~\}~,
 \]
-with an order $(\dep)$ given by: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall x.Y$ and $x\in\rho$.
-
-%It is expected that for a more involved logic that includes multiplicative connectives, a dependency condition such as the below one needs to be applied to a slice instead.
-%
+with a \defn{dependency} order $(\dep)$: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall x.Y$ and $x\in\rho$.
+\end{definition}
 
 % ..................................................
-
 \begin{definition}
 A witness pre-net is \defn{correct} if
 \begin{itemize}
@@ -1110,9 +1163,11 @@ A witness pre-net is \defn{correct} if
 \item it is \defn{dependency-correct}: every column is a partial order (i.e.\ is acyclic/antisymmetric).
 \end{itemize}
 \end{definition}
-
 % ..................................................
 
+In the remainder of this section we will establish that the two correctness conditions, by coalescence and by slicing, are equivalent. The geometric condition further gives \emph{strong} coalescence: since it is preserved, no coalescence step yields an incorrect, and thus non-coalescing, pre-net. Finally, canonicity follows by inspecting the critical pairs of sequentialization.
+
+% ..................................................
 \newcounter{lemcorrect}
 \setcounter{lemcorrect}{\thetheorem}
 \begin{lemma}
@@ -1181,33 +1236,33 @@ From left to right is by inspection of the critical pairs of sequentialization (
 
 \section{Composition}
 
-% ..................................................
-\begin{figure}
+In this section we will describe the composition of two witness nets by a global operation. It consists of the relational composition of both linkings, as in the propositional case, where for each pair of links that are being connected, their witness maps are composed. Since each link corresponds to a slice, the operation is effectively first-order composition \cite{Mimram-2011} applied slice-wise. 
+
 \[
-\begin{array}{ccc}
-	\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
-	 \infer[\!\!\scriptstyle{\qrr*}]{\Seq A{B_1\*B_2}\vphantom{\dual B}}{\Prf{\pi_1}A{B_1} & \Prf{\pi_2}A{B_2}}
-	 &&
-	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{B_i}C}
-	}}
-	&\Rightarrow&
-	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf{\pi_i}A{B_i} && \Prf\phi{\dual B_i}C}}
-\\ \\
-	\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
-	 \infer[\!\!\scriptstyle{\qrr?t}]{\Seq A{\exists x.B}}{\Prf\pi A{B[t/x]}}
-	 &&
-	 \infer[\!\!\scriptstyle{\qrr!}]{\Seq {\forall x.\dual B}C}{\Prf\phi{\dual B}C}
-	}}
-	&\Rightarrow&
-	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf\pi A{B[t/x]} && \Prf{\phi[t/x]}{\dual B[t/x]}C}}
-\end{array}
+\begin{tikzpicture}[net]
+	\formula[right,y=1.2]{\exists v.A}
+	\formula[right,y=0]{*{\forall x.\exists y.\forall z.\,}P}
+	\Vlink[red,l,label={$\scriptstyle[v/z,f(x)/y]$~~}]{1,1}
+	\formula[right,y=-.5]{*{\exists x.\forall y.\exists z.\,}{\dual P}}
+	\formula[right,y=-1.7]{C}
+	\Vlink[blue,l,label={$\scriptstyle[t/x,g(y)/z]$~~}]{1,1}
+\end{tikzpicture}
+\qquad
+\Rightarrow
+\qquad
+\begin{tikzpicture}[net]
+	\formula[right,y=1.2]{A}
+	\formula[right,y=-1.7]{C}
+	\Vlink[blue,l,label={$\scriptstyle[t/x,g(y)/z]$~~}]{1,1}
+\end{tikzpicture}
 \]
-\caption{\all1 cut-elimination steps}
-\label{fig:cut-elim}
-\end{figure}
-% ..................................................
+
+
+To compose two links $\link ab$ and $\link[\tau]{\dual b}c$, the substitutions on the  $\sigma_b$ and $\tau\subdual b$
+
+
+\todo{example: $\forall x.\exists y.\forall z.P$ with $[f(x)/y]$ cut against $\exists x.\forall y.\exists z.\dual P$ with $[a/x,g(y)/z]$.}
+
 
 The \defn{domain-preserving composition} of two witness maps $\sigma\dcom\tau$ is the map $(\sigma\tau)\res{\dom\sigma}$.
 
@@ -1237,6 +1292,37 @@ The \defn{composition} $(\net{\lambda_\Sigma^\Pi}AB)\comp(\net{\kappa_\Theta^\Ph
 \end{definition}
 % ..................................................
 
+
+% ..................................................
+\begin{figure}
+\[
+\begin{array}{ccc}
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
+	 \infer[\!\!\scriptstyle{\qrr*}]{\Seq A{B_1\*B_2}\vphantom{\dual B}}{\Prf{\pi_1}A{B_1} & \Prf{\pi_2}A{B_2}}
+	 &&
+	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{B_i}C}
+	}}
+	&\Rightarrow&
+	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf{\pi_i}A{B_i} && \Prf\phi{\dual B_i}C}}
+\\ \\
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
+	 \infer[\!\!\scriptstyle{\qrr?t}]{\Seq A{\exists x.B}}{\Prf\pi A{B[t/x]}}
+	 &&
+	 \infer[\!\!\scriptstyle{\qrr!}]{\Seq {\forall x.\dual B}C}{\Prf\phi{\dual B}C}
+	}}
+	&\Rightarrow&
+	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf\pi A{B[t/x]} && \Prf{\phi[t/x]}{\dual B[t/x]}C}}
+\end{array}
+\]
+\caption{\all1 cut-elimination steps}
+\label{fig:cut-elim}
+\end{figure}
+% ..................................................
+
+
+
 These compositions may omit proof annotations and witness annotations.
 
 The composition of two links is strongly related to composition of strategies in game semantics. There, two strategies on $\seq AB$ and $\seq{\dual B}C$ are composed by \emph{interaction} on the interface of $B$ and $\dual B$, and subsequently \emph{hiding} that interaction. 
@@ -1249,8 +1335,6 @@ The composition of two links is strongly related to composition of strategies in
 \cite{Mimram-2011}
 
 \lutz{why the fixpoint?}
-
-\todo{example: $\forall x.\exists y.\forall z.P$ with $[f(x)/y]$ cut against $\exists x.\forall y.\exists z.\dual P$ with $[a/x,g(y)/z]$.}
 
 
 In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization with composition, and demonstrate how they are resolved.
