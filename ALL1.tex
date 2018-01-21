@@ -54,6 +54,7 @@
 \newcommand\proofs{\textsc{proof}}
 \newcommand\all{\textsc{all}}
 \newcommand\mall{\textsc{mall}}
+\newcommand\mll{\textsc{mll}}
 
 \newcommand\ex[2][{}]{\textsc{ev}_{#1}(#2)}
 
@@ -402,7 +403,7 @@
 \author[3]{Lutz Stra\ss burger}
 \affil[1]{University of Bath, United Kingdom\\
   \texttt{w.b.heijltjes@bath.ac.uk}}
-\affil[2]{UC Berkeley, USA.\\
+\affil[2]{UC Berkeley, USA\\
   \texttt{dominich@theory.stanford.edu}}
 \affil[3]{INRIA \&\ \'Ecole Polytechnique, Palaiseau, France\\
   \texttt{lutz.strassburger@inria.fr}}
@@ -535,7 +536,7 @@ In unification nets, existential witnesses are reconstructed during coalescence.
 
 We include the following results for our \all1 proof nets. Witness nets are \emph{canonical} for the permutations of the sequent calculus, and we provide a geometric correctness condition. \emph{Composition} of unification nets (over $\seq AB$ and $\seq{\dual BC}$ into one over $\seq AC$) is remarkedly simple, as the relational composition of both sets of links. For composition of witness nets, in addition the witness assignments of links must be composed, which is done through a simple process of \emph{interaction + hiding} similar to those of game semantics \cite{Mimram-2011}.
 
-A companion paper \cite{Hughes-2018} explores unification nets for first-order \emph{multiplicative} linear logic, reporting drastic complexity improvements and equally straightforward proof net composition.
+%A companion paper \cite{Hughes-2018} explores unification nets for first-order \emph{multiplicative} linear logic, reporting drastic complexity improvements and equally straightforward proof net composition.
 
 % Hyland-Ong-2000,Abramsky-Jagadeesan-Malacaria-2000
 
@@ -1803,6 +1804,7 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
 
 \subsection*{Acknowledgements}
 
+Dominic would like to thank his host, Wes Holliday, at the UC Berkeley Logic Group.
 
 
 \bibliography{ALL1}
