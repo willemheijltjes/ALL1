@@ -403,7 +403,7 @@
 \author[3]{Lutz Stra\ss burger}
 \affil[1]{University of Bath, United Kingdom\\
   \texttt{w.b.heijltjes@bath.ac.uk}}
-\affil[2]{UC Berkeley, USA\\
+\affil[2]{Logic Group, UC Berkeley, USA\\
   \texttt{dominich@theory.stanford.edu}}
 \affil[3]{INRIA \&\ \'Ecole Polytechnique, Palaiseau, France\\
   \texttt{lutz.strassburger@inria.fr}}
@@ -447,8 +447,8 @@ Both notions of proof net are defined through coalescence (the additive version 
 
 
 Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$. Proofs, over a sequent $A\vdash B$ or, here, $\seq{\dual A}B$, are built from the canonical morphisms: projections, injections, and diagonals. These are captured naturally in \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which consist of a set of \emph{links} between subformulas in $\dual A$ and in $B$, satisfying a simple geometric correctness condition.
-\[
-\begin{array}{c@{\qquad}c@{\qquad}c@{\qquad}c}
+\[\hspace*{9ex}% spacing hack to achieve central horizontal alignment
+\begin{array}{c@{\qquad\qquad}c@{\qquad\qquad}c@{\qquad\qquad}c}
 	\begin{tikzpicture}[net]
 		\formula[y=1.2]{{\dual a}}
 		\formula[y=0]{a\*a}
@@ -503,25 +503,26 @@ The standard approach to evaluate a formula $\exists x.A$ is by a substitution $
 But the current, successful formulation of additive proof nets, as a set of links over a two-formula sequent, requires subformulas to remain intact.
 %
 Moreover, the same quantification $\exists x.A$ may occur in different \emph{slices} (branches of a proof above a product), with different witnesses, as below. But the \emph{formulas + links} design has only one instance of $\exists x.A$.
-\[
+\[\hspace*{26ex}% spacing hack to achieve central horizontal alignment
 \vc{
 	\infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
 	 \infer[\Qrr?s]{\Seq{\exists x.A}B}{\Seq{A[s/x]}B}
 	 &
 	 \infer[\Qrr?t]{\Seq{\exists x.A}C}{\Seq{A[t/x]}C}
    }}
-~.
+%~.
 \]
 %
-We advance two solutions. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. \defn{Unification nets} omit existential witnesses altogether, and reconstruct them by unification. Respective examples are below.
+We advance two solutions. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. \defn{Unification nets}, introduced by the second author in \cite{Hughes-2018} for first-order multiplicative linear logic, omit existential witnesses and reconstruct them by unification; we extend them to \all1. Respective examples are below.
 \[
+\hspace*{8ex}% spacing hack to achieve central horizontal alignment
 \begin{tikzpicture}[net]
 	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
 	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
 	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
 	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
 \end{tikzpicture}
-\qquad\qquad
+\hspace*{16ex}
 \begin{tikzpicture}[net]
 	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
 	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
