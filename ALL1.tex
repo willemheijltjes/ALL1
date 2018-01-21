@@ -781,7 +781,7 @@ Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a ma
 \end{tabular}
 \]
 %
-A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart for the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations (Appendix, Figure~\ref{fig:permutations}.
+A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart for the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations (Appendix~\ref{sec:permutations}, Figure~\ref{fig:permutations}).
 
 By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
 \[
@@ -1231,7 +1231,7 @@ Proof nets are canonical: $[\pi]=[\phi]$ if and only if $\pi\sim\phi$.
 \end{theorem}
 
 \begin{proof}
-From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in the appendix.
+From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in Appendix~\ref{sec:permutations}.
 \end{proof}
 
 
@@ -1246,7 +1246,7 @@ We will describe the composition of two witness nets by a global operation. It c
 
 \setlength\parindent\seriously
 \indent
-Cut-elimination rules for \all1 are given in Figure~\ref{fig:cut-elim}; the needed permutations are in the appendix, Figure~\ref{fig:cut-permutations}.
+Cut-elimination rules for \all1 are given in Figure~\ref{fig:cut-elim}; the needed permutations are in Appendix~\ref{sec:permutations}, Figure~\ref{fig:cut-permutations}.
 }
 \quad
 \begin{tikzpicture}[net]
@@ -1984,7 +1984,7 @@ Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is c
 
 % --------------------------------------------------
 
-\section{Permutations}
+\section{Permutations}\label{sec:permutations}
 
 % ..................................................
 
