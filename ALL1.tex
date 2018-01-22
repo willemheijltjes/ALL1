@@ -223,7 +223,7 @@
    \Seq A{B[t/y]}
 }}}
 \newcommand\permEA{
- \infer[\Qrr?t]{\Seq{\forall x.A}{\forall y.B}}{
+ \infer[\Qrr?t]{\Seq{\forall x.A}{\exists y.B}}{
   \infer[\Qrr!]{\Seq{\forall x.A}{B[t/y]}}{
    \Seq A{B[t/y]}
 }}}
@@ -370,10 +370,10 @@
 }}
 \newcommand\permCX{
  \infer[\Qrr*]{\Seq{{A_1\*A_2}}C}{
-  \infer[\Qrr.]{\Seq {A_i}C}{
+  \infer[\Qrr.]{\Seq {A_1}C}{
    \Seq {A_1}B & \Seq{\dual B}C
   }&
-  \infer[\Qrr.]{\Seq {A_i}C}{
+  \infer[\Qrr.]{\Seq {A_2}C}{
    \Seq {A_2}B & \Seq{\dual B}C
 }}}
 \newcommand\permCD{
@@ -384,11 +384,11 @@
   \Seq{\dual C}D
 }}
 \newcommand\permDC{
- \infer[\Qrr.]{\Seq{{A_1\*A_2}}C}{
-  \Seq A{\dual B}
+ \infer[\Qrr.]{\Seq{A}D}{
+  \Seq A{B}
   &
-  \infer[\Qrr.]{\Seq BD}{
-   \Seq B{\dual C} & \Seq CD
+  \infer[\Qrr.]{\Seq {\dual B}D}{
+   \Seq {\dual B}{C} & \Seq {\dual C}D
 }}}
 
 \makeatother
@@ -402,11 +402,11 @@
 \author[2]{Dominic J.D.\ Hughes}
 \author[3]{Lutz Stra\ss burger}
 \affil[1]{University of Bath, United Kingdom\\
-  \texttt{w.b.heijltjes@bath.ac.uk}}
+  \texttt{http://www.cs.bath.ac.uk/~wbh22/}} %%w.b.heijltjes@bath.ac.uk}}
 \affil[2]{Logic Group, UC Berkeley, USA\\
-  \texttt{dominich@theory.stanford.edu}}
-\affil[3]{INRIA \&\ \'Ecole Polytechnique, Palaiseau, France\\
-  \texttt{lutz.strassburger@inria.fr}}
+  \texttt{http://boole.stanford.edu/~dominic/}} %%dominich@theory.stanford.edu}}
+\affil[3]{Inria Saclay \&\ LIX/\'Ecole Polytechnique, Palaiseau, France\\
+  \texttt{http://www.lix.polytechnique.fr/Labo/Lutz.Strassburger/}} %%lutz.strassburger@inria.fr}}
 \authorrunning{W.B.\ Heijltjes, D.J.D.\ Hughes, and L.\ Stra\ss burger}
 
 \Copyright{Willem B.\ Heijltjes, Dominic J.D.\ Hughes, and Lutz Stra\ss burger}
@@ -610,7 +610,7 @@ We include the following results for our \all1 proof nets. Witness nets are \emp
 \end{array}
 \\ \\[20pt]
 	\color{violet}\infer[\color{black}\Qrr!]{\color{black}\Seq{\forall x.\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
-	 \color{violet}\infer[\color{black}\Qrr?,x]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+	 \color{violet}\infer[\color{black}\Qrr?x]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
 	  \color{violet}\infer[\color{black}\Qrr*]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))\*Q(x,t)}}{
 	   \color{red}\infer[\color{black}\Qrr?{f(x)}]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))}}{
 	    \color{red}\infer[\color{black}\Qrr+1]{\color{black}\Seq{\dual P(f(x))\+\dual Q(x,f(x))}{P(f(x))}}{
@@ -908,7 +908,7 @@ A witness pre-net $\net{\lambda_\Sigma}AB$ has \defn{exact coverage} if for ever
 %
 % ..................................................
 %
-The witness map $\sigma$ of a link $\link CD$ then has two natural components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we will abbreviate by $\sigma_C$ and $\sigma_D$ respectively.
+The witness map $\sigma$ of a link $\link CD$ then has two natural \lutz{disjoint?} components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we will abbreviate by $\sigma_C$ and $\sigma_D$ respectively.
 
 Finally, note that a de-sequentialization $[\pi]$ has exact coverage.
 
@@ -1108,7 +1108,7 @@ We define a \defn{dependency} relation between a universal quantification $\fora
 \qquad\qquad
 \vc{
 	\infer[\Qrr!]{\Seq{\forall x.A}{\exists y.B}}{
-	 \infer[\Qrr?t]{\Seq A{\exists x.B}}{\Seq AB[t/y]}
+	 \infer[\Qrr?t]{\Seq A{\exists y.B}}{\Seq AB[t/y]}
    }}
    \quad\text{where }x\in\fv(t)
 \]
@@ -2031,9 +2031,9 @@ $}
 \\			  &			  & \downperm & \downperm \\
  			  &			  & \permQP   & \permXP
 \\ \\[20pt]
- 			  &			  &			  & \permPX
+ 			  &			  &			  & \permXY
 \\			  &			  &			  & \downperm \\
- 			  &			  &			  & \permXP
+ 			  &			  &			  & \permYX
 \end{array}$}
 \]
 \caption{Cut-free rule permutations}
