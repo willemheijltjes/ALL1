@@ -1,0 +1,49 @@
+We thank the reviewers for their effort and answer them in reverse
+order.
+
+Review 3:
+=========
+
+We agree with everything said in this review.
+
+
+Review 2:
+=========
+
+The reviewer suggest to give a better overview of our results in the
+introduction and also include a conclusion. We are happy to do so in
+the final version of the paper.
+
+
+Review 1:
+=========
+
+The reviewer has several complaints that we all address below.
+
+1) The reviewer thinks that witness nets are not very interesting but
+unification nets are, thus the focus in the paper is unbalanced.
+
+We disagree. Witness nets are essential for developping unification
+nets. the section on unification nets is so short because it builds on
+the theory of witness nets that had to be developped before.
+
+1') witness nets are straightforward extension of usual proof nets.
+
+It only looks that way for you because we did an excellent job
+presenting them. It took us hard work to simplify the presentation in
+such a way that it looks straightforward. If it was that easy as you
+think, then why took it 30 years for someone to come up with the idea?
+
+2) Comparison to multi-focusing.
+
+We are well aware of the work on multi-focusing and its relation to
+expansion trees. First, observe that that work is about classical
+logic and we are here dealing with linear logic, which is a different
+world. And second, we do explain the relation to expansion trees in
+section 1.2. Whether we can obtain a notion of focusing such that
+which identifies the same proofs as our proof nets is a question for
+future research, and you cannot expect an answer to that in this
+paper.
+
+3) Presentation.
+
