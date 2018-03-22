@@ -63,13 +63,12 @@ about the introduction, and that we address below:
   calculus proofs.
 
 - "page 4, define monomial nets": We did not give the definition in
-  this paper (rather we remove the reference to them) because this
-  alone would fill another paper (see [6] and [7]) and is not relevant
-  for us. We mention them because they are the only known version of
-  proof nets of ALL1 so far, and not mentioning them would have made
-  another referee complain. The point here is that witness nets (that
-  you consider straightforward) are already a considerable improvement
-  over monomial nets.
+  this paper because this alone would fill another paper (see [6,7])
+  and is not relevant for us. We mention them because they are the
+  only known version of proof nets for ALL1 so far, and not mentioning
+  them would have made another referee complain. The point here is
+  that witness nets (that you consider straightforward) are already a
+  considerable improvement over monomial nets.
 
 - "... bad way of starting a section": Since when is honesty bad? We
   make a statement about monomial nets that is not really relevant to
