@@ -40,10 +40,9 @@ We are well aware of the work on multi-focusing and its relation to
 expansion trees. First, observe that that work is about classical
 logic and we are here dealing with linear logic, which is a different
 world. And second, we do explain the relation to expansion trees in
-section 1.2. Whether we can obtain a notion of focusing such that
-which identifies the same proofs as our proof nets is a question for
-future research, and you cannot expect an answer to that in this
-paper.
+section 1.2. Whether we can obtain a notion of focusing which
+identifies the same proofs as our proof nets is a question for future
+research, and you cannot expect an answer to that in this paper.
 
 3) The reviewer is not happy with the presentation and justifies this
 with the following points, that are (except for the last one) all
