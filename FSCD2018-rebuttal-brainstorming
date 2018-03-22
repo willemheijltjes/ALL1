@@ -45,5 +45,43 @@ which identifies the same proofs as our proof nets is a question for
 future research, and you cannot expect an answer to that in this
 paper.
 
-3) Presentation.
+3) The reviewer is not happy with the presentation and justifies this
+with the following points, that are (except for the last one) all
+about the introduction, and that we address below:
 
+- "page 2, cryptic examples": as said in the paragraph above, one
+  example is a witness net and the other is a unification net for the
+  same conclusion, and as we say in the text, witness nets carry the
+  substitution explicitely at the links, and the unification nets
+  don't.
+
+- Figure 1: This figure is a running example that we use several times
+  in the paper (p.2,p.6, and p.8) it is in the introduction because
+  here it is mentioned for the first time. It contains a correct
+  witness net (top left) together with a coalescence sequence
+  veryfying its correctness, ending with a single link carrying the
+  empty substitution (top right). Below is a corresponding sequent
+  calculus proofs.
+
+- "page 4, define monomial nets": We did not give the definition in
+  this paper (rather we remove the reference to them) because this
+  alone would fill another paper (see [6] and [7]) and is not relevant
+  for us. We mention them because they are the only known version of
+  proof nets of ALL1 so far, and not mentioning them would have made
+  another referee complain. The point here is that witness nets (that
+  you consider straightforward) are already a considerable improvement
+  over monomial nets.
+
+- "... bad way of starting a section": Since when is honesty bad? We
+  make a statement about monomial nets that is not really relevant to
+  our results but puts them a bit more in perspective.
+
+- "Finally, available space... Rephrase": How should we rephrase a
+  statement about the restriction of space in conference papers? We
+  could, however, remove the sentence.
+
+- "page 13: ... This seems very important. Please elaborate.": This is
+  a factual observation about sequent calculus which is interesting,
+  but not very important. The display below the paragraph explains it
+  very well, and we don't see what there is to elaborate.
+  
