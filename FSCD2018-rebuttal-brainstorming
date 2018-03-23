@@ -83,3 +83,51 @@ about the introduction, and that we address below:
   but not very important. The display below the paragraph explains it
   very well, and we don't see what there is to elaborate.
   
+
+
+
+Review 1:
+=========
+
+We are rather disappointed with this review. It does not give an evaluation of the paper, and merely lists three perceived issues: 1) it asks why the paper does not give more focus to the more interesting of the two presented notions; 2) it complains that a particular reference is not cited; and 3) it suggests that some aspects of the presentation could be improved. These are very minor concerns, and the latter two are easily fixed in a final version. It is mysterious to us why the review would focus on these three marginal points, instead of discussing the content of the paper.
+
+We will consider the review's concerns in turn.
+
+"1) Witness proof nets do not very interesting being a rather straight-forward extension of usual proof nets. [...] Could you please elucidate the conceptual advances of witness nets?"
+
+Witness nets are the first canonical proof nets for first-order additive linear logic (according to the standard semantics, which distinguishes proofs with different existential witnesses). The technical innovations are the following. First, to find the right way of recording witness information to make canonicity possible, which is indeed very subtle. Second, we give a contractibility-based correctness condition for efficient parsing, plus a geometric condition that is semantically revealing, and prove both correct.
+ 
+"Unification nets, on the other hand, are more interesting involving (for the first-time?) unification in proof nets. Unfortunately, the paper focuses much more on Witness nets, instead of the Unification nets. This is rather disappointing."
+
+Unification nets are fully described in the paper. The technical development proceeds naturally via witness nets, which therefore receive more focus.
+
+"2) Comparison with related work and in particular with the paper "A Multi-Focused Proof System Isomorphic to Expansion Proofs" is missing. I believe this is a very related work that has to be better compared with."
+
+In fact, this paper is not immediately relevant. It presents a sequent-calculus version of Expansion Proofs, for first-order classical logic, to which we do compare our work.
+
+"3) Poor presentation: The presentation of the paper lacks better explanations of figure, contains some dubious statements, etc. More details below."
+
+We are confused why the very few (six, to be precise) detailed comments would amount to "poor presentation". We will discuss these in turn.
+
+-- "Respective examples are below -> rather cryptic examples. Please add explanations of why they are useful in anyway; [...] Figure 1 -> I am not sure how to interpret this figure. Please add more explanations!"
+
+This example was chosen to be small but comprehensive. We will add further explanations to the final version.
+
+-- "page 4: monomial nets and weights -> please define!"
+
+Monomial nets are in the literature, as referenced, and are not the subject of the paper.
+
+-- "We believe (though have not technically verified) ... to the following approach. -> Rather bad way of starting a section."
+
+Why?
+
+-- "Finally, available space does not permit a ... a journal version -> Please rephrase."
+
+This seems a completely reasonable sentence to us, and a completely reasonable thing to write in a conference paper.
+
+-- "page 13: Unlike for proof nets, this notion ... from their respective subproofs -> This seems very important. Please elaborate."
+
+This concerns an interesting observation about sequent calculus: the idea of "generality" for witnessing terms, which works well for proof nets, does not behave well under the permutations of sequent proofs. It is not important to the technical development, but we could expand on it in a final version.
+
+
+
