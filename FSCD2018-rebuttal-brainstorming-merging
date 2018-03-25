@@ -2,12 +2,23 @@ We thank the reviewers for their effort.
 
 We agree with everything Reviewer 3 said.
 
-Reviewer 2 suggests a better overview of results in the introduction
+Review 2 suggests a better overview of results in the introduction
 and adding a conclusion; we will do so.
 
+Review 3.
 
-[Hereafter I interleave Lutz and Willem on the related issues]
+[Hereafter I interleave Lutz and Willem on the related issues. I also
+add some Dominic versions here and there.]
 
+[Dominic (riffing on Willem's)] This review does not give an evaluation
+of the paper, and merely lists three perceived issues: 1) it asks why
+the paper does not give more focus to the more interesting of the two
+presented notions; 2) it complains that a particular reference is not
+cited; and 3) it suggests that some aspects of the presentation could
+be improved. These are very minor concerns, and the latter two are
+easily fixed. It is mysterious to us why the review would focus on
+these three marginal points, instead of discussing the content of the
+paper.
 
 [Willems Intro for Reviewer 3] We are rather disappointed with this
 review. It does not give an evaluation of the paper, and merely lists
@@ -19,7 +30,7 @@ very minor concerns, and the latter two are easily fixed in a final
 version. It is mysterious to us why the review would focus on these
 three marginal points, instead of discussing the content of the paper.
 
-[Lutz] Reviewer 3 has several complaints that we all address below.
+[Lutz] Reviewer 3 has several complaints that we address below.
 
 
 
@@ -28,7 +39,7 @@ interesting but unification nets are, thus the focus in the paper is
 unbalanced.
 
 [Lutz] We disagree. Witness nets are essential for developping
-unification nets. the section on unification nets is so short because
+unification nets. The section on unification nets is so short because
 it builds on the theory of witness nets that had to be developped
 before.
 
