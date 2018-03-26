@@ -19,8 +19,8 @@ discussing the content.
 
 
 (1a) "Witness proof nets do not very interesting being a rather
-straight-forward extension of usual proof nets. [...] Could you please
-elucidate the conceptual advances of witness nets?"
+     straight-forward extension of usual proof nets. [...] Could you
+     please elucidate the conceptual advances of witness nets?"
 
 Witness nets are the first canonical proof nets for first-order
 additive linear logic (according to the standard semantics, which
@@ -32,10 +32,10 @@ efficient parsing; and (iii) give a geometric correctness condition
 that is semantically revealing.
 
 
-(1b) "Unification nets, on the other hand, are more interesting involving
-(for the first-time?) unification in proof nets. Unfortunately, the
-paper focuses much more on Witness nets, instead of the Unification
-nets. This is rather disappointing."
+(1b) "Unification nets, on the other hand, are more interesting
+     involving (for the first-time?) unification in proof
+     nets. Unfortunately, the paper focuses much more on Witness nets,
+     instead of the Unification nets. This is rather disappointing."
 
 Unification nets are fully described in the paper. The technical
 development proceeds naturally via witness nets, which therefore
@@ -43,8 +43,8 @@ receive more focus.
 
 
 (2) "Comparison with related work and in particular with the paper 'A
-Multi-Focused Proof-System Isomorphic to Expansion-Proofs' is
-missing."
+    Multi-Focused Proof-System Isomorphic to Expansion-Proofs' is
+    missing."
 
 This paper is not immediately relevant. It presents a sequent-calculus
 version of expansion-proofs, for first-order *classical* logic, to
@@ -52,7 +52,7 @@ which we do compare our work. We can add a reference.
 
 
 (3) "Poor presentation: The presentation of the paper lacks better
-explanations of figure, contains some dubious statements, etc."
+    explanations of figure, contains some dubious statements, etc."
 
 We are confused why the very few (six, to be precise) detailed
 comments, that are mostly about the introduction, would amount to
@@ -60,15 +60,16 @@ comments, that are mostly about the introduction, would amount to
 
 
 (3a) "page 2: Respective examples are below -> rather cryptic
-examples. Please add explanations of why they are useful in anyway;
+     examples. Please add explanations of why they are useful in
+     anyway;
 
 This example, comparing witness nets and unification nets, was chosen
 to be small but comprehensive. We can add further explanations to the
 final version.
 
 
-(3b) "Figure 1 -> I am not sure how to interpret this figure. Please add
-more explanations!"
+(3b) "Figure 1 -> I am not sure how to interpret this figure. Please
+     add more explanations!"
 
 For the same example, we show a coalescence sequence verifying
 correctness and a a sequent calculus proof (see pp.2,6,8 in the
@@ -82,19 +83,20 @@ subject of our paper.
 
 
 (3d) "We believe (though have not technically verified) ... to the
-following approach. -> Rather bad way of starting a section."
+     following approach. -> Rather bad way of starting a section."
 
 We can move this conjecture to the end of the subsection.
 
 
 (3e) "available space does not permit a ... a journal version ->
-Please rephrase."
+     Please rephrase."
 
 This seems a reasonable sentence to write in a conference paper.
 
 
 (3f) "page 13: Unlike for proof nets, this notion ... from their
-respective subproofs -> This seems very important. Please elaborate."
+     respective subproofs -> This seems very important. Please
+     elaborate."
 
 This concerns an interesting observation about sequent calculus: the
 idea of "generality" for witnessing terms, which works well for proof
