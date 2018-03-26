@@ -35,7 +35,7 @@ that is semantically revealing.
 (1b) "Unification nets, on the other hand, are more interesting
      involving (for the first-time?) unification in proof
      nets. Unfortunately, the paper focuses much more on Witness nets,
-     instead of the Unification nets. This is rather disappointing."
+     instead of the Unification nets."
 
 Unification nets are fully described in the paper. The technical
 development proceeds naturally via witness nets, which therefore
@@ -43,12 +43,12 @@ receive more focus.
 
 
 (2) "Comparison with related work and in particular with the paper 'A
-    Multi-Focused Proof-System Isomorphic to Expansion-Proofs' is
+    Multi-Focused Proof System Isomorphic to Expansion Proofs' is
     missing."
 
 This paper is not immediately relevant. It presents a sequent-calculus
-version of expansion-proofs, for first-order *classical* logic, to
-which we do compare our work. We can add a reference.
+version of expansion proofs, for first-order *classical* logic, to
+which we do compare our work. But we can add a reference.
 
 
 (3) "Poor presentation: The presentation of the paper lacks better
