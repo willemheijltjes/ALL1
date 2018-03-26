@@ -28,8 +28,8 @@ distinguishes proofs with different existential witnesses). The
 technical innovations are: (i) to find the right way of recording
 witness information to make canonicity possible, which is indeed very
 subtle; (ii) give a contractibility-based correctness condition for
-efficient parsing; (iii) give a geometric correctness condition
-that is semantically revealing; and (iv) prove both correct.
+efficient parsing; and (iii) give a geometric correctness condition
+that is semantically revealing.
 
 
 (1b) "Unification nets, on the other hand, are more interesting involving
@@ -43,12 +43,12 @@ receive more focus.
 
 
 (2) "Comparison with related work and in particular with the paper 'A
-Multi-Focused Proof System Isomorphic to Expansion Proofs' is
+Multi-Focused Proof-System Isomorphic to Expansion-Proofs' is
 missing."
 
 This paper is not immediately relevant. It presents a sequent-calculus
-version of Expansion Proofs, for first-order *classical* logic, to
-which we do compare our work. We can add a reference, though.
+version of expansion-proofs, for first-order *classical* logic, to
+which we do compare our work. We can add a reference.
 
 
 (3) "Poor presentation: The presentation of the paper lacks better
@@ -71,7 +71,7 @@ final version.
 more explanations!"
 
 For the same example, we show a coalescence sequence verifying
-correctness and a a sequent calculus proof (see pp.2, 6, and 8 in the
+correctness and a a sequent calculus proof (see pp.2,6,8 in the
 paper).
 
 
