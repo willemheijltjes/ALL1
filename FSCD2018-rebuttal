@@ -1,9 +1,12 @@
 We thank the reviewers for their effort.
 
+
 We agree with everything Reviewer 3 said.
+
 
 Review 2 suggests a better overview of results in the introduction
 and adding a conclusion; we will do so.
+
 
 Review 1 does not give an evaluation of the paper, and merely
 perceives three issues: it (1) asks why the paper does not give more
@@ -22,11 +25,11 @@ elucidate the conceptual advances of witness nets?"
 Witness nets are the first canonical proof nets for first-order
 additive linear logic (according to the standard semantics, which
 distinguishes proofs with different existential witnesses). The
-technical innovations are the following. First, to find the right way
-of recording witness information to make canonicity possible, which is
-indeed very subtle. Second, we give a contractibility-based
-correctness condition for efficient parsing, plus a geometric
-condition that is semantically revealing, and prove both correct.
+technical innovations are: (i) to find the right way of recording
+witness information to make canonicity possible, which is indeed very
+subtle; (ii) give a contractibility-based correctness condition for
+efficient parsing; (iii) give a geometric correctness condition
+that is semantically revealing; and (iv) prove both correct.
 
 
 (1b) "Unification nets, on the other hand, are more interesting involving
@@ -44,50 +47,57 @@ Multi-Focused Proof System Isomorphic to Expansion Proofs' is
 missing."
 
 This paper is not immediately relevant. It presents a sequent-calculus
-version of Expansion Proofs, for first-order classical logic, to which
-we do compare our work.
+version of Expansion Proofs, for first-order *classical* logic, to
+which we do compare our work.
 
 
 (3) "Poor presentation: The presentation of the paper lacks better
 explanations of figure, contains some dubious statements, etc."
 
 We are confused why the very few (six, to be precise) detailed
-comments would amount to "poor presentation". We discuss these in
-turn.
+comments, that are mostly about the introduction, would amount to
+"poor presentation". We discuss them below.
 
 
 (3a) "Respective examples are below -> rather cryptic examples. Please
-add explanations of why they are useful in anyway; [...] Figure 1 -> I
-am not sure how to interpret this figure. Please add more
-explanations!"
+add explanations of why they are useful in anyway; 
 
-This example was chosen to be small but comprehensive. We will add
-further explanations to the final version.
+This example, comparing witness nets and unification nets, was chosen
+to be small but comprehensive. We can add further explanations to the
+final version.
 
 
-(3b) "page 4: monomial nets and weights -> please define!"
+(3b) "Figure 1 -> I am not sure how to interpret this figure. Please add
+more explanations!"
+
+For the same example, we show a coalescence sequence verifying
+correctness and a a sequent calculus proof (see pp.2, 6, and 8 in the
+paper).
+
+
+(3c) "page 4: monomial nets and weights -> please define!"
 
 Monomial nets are in the literature, as referenced, and are not the
-subject of the paper.
+subject of our paper.
 
 
-(3c) "We believe (though have not technically verified) ... to the
+(3d) "We believe (though have not technically verified) ... to the
 following approach. -> Rather bad way of starting a section."
 
-We can move this conjecture to the end of the section.
+We can move this conjecture to the end of the subsection.
 
 
-(3d) "available space does not permit a ... a journal version ->
+(3e) "available space does not permit a ... a journal version ->
 Please rephrase."
 
 This seems a reasonable sentence to write in a conference paper.
 
 
-(3e) "page 13: Unlike for proof nets, this notion ... from their
+(3f) "page 13: Unlike for proof nets, this notion ... from their
 respective subproofs -> This seems very important. Please elaborate."
 
 This concerns an interesting observation about sequent calculus: the
 idea of "generality" for witnessing terms, which works well for proof
 nets, does not behave well under the permutations of sequent
-proofs. It is not important to the technical development, but we could
-expand on it.
+proofs. It is not important to the technical development of our paper,
+but we could expand on it.
