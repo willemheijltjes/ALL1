@@ -6,16 +6,16 @@ Review 2 suggests a better overview of results in the introduction
 and adding a conclusion; we will do so.
 
 Review 3 does not give an evaluation of the paper, and merely
-perceives three issues: it 1) asks why the paper does not give more
-focus to the more interesting of the two presented notions, 2)
-requests an unrelated reference be cited, and 3) suggests some aspects
+perceives three issues: it (1) asks why the paper does not give more
+focus to the more interesting of the two presented notions, (2)
+requests a reference be cited, and (3) suggests some aspects
 of the presentation could be improved. These are very minor concerns,
 and the latter two are easily fixed. It is mysterious to us why the
 review would focus on these three marginal points, instead of
 discussing the content.
 
 
-1) "Witness proof nets do not very interesting being a rather
+(1a) "Witness proof nets do not very interesting being a rather
 straight-forward extension of usual proof nets. [...] Could you please
 elucidate the conceptual advances of witness nets?"
 
@@ -29,7 +29,7 @@ correctness condition for efficient parsing, plus a geometric
 condition that is semantically revealing, and prove both correct.
 
 
-"Unification nets, on the other hand, are more interesting involving
+(1b) "Unification nets, on the other hand, are more interesting involving
 (for the first-time?) unification in proof nets. Unfortunately, the
 paper focuses much more on Witness nets, instead of the Unification
 nets. This is rather disappointing."
@@ -39,8 +39,7 @@ development proceeds naturally via witness nets, which therefore
 receive more focus.
 
 
-
-2) "Comparison with related work and in particular with the paper 'A
+(2) "Comparison with related work and in particular with the paper 'A
 Multi-Focused Proof System Isomorphic to Expansion Proofs' is
 missing."
 
@@ -49,15 +48,15 @@ version of Expansion Proofs, for first-order classical logic, to which
 we do compare our work.
 
 
-
-3) "Poor presentation: The presentation of the paper lacks better
+(3) "Poor presentation: The presentation of the paper lacks better
 explanations of figure, contains some dubious statements, etc."
 
 We are confused why the very few (six, to be precise) detailed
 comments would amount to "poor presentation". We discuss these in
 turn.
 
--- "Respective examples are below -> rather cryptic examples. Please
+
+(3a) "Respective examples are below -> rather cryptic examples. Please
 add explanations of why they are useful in anyway; [...] Figure 1 -> I
 am not sure how to interpret this figure. Please add more
 explanations!"
@@ -66,27 +65,26 @@ This example was chosen to be small but comprehensive. We will add
 further explanations to the final version.
 
 
--- "page 4: monomial nets and weights -> please define!"
+(3b) "page 4: monomial nets and weights -> please define!"
 
 Monomial nets are in the literature, as referenced, and are not the
 subject of the paper.
 
 
-
--- "We believe (though have not technically verified) ... to the
+(3c) "We believe (though have not technically verified) ... to the
 following approach. -> Rather bad way of starting a section."
 
 We can move this conjecture to the end of the section.
 
 
+(3d) "available space does not permit a ... a journal version ->
+Please rephrase."
 
--- "available space does not permit a ... a journal version -> Please rephrase."
-
-This seems a completely reasonable sentence to write in a conference paper.
+This seems a reasonable sentence to write in a conference paper.
 
 
-
--- "page 13: Unlike for proof nets, this notion ... from their respective subproofs -> This seems very important. Please elaborate."
+(3e) "page 13: Unlike for proof nets, this notion ... from their
+respective subproofs -> This seems very important. Please elaborate."
 
 This concerns an interesting observation about sequent calculus: the
 idea of "generality" for witnessing terms, which works well for proof
