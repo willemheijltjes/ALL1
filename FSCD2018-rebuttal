@@ -5,8 +5,6 @@ We agree with everything Reviewer 3 said.
 Review 2 suggests a better overview of results in the introduction
 and adding a conclusion; we will do so.
 
-Review 3.
-
 Review 3 does not give an evaluation of the paper, and merely
 perceives three issues: it 1) asks why the paper does not give more
 focus to the more interesting of the two presented notions, 2)
@@ -64,73 +62,34 @@ add explanations of why they are useful in anyway; [...] Figure 1 -> I
 am not sure how to interpret this figure. Please add more
 explanations!"
 
-
-[L] - "page 2, cryptic examples": as said in the paragraph above, one
-  example is a witness net and the other is a unification net for the
-  same conclusion, and as we say in the text, witness nets carry the
-  substitution explicitely at the links, and the unification nets
-  don't.
-
-
-[W] This example was chosen to be small but comprehensive. We will add
+This example was chosen to be small but comprehensive. We will add
 further explanations to the final version.
 
-[L] - Figure 1: This figure is a running example that we use several
-  times in the paper (p.2,p.6, and p.8) it is in the introduction
-  because here it is mentioned for the first time. It contains a
-  correct witness net (top left) together with a coalescence sequence
-  veryfying its correctness, ending with a single link carrying the
-  empty substitution (top right). Below is a corresponding sequent
-  calculus proofs.
+
+-- "page 4: monomial nets and weights -> please define!"
+
+Monomial nets are in the literature, as referenced, and are not the
+subject of the paper.
 
 
 
-[W] -- "page 4: monomial nets and weights -> please define!"
-
-[W] Monomial nets are in the literature, as referenced, and are not
-the subject of the paper.
-
-[L] - "page 4, define monomial nets": We did not give the definition
-  in this paper because this alone would fill another paper (see
-  [6,7]) and is not relevant for us. We mention them because they are
-  the only known version of proof nets for ALL1 so far, and not
-  mentioning them would have made another referee complain. The point
-  here is that witness nets (that you consider straightforward) are
-  already a considerable improvement over monomial nets.
-
-
-
-
-[W] -- "We believe (though have not technically verified) ... to the
+-- "We believe (though have not technically verified) ... to the
 following approach. -> Rather bad way of starting a section."
 
-[W] Why?
-
-[L] - "... bad way of starting a section": Since when is honesty bad?
-  We make a statement about monomial nets that is not really relevant
-  to our results but puts them a bit more in perspective.
+We can move this conjecture to the end of the section.
 
 
 
-[W] -- "Finally, available space does not permit a ... a journal version -> Please rephrase."
+-- "available space does not permit a ... a journal version -> Please rephrase."
 
-[W] This seems a completely reasonable sentence to us, and a completely reasonable thing to write in a conference paper.
-
-[L] - "Finally, available space... Rephrase": How should we rephrase a
-  statement about the restriction of space in conference papers? We
-  could, however, remove the sentence.
+This seems a completely reasonable sentence to write in a conference paper.
 
 
 
-[W] -- "page 13: Unlike for proof nets, this notion ... from their respective subproofs -> This seems very important. Please elaborate."
+-- "page 13: Unlike for proof nets, this notion ... from their respective subproofs -> This seems very important. Please elaborate."
 
-[W] This concerns an interesting observation about sequent calculus:
-the idea of "generality" for witnessing terms, which works well for
-proof nets, does not behave well under the permutations of sequent
+This concerns an interesting observation about sequent calculus: the
+idea of "generality" for witnessing terms, which works well for proof
+nets, does not behave well under the permutations of sequent
 proofs. It is not important to the technical development, but we could
-expand on it in a final version.
-
-[L] - "page 13: ... This seems very important. Please elaborate.":
-  This is a factual observation about sequent calculus which is
-  interesting, but not very important. The display below the paragraph
-  explains it very well, and we don't see what there is to elaborate.
+expand on it.
