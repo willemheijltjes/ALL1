@@ -1,4 +1,4 @@
-\documentclass[UKenglish]{lipics-v2016}
+\documentclass[UKenglish]{lipics-v2018}
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{latexsym}
@@ -41,6 +41,13 @@
 \newcommand\zeroright[1]{\makebox[0pt][l]{$#1$}}
 
 \newcommand\floor[1]{\lfloor#1\rfloor}
+
+
+% ===== Check mark symbols
+\usepackage{pifont}
+	\newcommand\xmark{{\red\ding{54}}}
+	\newcommand\vmark{{\color{green}\ding{51}}}
+
 
 % ===== Sets
 
@@ -398,21 +405,31 @@
 \title{Proof nets for first-order additive linear logic}
 %\titlerunning{Proof nets for ALL1}
 
-\author[1]{Willem B.\ Heijltjes}
-\author[2]{Dominic J.D.\ Hughes}
-\author[3]{Lutz Stra\ss burger}
-\affil[1]{University of Bath, United Kingdom\\
-  \url{http://willem.heijltj.es/}} %%\texttt{w.b.heijltjes@bath.ac.uk}}
-\affil[2]{Logic Group, UC Berkeley, USA\\
-  \url{http://boole.stanford.edu/~dominic/}} %%\texttt{dominich@theory.stanford.edu}}
-\affil[3]{Inria Saclay \&\ LIX/\'Ecole Polytechnique, Palaiseau, France\\
-  \url{http://www.lix.polytechnique.fr/Labo/Lutz.Strassburger/}} %%\texttt{lutz.strassburger@inria.fr}}
+\author
+ {Willem B.\ Heijltjes}
+ {University of Bath, United Kingdom}
+ {http://willem.heijltj.es/} %{w.b.heijltjes@bath.ac.uk}
+ {}
+ {}
+\author
+ {Dominic J.D.\ Hughes}
+ {Logic Group, UC Berkeley, USA}
+ {http://boole.stanford.edu/\textasciitilde dominic/} %{dominich@theory.stanford.edu}
+ {}
+ {} 
+\author
+ {Lutz Stra\ss burger}
+ {Inria Saclay \&\ LIX/\'Ecole Polytechnique, Palaiseau, France}
+ {http://www.lix.polytechnique.fr/Labo/Lutz.Strassburger/} %{lutz.strassburger@inria.fr}
+ {}
+ {}
+
 \authorrunning{W.B.\ Heijltjes, D.J.D.\ Hughes, and L.\ Stra\ss burger}
 
 \Copyright{Willem B.\ Heijltjes, Dominic J.D.\ Hughes, and Lutz Stra\ss burger}
 
 \subjclass{F.4.1: Mathematical logic--Proof theory}
-\keywords{Linear logic, First-order logic, Proof nets}
+\keywords{Linear logic, First-order logic, Proof nets, Herbrand's Theorem}
 
 
 
@@ -424,12 +441,11 @@
 \maketitle
 
 \begin{abstract}
-We extend proof nets for additive linear logic with first-order quantification. 
+We present canonical proof nets for first-order additive linear logic, the fragment of linear logic with sum, product, and first-order universal and existential quantification. 
 
-We present two versions of our proof nets. One, witness nets, retains explicit witnessing information to existential quantification. For the other, unification nets, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed.
+We present two versions of our proof nets. One, witness nets, retains explicit witnessing information to existential quantification. For the other, unification nets, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed. 
 
-Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. 
-Both notions of proof net are defined through coalescence (the additive version of multiplicative contractibility), and for witness nets a geometric correctness criterion is provided. Both feature a global composition operation.
+Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. Both notions of proof net are defined through coalescence, the additive version of multiplicative contractibility, and for witness nets a geometric correctness criterion is provided. Both feature a global composition operation.
 \end{abstract}
 
 
@@ -437,40 +453,44 @@ Both notions of proof net are defined through coalescence (the additive version 
 
 \section{Introduction}
 
-%Proof nets aim to be canonical representations of proofs. As graphs, they abstract away from the rule commutations of the sequent calculus. 
+Additive linear logic $(\all)$ is the logic of product $(\*)$, sum $(\+)$, and their canonical morphisms: projections, injections, and diagonals. It is naturally captured in \defn{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which describe a morphism $A\to B$ by a sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between the propositional atoms of $\dual A$ and those of $B$.
 %
-%In the study of \emph{proof nets} \cite{Girard-1987}, canonical graphical representations of proofs, the additive fragment of linear logic provides several interesting challenges. At the propositional level, the challenge is to capture the merging of the contexts $\Gamma$ in the additive product rule:
-%\[
-%	\vc{\infer[\Qrr*]{\seq\Gamma{A\*B}}{\seq\Gamma A & \seq\Gamma B}}~.
-%\]
-%One approach, perfect for the multiplicative fragment, is to create proof nets from sequent proofs by separating rules from their context: each sequent rule becomes a node in the graph, connected only to the primary formulas of the rule, in this case $A$, $B$, and $A\*B$. The benefit is a direct interpretation from sequent calculus; 
-
-
-Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$. Proofs, over a sequent $A\vdash B$ or, here, $\seq{\dual A}B$, are built from the canonical morphisms: projections, injections, and diagonals. These are captured naturally in \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which consist of a set of \emph{links} between subformulas in $\dual A$ and in $B$, satisfying a simple geometric correctness condition.
-\[\hspace*{9ex}% spacing hack to achieve central horizontal alignment
-\begin{array}{c@{\qquad\qquad}c@{\qquad\qquad}c@{\qquad\qquad}c}
+Additive proof nets are \defn{canonical}: they factor out the permutations of sequent calculus, and correspond 1--1 to morphisms of the free category.
+%
+%Additive linear logic $(\all)$ is the logic of product $(\*)$, sum $(\+)$, and their canonical morphisms: projections, injections, and diagonals. It is naturally captured in \defn{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which describe a morphism $A\mathbin{\shortrightarrow}B$ by a sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between subformulas in $\dual A$ and in $B$. Proof nets are \defn{canonical}, factoring out the permutations of sequent calculus.
+%
+%Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$. Proofs, over a two-sided sequent $A\vdash B$ or, here, a one-sided sequent $\seq{\dual A}B$, are built from the canonical morphisms: projections, injections, and diagonals. These are captured naturally in \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which consist of a set of \emph{links} between subformulas in $\dual A$ and in $B$, as illustrated below left.
+\[
+%\hspace*{9ex}% spacing hack to achieve central horizontal alignment
+\hspace*{-\parindent}%
+\hspace*{\fill}%
+% Behold my better spacing hack to achieve central horizontal alignment :)
+\begin{array}{c@{\qquad\qquad}c}
 	\begin{tikzpicture}[net]
-		\formula[y=1.2]{{\dual a}}
+		\formula[y=1]{{\dual a}}
 		\formula[y=0]{a\*a}
 		\Vlink[red]{[-2]1,1}
 		\Vlink[red]{[2]1,3}
 	\end{tikzpicture}
 &
 	\begin{tikzpicture}[net]
-		\formula[y=1.2]{{\dual a}}
+		\formula[y=1]{{\dual a}}
 		\formula[y=0]{a\+b}
 		\Vlink[red]{1,1}
 	\end{tikzpicture}
-&
+\\
+	\text{\small diagonal}
+&	\text{\small injection}	
+\\ \\ \\[-10pt]
 	\begin{tikzpicture}[net]
-		\formula[y=1.2]{{\dual a}\+{\dual b}}
+		\formula[y=1]{{\dual a}\+{\dual b}}
 		\formula[y=0]{b\*a}
 		\Vlink[red]{1,3}
 		\Vlink[red]{3,1}
 	\end{tikzpicture}
 &
 	\begin{tikzpicture}[net]
-		\formula[y=1.2]{*{\phantom(}{\dual a}*{\phantom)}
+		\formula[y=1]{*{\phantom(}{\dual a}*{\phantom)}
 		 {{\+}}*({\dual b}*{\phantom)}
 		 {{\+}}*{\phantom(}{\dual c}*)}
 		\formula[y=0]{*(a*{\phantom)}
@@ -481,61 +501,242 @@ Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$. Pr
 		\Vlink[red]{5,5}
 	\end{tikzpicture}
 \\
-	\text{\small diagonal}
-&	\text{\small injection}
-&	\text{\small symmetry}
+	\text{\small symmetry}
 &	\text{\small associativity}
 \end{array}
+\qquad\qquad\qquad
+\begin{array}{c}
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=1.5]{a*\**(b*\+b*)}
+            \Vlink[red]{1,2}
+            \Vlink[red]{2,1}
+        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+        \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+\quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}
+\\ \\[-5pt]
+	\text{\small composition}
+\end{array}
+\hfill
+\]
+\defn{Composition}, of proof nets over $\seq{\dual A}B$ and $\seq{\dual B}C$ to one over $\seq{\dual A}C$, is by the relational composition of their linkings along the dual formulas $B$ and $\dual B$, as illustrated above right.
+
+Additive proof nets have two natural correctness criteria. \defn{Coalescence} \cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, a counterpart to multiplicative \emph{contractibility} \cite{Danos-1990}, provides efficient correctness and sequentialization via local rewriting: it asks that the steps below left result in a single link, connecting both formulas. \defn{Slicing} \cite{Hughes-vanGlabbeek-2005} is a global, geometric criterion: it asks that each \defn{slice}, a choice to remove one subformula of each product along with all connected links, retains a single link.
+%
+\[
+\hspace*{-\parindent}
+\hspace*{\fill}
+\begin{array}{c@{\qquad\qquad\qquad}c}
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\*C}
+		\Vlink[red]{[-2]1,1}
+		\Vlink[red]{[2]1,3}
+	\end{tikzpicture}}
+~\scoal~
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\*C}
+		\Vlink[red]{1,2}
+	\end{tikzpicture}}
+\qquad\quad
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\+C}
+		\Vlink[red]{1,1}
+	\end{tikzpicture}}
+~\scoal~
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\+C}
+		\Vlink[red]{1,2}
+	\end{tikzpicture}}
+&	
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\begin{scope}[black!40]
+		\formula[y=0]{B\*C}
+		\Vlink[red]{[-1]1,1}
+		\Vlink{[1]1,3}
+		\end{scope}
+		\formula[y=0]{B{\phantom{{}\*{}}}{\phantom C}}
+	\end{tikzpicture}}
+\qquad
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\begin{scope}[black!40]
+		\formula[y=0]{B\*C}
+		\Vlink{[-1]1,1}
+		\Vlink[red]{[1]1,3}
+		\end{scope}
+		\formula[y=0]{{\phantom B}{\phantom{{}\*{}}}C}
+	\end{tikzpicture}}
+\\
+	\text{\small coalescence}
+&	\text{\small slicing}
+\end{array}	
+\hfill
+\]
+
+%In this paper we extend additive proof nets with first-order quantification. 
+In this paper we present proof nets for first-order additive linear logic (\all1).
+Our central challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers, into additive proof nets, while retaining their features and tools: canonicity, direct (relational) composition, coalescence, and slicing.
+
+In a standard approach, as in the sequent calculus rules below left, a witness to $\exists x.B$ is assigned by an immediate substitution $B[t/x]$. To assign different witnesses in different slices, the subformula may be duplicated first, giving $B[s/x]$ and $B[t/x]$, as below right.
+%
+\[
+\hspace*{\fill}
+\hspace*{-\parindent}
+	\vc{\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}}
+\qquad
+	\vc{\infer[\Qrr!]{\seq A{\forall x.B}}{\seq AB}}
+\qquad\qquad
+\vc{
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
+   }}
+\hfill
 \]
 %
-The logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995,Galmiche-2000} and proof net correctness \cite{Heijltjes-Hughes-2015} are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$); proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}; and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
+This is incompatible with a \defn{sequent + links} proof net design, where the conclusion sequent remains intact, and a subformula $B$ cannot be the subject of substitution or duplication. Instead, we propose two alternative treatments of witnessing terms, embodied in two notions of proof net: \defn{witness nets} and \defn{unification nets}.
+% irrecoverably alters the subformula $B$ (since $B[t/x]$ may contain other occurrences of $t$, it is not possible to recover $B$)
+%
+Our solutions are based on the second author's recent \defn{unification nets} for first-order multiplicative linear logic \cite{Hughes-2018}. Their main feature is to omit existential witnesses altogether, and reconstruct them by unification.
+%
+\[
+\hspace*{\fill}
+\hspace*{-\parindent}
+\begin{array}{c@{\qquad\qquad\qquad}c}
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1.2]{\exists x.{\dual P}(x)}
+		\formula[y=0]{P(s)\*P(t)}
+		\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
+		\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1.2]{\exists x.{\dual P}(x)}
+		\formula[y=0]{P(s)\*P(t)}
+		\Vlink[red]{[-3]4,1}
+		\Vlink[red]{[1]4,6}
+	\end{tikzpicture}}
+\\ \\[-5pt]
+	\text{\small a witness net}
+&	\text{\small a unification net}
+\end{array}
+\hfill
+\]
+
+\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example above left shows the net corresponding to the sequent proof above. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of a propositional atom.) Witness nets are canonical for \all1 sequent calculus permutations, and we give both correctness criteria,  coalescence and slicing. Composition is direct, where the witness assignments of links must be composed, which is done through a simple process of \emph{interaction + hiding} similar to that of game semantics \cite{Mimram-2011}.
+
+\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition remains by relational composition, and correctness is by coalescence, during which process witnesses are reconstructed by first-order unification.
+
+Coalescence~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, like multiplicative contractibility, \cite{Danos-1990,Guerrini-Masini-2001} is effectively top-down sequentialization. Figure~\ref{fig:main example} illustrates the process. In the example, a link between subformulas $A$ and $B$ carrying a substitution map $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each coalescence step ($\star S$) corresponds to a proof rule ($\star R$), by which the coalescence sequence generates the sequent proof from the axioms down to the conclusion.
+
+
+
+In unification nets, existential witnesses are reconstructed during coalescence. The initial substitution map assigned to a link on atomic formulas $a=P(s_1,\dots,s_n)$ and $b=\dual P(t_1,\dots,t_n)$ is the most general unifier (\mgu) of $a$ and $\dual b$ (the first step in Figure~\ref{fig:unification example}). Coalescence then proceeds as for witness nets, except when joining two links from different slices with a product step, ($\urr*$) in Figure~\ref{fig:unification example}. Here, witness nets require both links to carry the same substitution map, while for unification nets a common, more general map is generated by unification.
+
+
+%As illustrated by Herbrand's Theorem \cite{Herbrand-1930},
+
+
+
+%\[
+%\hspace*{\fill}%
+%\hspace*{-\parindent}%\hspace*{8ex}% spacing hack to achieve central horizontal alignment
+%\begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+%	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+%\end{tikzpicture}
+%\hspace*{16ex}
+%\begin{tikzpicture}[net]
+%	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+%	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+%	\Vlink[red]{3,2}
+%	\Vlink[blue]{5,4}
+%\end{tikzpicture}
+%\hfill
+%\]
+%
+%Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, the additive counterpart to \defn{contractibility} for multiplicative linear logic~\cite{Danos-1990}. It is a simple graph rewrite relation that pushes links from the leaves towards the roots of a sequent,
+
+
+%We include the following results for our \all1 proof nets. Witness nets are \emph{canonical} for the permutations of the sequent calculus, and we provide a geometric correctness condition. \emph{Composition} of unification nets (over $\seq AB$ and $\seq{\dual BC}$ into one over $\seq AC$) is remarkedly simple, as the relational composition of both sets of links. For composition of witness nets, in addition 
+%\end{document}
+
+\subsection{Background}
+
+Additive linear logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995,Galmiche-2000} and proof net correctness \cite{Heijltjes-Hughes-2015} are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$); proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}; and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
 
 At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and is a core part of \emph{session types}~\cite{Honda-1993}.
 
 {\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek-2005} for {\mall}, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. Its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}, and in the third author's study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the cut elimination of first-order \emph{combinatorial proofs} is one motivation for the current presentation.
 
-We present proof nets for first-order additive linear logic (\all1). The main content of first-order proof, and our central challenge, is the \emph{witness assignment} to existential quantifiers. 
-%
-The standard approach to evaluate a formula $\exists x.A$ is by a substitution $A[t/x]$, which destroys the subformula $A$.%
-%
-\footnote{Given $A[t/x]$ and $t$, it is not possible to unambiguously recover $A$, which may contain other occurrences of $t$ not originating in the substitution $[t/x]$.}
-%
-But the current, successful formulation of additive proof nets, as a set of links over a two-formula sequent, requires subformulas to remain intact.
-%
-Moreover, the same quantification $\exists x.A$ may occur in different \emph{slices} (branches of a proof above a product), with different witnesses, as below. But the \emph{formulas + links} design has only one instance of $\exists x.A$.
-\[\hspace*{26ex}% spacing hack to achieve central horizontal alignment
-\vc{
-	\infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
-	 \infer[\Qrr?s]{\Seq{\exists x.A}B}{\Seq{A[s/x]}B}
-	 &
-	 \infer[\Qrr?t]{\Seq{\exists x.A}C}{\Seq{A[t/x]}C}
-   }}
-%~.
-\]
-%
-We advance two solutions. \defn{Witness nets} replace the \emph{implicit} substitutions of sequent proofs with \emph{explicit} substitutions, recorded at each link. \defn{Unification nets}, introduced by the second author in \cite{Hughes-2018} for first-order multiplicative linear logic, omit existential witnesses and reconstruct them by unification; we extend them to \all1. Respective examples are below.
-\[
-\hspace*{8ex}% spacing hack to achieve central horizontal alignment
-\begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
-	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-\end{tikzpicture}
-\hspace*{16ex}
-\begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red]{3,2}
-	\Vlink[blue]{5,4}
-\end{tikzpicture}
-\]
-%
-Correctness and sequentialization for \all1 proof nets will be through \defn{coalescence}~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, the additive counterpart to \defn{contractibility} for multiplicative linear logic~\cite{Danos-1990}. It is a simple graph rewrite relation that pushes links from the leaves towards the roots of a sequent, that is effectively top-down sequentialization (like its multiplicative counterpart~\cite{Guerrini-Masini-2001}). Figure~\ref{fig:main example} illustrates the process for the witness net above. In the example, a link between subformulas $A$ and $B$ carrying a substitution map $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each coalescence step ($\star S$) corresponds to a proof rule ($\star R$), by which the sequence generates the sequent proof.
 
-In unification nets, existential witnesses are reconstructed during coalescence. The initial substitution map assigned to a link on atomic formulas $a=P(s_1,\dots,s_n)$ and $b=\dual P(t_1,\dots,t_n)$ is the most general unifier (\mgu) of $a$ and $\dual b$ (the first step in Figure~\ref{fig:unification example}). Coalescence then proceeds as for witness nets, except when joining two links from different slices with a product step, ($\urr*$) in Figure~\ref{fig:unification example}. Here, witness nets require both links to carry the same substitution map, while for unification nets a common, more general map is generated by unification.
 
-We include the following results for our \all1 proof nets. Witness nets are \emph{canonical} for the permutations of the sequent calculus, and we provide a geometric correctness condition. \emph{Composition} of unification nets (over $\seq AB$ and $\seq{\dual BC}$ into one over $\seq AC$) is remarkedly simple, as the relational composition of both sets of links. For composition of witness nets, in addition the witness assignments of links must be composed, which is done through a simple process of \emph{interaction + hiding} similar to those of game semantics \cite{Mimram-2011}.
+%Additive linear logic $(\all)$ is the logic of product $(\*)$ and sum $(\+)$, and their canonical morphisms: projections, injections, and diagonals. It is captured naturally in \defn{additive proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, consisting of a two-sided sequent $A\vdash B$ or, here, a one-sided sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between subformulas in $\dual A$ and in $B$.
+
+%\[
+%%\hspace*{9ex}% spacing hack to achieve central horizontal alignment
+%\hspace*{-\parindent}%
+%\hspace*{\fill}%
+%% Behold my better spacing hack to achieve central horizontal alignment :)
+%\begin{array}{c@{\qquad\qquad}c@{\qquad\qquad}c@{\qquad\qquad}c}
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{{\dual a}}
+%		\formula[y=0]{a\*a}
+%		\Vlink[red]{[-2]1,1}
+%		\Vlink[red]{[2]1,3}
+%	\end{tikzpicture}
+%&
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{{\dual a}}
+%		\formula[y=0]{a\+b}
+%		\Vlink[red]{1,1}
+%	\end{tikzpicture}
+%&
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{{\dual a}\+{\dual b}}
+%		\formula[y=0]{b\*a}
+%		\Vlink[red]{1,3}
+%		\Vlink[red]{3,1}
+%	\end{tikzpicture}
+%&
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{*{\phantom(}{\dual a}*{\phantom)}
+%		 {{\+}}*({\dual b}*{\phantom)}
+%		 {{\+}}*{\phantom(}{\dual c}*)}
+%		\formula[y=0]{*(a*{\phantom)}
+%		{{\*}}*{\phantom(}b*)
+%		{{\*}}*{\phantom(}c*{\phantom)}}
+%		\Vlink[red]{1,1}
+%		\Vlink[red]{3,3}
+%		\Vlink[red]{5,5}
+%	\end{tikzpicture}
+%\\
+%	\text{\small diagonal}
+%&	\text{\small injection}
+%&	\text{\small symmetry}
+%&	\text{\small associativity}
+%\end{array}
+%\hfill
+%\]
 
 %A companion paper \cite{Hughes-2018} explores unification nets for first-order \emph{multiplicative} linear logic, reporting drastic complexity improvements and equally straightforward proof net composition.
 
@@ -691,7 +892,7 @@ In this paper we will not attempt to settle the question of proof identity. Rath
 
 \subsection{Monomial nets and Expansion Trees}
 
-Proof nets with additives and quantifiers exist as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}. We believe (though have not technically verified) that additive monomial nets include, and could be restricted to, canonical forms. These would be equivalent to the following approach.
+Proof nets with additives and quantifiers exist as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}. We believe that additive monomial nets include, and could be restricted to, canonical forms. These would be equivalent to the following approach.
 
 \emph{Expansion tree proofs} for classical logic \cite{Miller-1987,Heijltjes-2010} provide another approach to canonicity for first-order quantification. In this formulation, a formula $\exists x.A$ is interpreted as the sum (or classically, \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. The idea can be traced to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices.
 
@@ -731,26 +932,6 @@ For the definition of proof nets, we did not pursue this direction, and consider
 
 \section{Proof nets for first-order additive linear logic}
 
-% ..................................................
-
-\begin{figure}
-\[
-	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
-\quad
-	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
-\quad
-	\infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
-\quad
-	\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
-\quad
-	\infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
-\]
-\caption{A sequent calculus for $\all1$}
-\label{fig:sequent calculus}
-\end{figure}
-
-% ..................................................
-
 % --------------------------------------------------
 
 \subsection{First-order additive linear logic}
@@ -782,6 +963,29 @@ Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a ma
 \]
 %
 A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart for the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations (Appendix~\ref{sec:permutations}, Figure~\ref{fig:permutations}).
+
+
+% ..................................................
+
+\begin{figure}
+\[
+	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
+\quad
+	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
+\quad
+	\infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
+\quad
+	\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
+\quad
+	\infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
+\]
+\caption{A sequent calculus for $\all1$}
+\label{fig:sequent calculus}
+\end{figure}
+
+% ..................................................
+
+
 
 By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
 \[
@@ -1800,12 +2004,29 @@ If $\net\lambda AB$ sequentializes to $\pi$ and $\net\kappa{\dual B}C$ to $\phi$
 By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labellings $\Sigma$ and $\Theta$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$. By Theorem~\ref{thm:composition} their composition $(\net{\lambda_\Sigma\comp\kappa_\Theta)}AC$ strict-sequentializes to a normal form $\psi$ of $\pi\comp\phi$. By Lemma~\ref{lem:ucoal generality} the net $\net{(\lambda\comp\kappa)_\star}AC$ unifying-sequentializes to $\psi'\leq\psi$.
 \end{proof}
 
+% --------------------------------------------------
+
+\section{Conclusion}
+
+We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic. We conclude with a quick table surveying our results.
+
+\begin{center}
+\begin{tabular}{lcc}
+\vphantom)	& Witness nets & Unification nets
+\\\hline
+   Canonicity & \vmark & \vmark
+\\ Generality && \vmark
+\\ Direct composition & \vmark & \vmark
+\\ Coalescence & \vmark & \vmark
+\\ Slicing & \vmark &
+\end{tabular}
+\end{center}
 
 % --------------------------------------------------
 
 \subsection*{Acknowledgements}
 
-Dominic would like to thank his host, Wes Holliday, at the UC Berkeley Logic Group.
+We would like to thank the anonymous referees for their constructive feedback. Dominic would like to thank his host, Wes Holliday, at the UC Berkeley Logic Group.
 
 
 \bibliography{ALL1}
