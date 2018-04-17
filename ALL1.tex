@@ -2006,13 +2006,13 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
 \begin{figure}[!t]
 \begin{center}
 \begin{tabular}{lcccc}
- &	Monomial nets & Expansion trees & Witness nets & Unification nets
+ &	Monomial nets & Expansion trees$^\ast$ & Witness nets & Unification nets
 \\\hline
-   Canonicity & \xmark & \vmark & \vmark & \vmark
+   Canonicity & \xmark & \vmark^\ast & \vmark & \vmark
 \\ Generality & \xmark &\xmark&\xmark& \vmark
 \\ Direct composition &(\vmark) &\xmark& \vmark & \vmark
 \\ Coalescence & ? & ? & \vmark & \vmark
-\\ Slicing &\vmark &\xmark& \vmark &\xmark
+\\ Slicing &\vmark &\vmark^\ast& \vmark & ?
 \end{tabular}  
   \caption{Comparison of different notions of proof nets for quantifiers and additive connectives}
   \label{fig:results}
@@ -2029,7 +2029,7 @@ We have presented two notions of first-order additive proof net, witness nets an
 %
 Proof nets with additives and quantifiers existed before as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}.
 %
-However, we do conjecture that additive monomial nets could be restricted to some notion of canonical form, which would be equivalent to the notion induced by \emph{expansion tree proofs}, provide another approach to canonicity for first-order quantification for classical logic \cite{Miller-1987,Heijltjes-2010}.
+However, we do conjecture that additive monomial nets could be restricted to some notion of canonical form, which would be equivalent to the notion induced by \emph{expansion tree proofs}, provide another approach to first-order quantification for classical logic \cite{Miller-1987,Heijltjes-2010}.
 %
 But the details of this relation are clearly beyond the scope of our paper.
 
@@ -2046,7 +2046,7 @@ However, for our definition of proof nets, we did not pursue this direction, and
 %
 %We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic.
 %
-The table in Figure~\ref{fig:results} summarizes the results of our paper and the observations in this section.
+The table in Figure~\ref{fig:results} summarizes the results of our paper and the observations in this section, where the column on expansion trees is speculative since they only exist for classical logic, and not (yet) exist for $\all$.
 
 
 % --------------------------------------------------
