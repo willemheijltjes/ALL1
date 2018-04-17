@@ -1,5 +1,7 @@
 \documentclass[UKenglish]{lipics-v2018}
 
+%\usepackage {etex}
+
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{latexsym}
 \usepackage{microtype}
@@ -45,7 +47,7 @@
 
 % ===== Check mark symbols
 \usepackage{pifont}
-	\newcommand\xmark{{\red\ding{54}}}
+	\newcommand\xmark{{\color{red}\ding{55}}}
 	\newcommand\vmark{{\color{green}\ding{51}}}
 
 
@@ -408,19 +410,19 @@
 \author
  {Willem B.\ Heijltjes}
  {University of Bath, United Kingdom}
- {http://willem.heijltj.es/} %{w.b.heijltjes@bath.ac.uk}
+ {{http://willem.heijltj.es/}} %{w.b.heijltjes@bath.ac.uk}
  {}
  {}
 \author
  {Dominic J.D.\ Hughes}
  {Logic Group, UC Berkeley, USA}
- {http://boole.stanford.edu/\textasciitilde dominic/} %{dominich@theory.stanford.edu}
+ {{http://boole.stanford.edu/\textasciitilde dominic/}} %{dominich@theory.stanford.edu}
  {}
  {} 
 \author
  {Lutz Stra\ss burger}
  {Inria Saclay \&\ LIX/\'Ecole Polytechnique, Palaiseau, France}
- {http://www.lix.polytechnique.fr/Labo/Lutz.Strassburger/} %{lutz.strassburger@inria.fr}
+ {{http://www.lix.polytechnique.fr/Labo/Lutz.Strassburger/}} %{lutz.strassburger@inria.fr}
  {}
  {}
 
@@ -442,10 +444,10 @@
 
 \begin{abstract}
 We present canonical proof nets for first-order additive linear logic, the fragment of linear logic with sum, product, and first-order universal and existential quantification. 
-
-We present two versions of our proof nets. One, witness nets, retains explicit witnessing information to existential quantification. For the other, unification nets, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed. 
-
-Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. Both notions of proof net are defined through coalescence, the additive version of multiplicative contractibility, and for witness nets a geometric correctness criterion is provided. Both feature a global composition operation.
+%
+We present two versions of our proof nets. One, \emph{witness nets}, retains explicit witnessing information to existential quantification. For the other, \emph{unification nets}, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed. 
+%
+Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. Both notions of proof net are defined through coalescence, the additive version of multiplicative contractibility, and for witness nets an additional geometric correctness criterion is provided. Both feature a global composition operation.
 \end{abstract}
 
 
@@ -619,7 +621,7 @@ Our solutions are based on the second author's recent \defn{unification nets} fo
 \[
 \hspace*{\fill}
 \hspace*{-\parindent}
-\begin{array}{c@{\qquad\qquad\qquad}c}
+\begin{array}{c@{\qquad\qquad\qquad\qquad\qquad}c}
 	\vc{\begin{tikzpicture}[net]
 		\formula[y=1.2]{\exists x.{\dual P}(x)}
 		\formula[y=0]{P(s)\*P(t)}
@@ -640,15 +642,134 @@ Our solutions are based on the second author's recent \defn{unification nets} fo
 \hfill
 \]
 
-\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example above left shows the net corresponding to the sequent proof above. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of a propositional atom.) Witness nets are canonical for \all1 sequent calculus permutations, and we give both correctness criteria,  coalescence and slicing. Composition is direct, where the witness assignments of links must be composed, which is done through a simple process of \emph{interaction + hiding} similar to that of game semantics \cite{Mimram-2011}.
+\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example above left shows the net corresponding to the sequent proof above. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of a propositional atom.) Witness nets are canonical for \all1 sequent calculus permutations, and we give two correctness criteria, one via coalescence and one via slicing. Composition is direct, where the witness assignments of links must be composed, which is done through a simple process of \emph{interaction + hiding} similar to that of game semantics \cite{Mimram-2011}.
 
-\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition remains by relational composition, and correctness is by coalescence, during which process witnesses are reconstructed by first-order unification.
-
-Coalescence~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, like multiplicative contractibility, \cite{Danos-1990,Guerrini-Masini-2001} is effectively top-down sequentialization. Figure~\ref{fig:main example} illustrates the process. In the example, a link between subformulas $A$ and $B$ carrying a substitution map $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each coalescence step ($\star S$) corresponds to a proof rule ($\star R$), by which the coalescence sequence generates the sequent proof from the axioms down to the conclusion.
+\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition remains by relational composition, and correctness is by coalescence. During this process witnesses are reconstructed by first-order unification.
 
 
+% ..................................................
 
-In unification nets, existential witnesses are reconstructed during coalescence. The initial substitution map assigned to a link on atomic formulas $a=P(s_1,\dots,s_n)$ and $b=\dual P(t_1,\dots,t_n)$ is the most general unifier (\mgu) of $a$ and $\dual b$ (the first step in Figure~\ref{fig:unification example}). Coalescence then proceeds as for witness nets, except when joining two links from different slices with a product step, ($\urr*$) in Figure~\ref{fig:unification example}. Here, witness nets require both links to carry the same substitution map, while for unification nets a common, more general map is generated by unification.
+\begin{figure}[!t]
+\[
+\begin{array}{c}
+\begin{array}{@{}c@{~}c@{\qquad}c@{}}
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+&&
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
+  \end{tikzpicture}} 
+\\ \\[-5pt] \downarrow\scriptstyle{\srr+1} && \uparrow\scriptstyle\srr! \\ \\[-5pt]
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}}
+&&
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
+  \end{tikzpicture}} 
+\\ \\[-5pt] \downarrow\scriptstyle\srr?,f(x) && \uparrow\scriptstyle\srr?,x \\ \\[-5pt]  
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
+  \end{tikzpicture}} 
+&&  
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
+  \end{tikzpicture}}
+\\ \\[-5pt] \downarrow\scriptstyle{\srr+2} && \uparrow\scriptstyle\srr* \\ \\[-5pt]
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
+  \end{tikzpicture}}
+& \stackrel{\srr?,t}\scoal & 
+  \vc{
+  \begin{tikzpicture}[net]
+	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
+	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
+	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
+	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
+  \end{tikzpicture}}
+\end{array}
+\\ \\[20pt]
+	\color{violet}\infer[\color{black}\Qrr!]{\color{black}\Seq{\forall x.\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+	 \color{violet}\infer[\color{black}\Qrr?x]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
+	  \color{violet}\infer[\color{black}\Qrr*]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))\*Q(x,t)}}{
+	   \color{red}\infer[\color{black}\Qrr?{f(x)}]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))}}{
+	    \color{red}\infer[\color{black}\Qrr+1]{\color{black}\Seq{\dual P(f(x))\+\dual Q(x,f(x))}{P(f(x))}}{
+	     \color{red}\infer[\color{black}\Qrr1]{\color{black}\Seq{\dual P(f(x))}{P(f(x))}}{}
+	   }}&
+	   \color{blue}\infer[\color{black}\Qrr?t]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{Q(x,t)}}{
+	    \color{blue}\infer[\color{black}\Qrr+2]{\color{black}\Seq{\dual P(t)\+\dual Q(x,t)}{Q(x,t)}}{
+	     \color{blue}\infer[\color{black}\Qrr1]{\color{black}\Seq{\dual Q(x,t)}{Q(x,t)}}{}
+	}}}}}
+\end{array}
+\]
+\caption{A coalescence and sequentialization example}
+\label{fig:main example}
+\end{figure}
+
+% ..................................................
+% ..................................................
+
+\begin{figure}[!t]
+\[
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.2]{{\dual P}*{(x,x)}}
+	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
+	\Vlink[red]{[-2]1,1}
+	\Vlink[blue]{[2]1,3}
+\end{tikzpicture}}
+\quad\ucoal\quad
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.2]{{\dual P}*{(x,x)}}
+	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
+	\Vlink[red,l,label={$\scriptstyle[s/y,s/x]$~~}]{[-2]1,1}
+	\Vlink[blue,r,label={~~$\scriptstyle[t/z,t/x]$}]{[2]1,3}
+\end{tikzpicture}}
+\quad\stackrel{\urr*}\ucoal\quad
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.2]{{\dual P}*{(x,x)}}
+	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
+	\Vlink[violet,r,label={~~$\scriptstyle[u/z,u/y,u/x]$}]{1,2}
+\end{tikzpicture}}
+\]
+\caption{Coalescence with unification; $u$ is the smallest term unifying $s$ and $t$} 
+\label{fig:unification example}
+\end{figure}
+
+% ..................................................
+
+
+
+Coalescence~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, like multiplicative contractibility, \cite{Danos-1990,Guerrini-Masini-2001} is effectively top-down sequentialization. Figure~\ref{fig:main example} illustrates the process. In the example, a link between subformulas $A$ and $B$ carrying a substitution $\sigma$ represents a sequent $\seq{A\sigma}{B\sigma}$. Each coalescence step ($\star S$) corresponds to a proof rule ($\star R$), by which the coalescence sequence generates the sequent proof from the axioms down to the conclusion.
+
+
+
+In unification nets, existential witnesses are reconstructed during coalescence. The initial substitution map assigned to a link on atomic formulas $a=P(s_1,\dots,s_n)$ and $b=\dual P(t_1,\dots,t_n)$ is the most general unifier (\mgu) of $a$ and $\dual b$ (the first step in Figure~\ref{fig:unification example}). Coalescence then proceeds as for witness nets, except when joining two links from different slices with a product step (marked \hbox{\small$\;\urr*\;$} in Figure~\ref{fig:unification example}). Here, witness nets require both links to carry the same substitution, while for unification nets a common, more general map is generated by unification.\looseness=-1
 
 
 %As illustrated by Herbrand's Theorem \cite{Herbrand-1930},
@@ -742,121 +863,6 @@ At the same time, the ubiquity of its main operations, product and sum, mean the
 
 % Hyland-Ong-2000,Abramsky-Jagadeesan-Malacaria-2000
 
-% ..................................................
-
-\begin{figure}
-\[
-\begin{array}{c}
-\begin{array}{@{}c@{~}c@{\qquad}c@{}}
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~}]{3,2}
-	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-  \end{tikzpicture}}
-&&
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{1,1}
-  \end{tikzpicture}} 
-\\ \\[-5pt] \downarrow\scriptstyle{\srr+1} && \uparrow\scriptstyle\srr! \\ \\[-5pt]
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red,l,label={$\scriptstyle[f(x)/y\,,\,x/z]$~~~}]{4,2}
-	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-  \end{tikzpicture}}
-&&
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[violet,l,label={$\scriptstyle\varnothing$~~}]{2,1}
-  \end{tikzpicture}} 
-\\ \\[-5pt] \downarrow\scriptstyle\srr?,f(x) && \uparrow\scriptstyle\srr?,x \\ \\[-5pt]  
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
-	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{5,4}
-  \end{tikzpicture}} 
-&&  
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[violet,l,label={$\scriptstyle[x/z]$~~~}]{[2]2,3}
-  \end{tikzpicture}}
-\\ \\[-5pt] \downarrow\scriptstyle{\srr+2} && \uparrow\scriptstyle\srr* \\ \\[-5pt]
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
-	\Vlink[blue,r,label={~$\scriptstyle[t/y\,,\,x/z]$}]{4,4}
-  \end{tikzpicture}}
-& \stackrel{\srr?,t}\scoal & 
-  \vc{
-  \begin{tikzpicture}[net]
-	\formula[y=1.2]{\forall*{x.}\exists*{y.~}{\dual P}*{(y)}\+{\dual Q}*{(x,y)}}
-	\formula[y=0]{\exists*{z.~}P*{(f(z))}\*Q*{(z,t)}}
-	\Vlink[red,l,label={$\scriptstyle[x/z]$~~}]{2,2}
-	\Vlink[blue,r,label={~~~$\scriptstyle[x/z]$}]{[4]2,4}
-  \end{tikzpicture}}
-\end{array}
-\\ \\[20pt]
-	\color{violet}\infer[\color{black}\Qrr!]{\color{black}\Seq{\forall x.\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
-	 \color{violet}\infer[\color{black}\Qrr?x]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{\exists z.P(f(z))\*Q(z,t)}}{
-	  \color{violet}\infer[\color{black}\Qrr*]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))\*Q(x,t)}}{
-	   \color{red}\infer[\color{black}\Qrr?{f(x)}]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{P(f(x))}}{
-	    \color{red}\infer[\color{black}\Qrr+1]{\color{black}\Seq{\dual P(f(x))\+\dual Q(x,f(x))}{P(f(x))}}{
-	     \color{red}\infer[\color{black}\Qrr1]{\color{black}\Seq{\dual P(f(x))}{P(f(x))}}{}
-	   }}&
-	   \color{blue}\infer[\color{black}\Qrr?t]{\color{black}\Seq{\exists y.\dual P(y)\+\dual Q(x,y)}{Q(x,t)}}{
-	    \color{blue}\infer[\color{black}\Qrr+2]{\color{black}\Seq{\dual P(t)\+\dual Q(x,t)}{Q(x,t)}}{
-	     \color{blue}\infer[\color{black}\Qrr1]{\color{black}\Seq{\dual Q(x,t)}{Q(x,t)}}{}
-	}}}}}
-\end{array}
-\]
-\caption{A coalescence and sequentialization example}
-\label{fig:main example}
-\end{figure}
-
-% ..................................................
-
-\begin{figure}
-\[
-\vc{\begin{tikzpicture}[net]
-	\formula[y=1.2]{{\dual P}*{(x,x)}}
-	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
-	\Vlink[red]{[-2]1,1}
-	\Vlink[blue]{[2]1,3}
-\end{tikzpicture}}
-\quad\ucoal\quad
-\vc{\begin{tikzpicture}[net]
-	\formula[y=1.2]{{\dual P}*{(x,x)}}
-	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
-	\Vlink[red,l,label={$\scriptstyle[s/y,s/x]$~~}]{[-2]1,1}
-	\Vlink[blue,r,label={~~$\scriptstyle[t/z,t/x]$}]{[2]1,3}
-\end{tikzpicture}}
-\quad\stackrel{\urr*}\ucoal\quad
-\vc{\begin{tikzpicture}[net]
-	\formula[y=1.2]{{\dual P}*{(x,x)}}
-	\formula[y=0]{P*{(y,s)}\*P*{(t,z)}}
-	\Vlink[violet,r,label={~~$\scriptstyle[u/z,u/y,u/x]$}]{1,2}
-\end{tikzpicture}}
-\]
-\caption{Coalescence with unification; $u$ is the smallest term unifying $s$ and $t$} 
-\label{fig:unification example}
-\end{figure}
-
-% ..................................................
-
 % --------------------------------------------------
 
 \subsection{Proof identity}
@@ -889,17 +895,6 @@ The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$
 	}}
 \]
 In this paper we will not attempt to settle the question of proof identity. Rather, our two notions of proof net each represent a natural and coherent perspective, at either end of the spectrum. \emph{Witness nets} make all existential witnesses explicit, including those to vacuous quantifiers, rejecting all three equivalences above. \emph{Unification nets} leave all witnesses implicit, thus identifying all proofs modulo witness assignment, and validating all three equivalences.
-
-\subsection{Monomial nets and Expansion Trees}
-
-Proof nets with additives and quantifiers exist as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}. We believe that additive monomial nets include, and could be restricted to, canonical forms. These would be equivalent to the following approach.
-
-\emph{Expansion tree proofs} for classical logic \cite{Miller-1987,Heijltjes-2010} provide another approach to canonicity for first-order quantification. In this formulation, a formula $\exists x.A$ is interpreted as the sum (or classically, \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. The idea can be traced to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices.
-
-We use this approach implicitly for our geometric correctness condition for witness nets (Section~\ref{sec:correctness}), which generalizes the existing \emph{slice-based} criterion for additive proof nets \cite{Hughes-vanGlabbeek-2005}. In constructing the slices over a formula, we interpret $\exists x.A$ by an \emph{expansion} $A[t_1/x]\+\dots\+A[t_n/x]$, where the witnesses $t_1$ through $t_n$ are collected from the substitution maps of the links in the proof net.
-
-For the definition of proof nets, we did not pursue this direction, and consider the present choice preferable. Witness nets and unification nets retain the original structure of \emph{formulas + links}, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links. Finally, available space does not permit a detailed exposition, which we defer to a journal version.
-
 
 
 %$\seq{\,\exists x.P(x,x,s)\,}{\,\exists y.\dual P(t,y,y)}$ 
@@ -967,7 +962,7 @@ A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus
 
 % ..................................................
 
-\begin{figure}
+\begin{figure}[!t]
 \[
 	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
 \quad
@@ -1165,7 +1160,9 @@ Then to recap, we have accumulated the following further notational conventions.
 	\psi=~\vc{\infer[\Qrr*]{\seq{C\sigma}{D_1\sigma\,\*\,D_2\sigma}}  {
       \Prf \pi {C\sigma} {D_1\sigma} & \Prf \phi {C\sigma} {D_2\sigma}    
 	}}
-\\ \\[-8pt]
+\end{align*}
+%\\ \\[-8pt]
+\begin{align*}
 \tag{$\srr?$}
 	\link CD^\pi
 	& \scoal
@@ -1226,7 +1223,7 @@ The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$
 % ..................................................
 
 % ..................................................
-\begin{figure}
+\begin{figure}[!t]
 \[
 \begin{array}{ccc@{\hspace{50pt}}ccc}
     \vc{\begin{tikzpicture}[net]
@@ -1509,7 +1506,7 @@ These compositions may omit proof annotations and witness annotations.
 
 
 % ..................................................
-\begin{figure}
+\begin{figure}[!t]
 \[
 \begin{array}{ccc}
 	\vc{
@@ -1545,7 +1542,7 @@ In the following we will demonstrate that composition gives the desired result: 
 \newcommand\yC{1.05}
 
 % ..................................................
-\begin{figure}[p]
+\begin{figure}[!tp]
 \[
 \begin{array}{ccc}
     \vc{
@@ -1621,7 +1618,7 @@ In the following we will demonstrate that composition gives the desired result: 
 \label{fig:crit1}
 \end{figure}
 % ..................................................
-\begin{figure}[p]
+\begin{figure}[!tp]
 \[
 \begin{array}{ccc}
     \vc{
@@ -1698,7 +1695,7 @@ In the following we will demonstrate that composition gives the desired result: 
 \label{fig:crit2}
 \end{figure}
 % ..................................................
-\begin{figure}[p]
+\begin{figure}[!tp]
 \[
 \begin{array}{ccc}
     \vc{
@@ -2006,21 +2003,51 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
 
 % --------------------------------------------------
 
-\section{Conclusion}
-
-We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic. We conclude with a quick table surveying our results.
-
+\begin{figure}[!t]
 \begin{center}
-\begin{tabular}{lcc}
-\vphantom)	& Witness nets & Unification nets
+\begin{tabular}{lcccc}
+ &	Monomial nets & Expansion trees & Witness nets & Unification nets
 \\\hline
-   Canonicity & \vmark & \vmark
-\\ Generality && \vmark
-\\ Direct composition & \vmark & \vmark
-\\ Coalescence & \vmark & \vmark
-\\ Slicing & \vmark &
-\end{tabular}
+   Canonicity & \xmark & \vmark & \vmark & \vmark
+\\ Generality & \xmark &\xmark&\xmark& \vmark
+\\ Direct composition &(\vmark) &\xmark& \vmark & \vmark
+\\ Coalescence & ? & ? & \vmark & \vmark
+\\ Slicing &\vmark &\xmark& \vmark &\xmark
+\end{tabular}  
+  \caption{Comparison of different notions of proof nets for quantifiers and additive connectives}
+  \label{fig:results}
 \end{center}
+\end{figure}
+
+% --------------------------------------------------
+
+
+\section{Conclusion and related work}
+
+%\subsection{Alternative approaches: monomial nets and expansion trees}
+We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic.
+%
+Proof nets with additives and quantifiers existed before as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}.
+%
+However, we do conjecture that additive monomial nets could be restricted to some notion of canonical form, which would be equivalent to the notion induced by \emph{expansion tree proofs}, provide another approach to canonicity for first-order quantification for classical logic \cite{Miller-1987,Heijltjes-2010}.
+%
+But the details of this relation are clearly beyond the scope of our paper.
+
+
+%%\emph{Expansion trees} provide another approach to canonicity for first-order quantification for classical logic \cite{Miller-1987,Heijltjes-2010}.
+
+In the formulation of expansion trees, a formula $\exists x.A$ is interpreted as the sum (or classically, the \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. This can be traced back to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices.
+%
+We used this idea implicitly for our geometric correctness condition for witness nets (Section~\ref{sec:correctness}), which generalizes the existing \emph{slice-based} criterion for multiplicative-additive proof nets \cite{Hughes-vanGlabbeek-2005}. In constructing the slices over a formula, we interpreted $\exists x.A$ by an \emph{expansion} $A[t_1/x]\+\dots\+A[t_n/x]$, where the witnesses $t_1$ through $t_n$ are collected from the substitution maps of the links in the proof net.
+
+However, for our definition of proof nets, we did not pursue this direction, and consider the choices made in this paper preferable. Witness nets and unification nets retain the original structure of \emph{formulas + links}, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links.
+%
+%%Finally, available space does not permit a detailed exposition, which we defer to a journal version.
+%
+%We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic.
+%
+The table in Figure~\ref{fig:results} summarizes the results of our paper and the observations in this section.
+
 
 % --------------------------------------------------
 
