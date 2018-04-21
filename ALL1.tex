@@ -534,7 +534,98 @@ Additive proof nets are \defn{canonical}: they factor out the permutations of se
 \]
 \defn{Composition}, of proof nets over $\seq{\dual A}B$ and $\seq{\dual B}C$ to one over $\seq{\dual A}C$, is by the relational composition of their linkings along the dual formulas $B$ and $\dual B$, as illustrated above right.
 
-Additive proof nets have two natural correctness criteria. \defn{Coalescence} \cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, a counterpart to multiplicative \emph{contractibility} \cite{Danos-1990}, provides efficient correctness and sequentialization via local rewriting: it asks that the steps below left result in a single link, connecting both formulas. \defn{Slicing} \cite{Hughes-vanGlabbeek-2005} is a global, geometric criterion: it asks that each \defn{slice}, a choice to remove one subformula of each product along with all connected links, retains a single link.
+
+In this paper we present proof nets for first-order additive linear logic (\all1). Our central challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers, into additive proof nets. In a standard approach, as in the sequent calculus rules below left, a witness to $\exists x.B$ is assigned by an immediate substitution $B[t/x]$. To assign different witnesses in different branches of a proof, the subformula may be duplicated first, giving $B[s/x]$ and $B[t/x]$, as below right.
+%
+\[
+\hspace*{\fill}
+\hspace*{-\parindent}
+	\vc{\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}}
+%\qquad
+%	\vc{\infer[\Qrr!~(x\,\notin\,\fv(A))]{\seq A{\forall x.B}}{\seq AB}}
+\qquad\quad
+\vc{
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
+   }}
+\hfill
+\]
+%
+This is incompatible with a \defn{sequent + links} proof net design, where the conclusion sequent remains intact, and a subformula $B$ cannot be the subject of substitution or duplication. Instead, we propose two alternative treatments of witnessing terms, embodied in two notions of proof net: \defn{witness nets} and \defn{unification nets}. Our solutions are based on the second author's recent \defn{unification nets} for first-order multiplicative linear logic \cite{Hughes-2018}. Their main feature is to omit existential witnesses altogether, and reconstruct them by unification.
+%
+\[
+\hspace*{\fill}
+\hspace*{-\parindent}
+\begin{array}{c@{\qquad\qquad\qquad\qquad\qquad}c}
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1.2]{\exists x.{\dual P}(x)}
+		\formula[y=0]{P(s)\*P(t)}
+		\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
+		\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1.2]{\exists x.{\dual P}(x)}
+		\formula[y=0]{P(s)\*P(t)}
+		\Vlink[red]{[-3]4,1}
+		\Vlink[red]{[1]4,6}
+	\end{tikzpicture}}
+\\ \\[-5pt]
+	\text{\small a witness net}
+&	\text{\small a unification net}
+\end{array}
+\hfill
+\]
+
+\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example above left shows the proof net for the sequent proof above. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of an atomic proposition.) Witness nets are canonical for \all1 sequent calculus permutations. Composition is direct, where the witness assignments of links are composed through a simple process of \emph{interaction + hiding} similar to that of game semantics \cite{Mimram-2011}.
+
+\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition is direct, by straightforward relational composition. We compare further properties in Figure~\ref{fig:results}, in the conclusion, where we also discuss related work.
+
+\subsection{Background}
+
+Additive linear logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995,Galmiche-2000} and proof net correctness \cite{Heijltjes-Hughes-2015} for a net over $\seq AB$ are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$). Proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}, and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
+
+At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and is a core part of \emph{session types}~\cite{Honda-1993}.
+
+{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek-2005} for {\mall}, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. Its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}, and in the third author's study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the cut elimination of first-order \emph{combinatorial proofs} is one motivation for the current presentation.
+
+\subsection{Proof identity}
+
+At the heart of a theory of proof nets is the question of \emph{proof identity}: when are two proofs equivalent? The answer determines which proofs should map onto the same proof net. The introduction of quantifiers creates an interesting issue: if two proofs differ by an immaterial choice of existential witness, should they be equivalent? For example, to prove the sequent $\seq{\exists x.P(x)}{\exists y.\dual P(y)}$ both quantifiers must receive \emph{the same} witness, as in the following two proofs, but \emph{any} witness will do.
+\[
+	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(s)}{\dual P(s)}}{}}}
+	\quad
+	\stackrel?\equiv
+	\quad
+	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(t)}{\dual P(t)}}{}}}
+\]
+The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ where $x$ is not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists R$-rule makes the instantiating witness explicit. Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists R$-rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
+\[
+	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
+	\quad
+	\stackrel?\equiv
+	\quad	
+	\vc{\infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}\qquad
+	\vc{
+	 \infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P\+Q(x)}{\dual P}}{
+	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(s)}{\dual P}}{\infer{\seq P{\dual P}}{}}
+	}}
+	\quad
+	\stackrel?\equiv
+	\quad	
+	\vc{
+	 \infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P\+Q(x)}{\dual P}}{
+	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(t)}{\dual P}}{\infer{\seq P{\dual P}}{}}
+	}}
+\]
+In this paper we will not attempt to settle the question of proof identity. Rather, our two notions of proof net each represent a natural and coherent perspective, at either end of the spectrum. \emph{Witness nets} make all existential witnesses explicit, including those to vacuous quantifiers, rejecting all three equivalences above. \emph{Unification nets} leave all witnesses implicit, thus identifying all proofs modulo witness assignment, and validating all three equivalences.
+
+
+\subsection{Correctness: coalescence and slicing}
+
+Additive proof nets have two natural correctness criteria. \defn{Coalescence} \cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, a counterpart to multiplicative \emph{contractibility} \cite{Danos-1990,Guerrini-Masini-2001}, provides efficient correctness and sequentialization via local rewriting: it asks that the steps below left result in a single link, connecting both formulas. \defn{Slicing} \cite{Hughes-vanGlabbeek-2005} is a global, geometric criterion: it asks that each \defn{slice}, a choice to remove one subformula of each product along with all connected links, retains a single link.
 %
 \[
 \hspace*{-\parindent}
@@ -590,64 +681,9 @@ Additive proof nets have two natural correctness criteria. \defn{Coalescence} \c
 \end{array}	
 \hfill
 \]
+We extend slicing to witness nets, and coalescence to both witness nets and unification nets. Here, we illustrate the latter, and leave a discussion of slicing to the conclusion of the paper.
 
-%In this paper we extend additive proof nets with first-order quantification. 
-In this paper we present proof nets for first-order additive linear logic (\all1).
-Our central challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers, into additive proof nets, while retaining their features and tools: canonicity, direct (relational) composition, coalescence, and slicing.
-
-In a standard approach, as in the sequent calculus rules below left, a witness to $\exists x.B$ is assigned by an immediate substitution $B[t/x]$. To assign different witnesses in different slices, the subformula may be duplicated first, giving $B[s/x]$ and $B[t/x]$, as below right.
-%
-\[
-\hspace*{\fill}
-\hspace*{-\parindent}
-	\vc{\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}}
-\qquad
-	\vc{\infer[\Qrr!~(x\,\notin\,\fv(A))]{\seq A{\forall x.B}}{\seq AB}}
-\qquad\quad
-\vc{
-	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
-	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
-	 &&
-	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
-   }}
-\hfill
-\]
-%
-This is incompatible with a \defn{sequent + links} proof net design, where the conclusion sequent remains intact, and a subformula $B$ cannot be the subject of substitution or duplication. Instead, we propose two alternative treatments of witnessing terms, embodied in two notions of proof net: \defn{witness nets} and \defn{unification nets}.
-% irrecoverably alters the subformula $B$ (since $B[t/x]$ may contain other occurrences of $t$, it is not possible to recover $B$)
-%
-Our solutions are based on the second author's recent \defn{unification nets} for first-order multiplicative linear logic \cite{Hughes-2018}. Their main feature is to omit existential witnesses altogether, and reconstruct them by unification.
-%
-\[
-\hspace*{\fill}
-\hspace*{-\parindent}
-\begin{array}{c@{\qquad\qquad\qquad\qquad\qquad}c}
-	\vc{\begin{tikzpicture}[net]
-		\formula[y=1.2]{\exists x.{\dual P}(x)}
-		\formula[y=0]{P(s)\*P(t)}
-		\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
-		\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
-	\end{tikzpicture}}
-&
-	\vc{\begin{tikzpicture}[net]
-		\formula[y=1.2]{\exists x.{\dual P}(x)}
-		\formula[y=0]{P(s)\*P(t)}
-		\Vlink[red]{[-3]4,1}
-		\Vlink[red]{[1]4,6}
-	\end{tikzpicture}}
-\\ \\[-5pt]
-	\text{\small a witness net}
-&	\text{\small a unification net}
-\end{array}
-\hfill
-\]
-
-\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example above left shows the net corresponding to the sequent proof above. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of a propositional atom.) Witness nets are canonical for \all1 sequent calculus permutations, and we give two correctness criteria, one via coalescence and one via slicing. Composition is direct, where the witness assignments of links are composed through a simple process of \emph{interaction + hiding} similar to that of game semantics \cite{Mimram-2011}.
-
-\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition remains by relational composition, and correctness is by coalescence. During this process witnesses are reconstructed by first-order unification.
-
-
-\defn{Coalescence}~\cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, like multiplicative contractibility \cite{Danos-1990,Guerrini-Masini-2001}, is effectively top-down sequentialization. We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \defn{unifying coalescence} ($\ucoal$) for unification nets. We first give an example of the former (writing $Pxy$ for $P(x,y)$ to conserve space). In the initial witness net, below left, each link corresponds to a sequent calculus axiom between both linked subformulas, with the substitutions applied.
+We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \defn{unifying coalescence} ($\ucoal$) for unification nets. We first give an example of the former (writing $Pxy$ for $P(x,y)$ to conserve space). In the initial witness net, below left, each link corresponds to a sequent calculus axiom between both linked subformulas, with the substitutions applied.
 %
 \newcommand\xs{xs} %{(\kern-1ptx\kern-1pt,\kern-2pts\kern-1pt)}
 \newcommand\xt{xt} %{(\kern-1ptx\kern-1pt,\kern-2ptt\kern-1pt)}
@@ -932,45 +968,6 @@ The second difference is the coalescence step for additive conjunction, above ri
 
 %We include the following results for our \all1 proof nets. Witness nets are \emph{canonical} for the permutations of the sequent calculus, and we provide a geometric correctness condition. \emph{Composition} of unification nets (over $\seq AB$ and $\seq{\dual BC}$ into one over $\seq AC$) is remarkedly simple, as the relational composition of both sets of links. For composition of witness nets, in addition 
 %\end{document}
-
-\subsection{Background}
-
-Additive linear logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995,Galmiche-2000} and proof net correctness \cite{Heijltjes-Hughes-2015} for a net over $\seq AB$ are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$). Proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}, and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
-
-At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and is a core part of \emph{session types}~\cite{Honda-1993}.
-
-{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical proof nets \cite{Hughes-vanGlabbeek-2005} for {\mall}, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. Its proof nets also appear as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}, and in the third author's study of the \emph{medial rule} for classical logic~\cite{str:RTA07}. To prepare the ground for the cut elimination of first-order \emph{combinatorial proofs} is one motivation for the current presentation.
-
-\subsection{Proof identity}
-
-At the heart of a theory of proof nets is the question of \emph{proof identity}: when are two proofs equivalent? The answer determines which proofs should map onto the same proof net. The introduction of quantifiers creates an interesting issue: if two proofs differ by an immaterial choice of existential witness, should they be equivalent? For example, to prove the sequent $\seq{\exists x.P(x)}{\exists y.\dual P(y)}$ both quantifiers must receive \emph{the same} witness, as in the following two proofs, but \emph{any} witness will do.
-\[
-	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(s)}{\dual P(s)}}{}}}
-	\quad
-	\stackrel?\equiv
-	\quad
-	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(t)}{\dual P(t)}}{}}}
-\]
-The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ where $x$ is not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists R$-rule makes the instantiating witness explicit. Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists R$-rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
-\[
-	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
-	\quad
-	\stackrel?\equiv
-	\quad	
-	\vc{\infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}\qquad
-	\vc{
-	 \infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P\+Q(x)}{\dual P}}{
-	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(s)}{\dual P}}{\infer{\seq P{\dual P}}{}}
-	}}
-	\quad
-	\stackrel?\equiv
-	\quad	
-	\vc{
-	 \infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P\+Q(x)}{\dual P}}{
-	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P\+Q(t)}{\dual P}}{\infer{\seq P{\dual P}}{}}
-	}}
-\]
-In this paper we will not attempt to settle the question of proof identity. Rather, our two notions of proof net each represent a natural and coherent perspective, at either end of the spectrum. \emph{Witness nets} make all existential witnesses explicit, including those to vacuous quantifiers, rejecting all three equivalences above. \emph{Unification nets} leave all witnesses implicit, thus identifying all proofs modulo witness assignment, and validating all three equivalences.
 
 
 
@@ -2133,17 +2130,33 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
 \end{proof}
 
 % --------------------------------------------------
+%
+%\begin{figure}[!t]
+%\begin{center}
+%\begin{tabular}{lcccc}
+% &	Monomial nets & Expansion trees$^\ast$ & Witness nets & Unification nets
+%\\\hline
+%   Canonicity & \xmark & \vmark$^\ast$ & \vmark & \vmark
+%\\ Generality & \xmark &\xmark&\xmark& \vmark
+%\\ Direct composition &(\vmark) &\xmark& \vmark & \vmark
+%\\ Coalescence & ? & ? & \vmark & \vmark
+%\\ Slicing &\vmark &\vmark$^\ast$& \vmark & ?
+%\end{tabular}  
+%  \caption{Comparison of different notions of proof nets for quantifiers and additive connectives}
+%  \label{fig:results}
+%\end{center}
+%\end{figure}
 
 \begin{figure}[!t]
 \begin{center}
-\begin{tabular}{lcccc}
- &	Monomial nets & Expansion trees$^\ast$ & Witness nets & Unification nets
+\begin{tabular}{lccc}
+ &	Monomial nets & Witness nets & Unification nets
 \\\hline
-   Canonicity & \xmark & \vmark$^\ast$ & \vmark & \vmark
-\\ Generality & \xmark &\xmark&\xmark& \vmark
-\\ Direct composition &(\vmark) &\xmark& \vmark & \vmark
-\\ Coalescence & ? & ? & \vmark & \vmark
-\\ Slicing &\vmark &\vmark$^\ast$& \vmark & ?
+   Canonicity          &    ?   & \vmark & \vmark
+\\ Generality          & \xmark & \xmark & \vmark
+\\ Direct composition  & \xmark & \vmark & \vmark
+\\ Coalescence         &    ?   & \vmark & \vmark
+\\ Slicing             & \vmark & \vmark &   ?
 \end{tabular}  
   \caption{Comparison of different notions of proof nets for quantifiers and additive connectives}
   \label{fig:results}
@@ -2155,30 +2168,13 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
 
 \section{Conclusion and related work}
 
-%\subsection{Alternative approaches: monomial nets and expansion trees}
-We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic.
-%
-Proof nets with additives and quantifiers existed before as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}.
-%
-However, we do conjecture that additive monomial nets could be restricted to some notion of canonical form, which would be equivalent to the notion induced by \emph{expansion tree proofs}, provide another approach to first-order quantification for classical logic \cite{Miller-1987,Heijltjes-2010}.
-%
-But the details of this relation are clearly beyond the scope of our paper.
+We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic. The table in Figure~\ref{fig:results} summarizes the results of our paper, along with some observations we make below. 
 
+Proof nets with additives and quantifiers existed before as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}. However, it is possible that additive monomial nets could be restricted to some notion of canonical form. Likewise, coalescence (or contractibility) has not been studied for first-order monomial nets, though it has been extended to a related form of MALL proof nets \cite{Maieli-2007}.
 
-%%\emph{Expansion trees} provide another approach to canonicity for first-order quantification for classical logic \cite{Miller-1987,Heijltjes-2010}.
+Our slicing condition is closely related to a number of approaches to first-order classical logic. A formula $\exists x.A$ is interpreted as the sum (or classically, the \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. This can be traced back to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices. \emph{Expansion tree proofs} \cite{Miller-1987,Heijltjes-2010} are a graphical proof formalism based on this idea.
 
-In the formulation of expansion trees, a formula $\exists x.A$ is interpreted as the sum (or classically, the \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. This can be traced back to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices.
-%
-We used this idea implicitly for our geometric correctness condition for witness nets (Section~\ref{sec:correctness}), which generalizes the existing \emph{slice-based} criterion for multiplicative-additive proof nets \cite{Hughes-vanGlabbeek-2005}. In constructing the slices over a formula, we interpreted $\exists x.A$ by an \emph{expansion} $A[t_1/x]\+\dots\+A[t_n/x]$, where the witnesses $t_1$ through $t_n$ are collected from the substitution maps of the links in the proof net.
-
-However, for our definition of proof nets, we did not pursue this direction, and consider the choices made in this paper preferable. Witness nets and unification nets retain the original structure of \emph{formulas + links}, without requiring expansion trees. More importantly, as in the propositional case, they enable direct (non-inductive) composition by a relational composition of links.
-%
-%%Finally, available space does not permit a detailed exposition, which we defer to a journal version.
-%
-%We have presented two notions of first-order additive proof net, witness nets and unification nets, to canonically capture the two natural notions of proof identity for first-order additive linear logic.
-%
-The table in Figure~\ref{fig:results} summarizes the results of our paper and the observations in this section, where the column on expansion trees is speculative since they only exist for classical logic, and not (yet) exist for $\all$.
-
+In our slicing condition, the witnesses $t_1,\dots,t_n$ for the expansion $A[t_1/x]\+\dots\+A[t_n/x]$ are collected from the substitutions recorded at the links of the proof net. Expansion trees, in contrast, record the expansion and its terms explicitly. This could be an interesting alternative approach to additive proof nets, which we will explore in future work. It is expected, though, that this would sacrifice \emph{generality} and \emph{direct composition}.
 
 % --------------------------------------------------
 
