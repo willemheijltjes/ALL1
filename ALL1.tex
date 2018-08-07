@@ -1200,7 +1200,7 @@ The side-condition on the $\forall R$-rule, that the eigenvariable is not free i
 A witness linking or pre-net has \defn{local eigenvariables} if all its links do.
 
 	\item[Exact coverage]
-The local witness substitution $[t/x]$ in a rule instance $\qrr?t$ will have been applied exactly to the axioms $\seq a{\dual a}$ in the subproof of that rule. Correspondingly, for a link $\link CD$ on $\seq AB$ we expect the domain of $\sigma$ to be exactly the existential variables in $A$ and $B$ in whose scope $C$ and $D$ occur. For a subformula $C$ of $A$, let the \defn{existential variables of $C$ in $A$} be the set $\ex[A]C = \{\,x \mid C < \exists x.X \sub A\,\}$. A link $\link CD$ on $\seq AB$ then has \defn{exact coverage} if $\dom\sigma = \ex[A]C\cup\ex[B]D$. If it does, $\sigma$ consists of two components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we abbreviate as $\sigma_C$ and $\sigma_D$ respectively. A witness linking or pre-net has \defn{exact coverage} if all its links do.
+The local witness substitution $[t/x]$ in a rule instance $\qrr?t$ will have been applied exactly to the axioms $\seq a{\dual a}$ in the subproof of that rule. Correspondingly, for a link $\link CD$ on $\seq AB$ we expect the domain of $\sigma$ to be exactly the existential variables in $A$ and $B$ that are free in $C$ and $D$. For a subformula $C$ of $A$, let the \defn{free existential variables} of $C$ in $A$ be the set $\ex[A]C = \{\,x \mid C < \exists x.X \sub A\,\}$. A link $\link CD$ on $\seq AB$ then has \defn{exact coverage} if $\dom\sigma = \ex[A]C\cup\ex[B]D$. If it does, $\sigma$ consists of two components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we abbreviate as $\sigma_C$ and $\sigma_D$ respectively. A witness linking or pre-net has \defn{exact coverage} if all its links do.
 \end{description}
 
 \noindent
@@ -1700,7 +1700,7 @@ In the following we will demonstrate that composition gives the desired result: 
 	\item 
 $\seq A{B_1{\*}B_2}$ ; $\seq{\dual B_1{\+}\dual B_2}C$\quad (Figure~\ref{fig:crit1})
 \\
-Since the existential covers of $B$ and $B_1$ are the same, $\sigma_B\tau\subdual B = \sigma_{B_1}\tau\subdual{B_1}$ and $\rho=\rho'$. It then follows that $\psi'$ cut-eliminates in one step to $\psi$.
+Since the free existential variables of $B$ and $B_1$ are the same, $\sigma_B\tau\subdual B = \sigma_{B_1}\tau\subdual{B_1}$ and $\rho=\rho'$. It then follows that $\psi'$ cut-eliminates in one step to $\psi$.
 
 	\item
 $\seq A{\exists x.B}$ ; $\seq{\forall x.\dual B}C$\quad (Figure~\ref{fig:crit2})
@@ -2054,7 +2054,7 @@ Without loss of generality, let $i=1$. A slice $S_1$ of $\seq AB$ containing $\l
 	\item 
 $\link AD$ with $D$ in $\forall x.D$. 
 \\
-The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. By way of contradiction, assume $x\in\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) Since $x\in\sigma$ we have $x\in\tau$, and in the column of $\link AD$ we have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
+The step $\link AD\scoal\link A{\forall x.D}$ applies if $x\notin\sigma$. By way of contradiction, assume $x\in\sigma$. The column of $\link AD$ contains $(D,\sigma_D)$ and $(\forall x.D,\tau)$ where $\tau=\sigma\res{\ex[B]{\forall x.D}}$. By the exact coverage condition, $\sigma=\sigma_A\cup\sigma_D$, and since the free existential variables in $D$ and $\forall x.D$ are the same, $\ex[B]D=\ex[B]{\forall x.D}$, so that $\tau=\sigma_D$. (Note that since $\sigma_A=\varnothing$, we get $\sigma=\sigma_D=\tau$, but this is not essential to the argument.) Since $x\in\sigma$ we have $x\in\tau$, and in the column of $\link AD$ we have $(\forall x.D,\tau)\dep(D,\tau)$ since $D$ occurs as $\forall x.D$. But we already have $(D,\tau)\dep(\forall x.D,\tau)$ because $D\sub\forall x.D$, contradicting antisymmetry of $(\dep)$. Then $x\notin\sigma$, and the step $\link AD\scoal\link A{\forall x.D}$ applies.
 
 	\item
 $\link{C_i}{D_j}$ in $C=C_1\*C_2$ and $D=D_1\*D_2$.
