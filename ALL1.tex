@@ -596,7 +596,7 @@ At the heart of a theory of proof nets is the question of \emph{proof identity}:
 	\quad
 	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(t)}{\dual P(t)}}{}}}
 \]
-The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ with $x$ not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists R$-rule makes the instantiating witness explicit. Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists R$-rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
+The issue is more pronounced where quantifiers are \emph{vacuous}, $\exists x.A$ with $x$ not free in $A$. The proofs below left can only be distinguished even syntactically because the $\exists\mathrm R$ rule makes the instantiating witness explicit. Below right is an interesting intermediate variant: the witness $s$ or $t$ can be observed without explicit annotation in the $\exists\mathrm R$ rule, but the choice is equally immaterial to the content of the proof as when the quantifier were vacuous.
 \[
 	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
 	\quad
@@ -730,7 +730,7 @@ We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \d
 	\color{blue}\infer[\!\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{\color{black}\infer{\seq{\dual P\xt}{P\xt}}{}}}
 \end{array}
 \]
-The first two steps (above middle and right) move both links from the subformula $\dual Pxy$ to $\exists y.\dual Pxy$, removing the substitutions $[s/y]$ and $[t/y]$ on $y$, and corresponding to sequent rules $\exists R,s$ and $\exists R,t$. Observe that we maintain the domain of the substitutions on a link as the variables of those existential quantifiers that either linked subformula is (strictly) in scope of. 
+The first two steps (above middle and right) move both links from the subformula $\dual Pxy$ to $\exists y.\dual Pxy$, removing the substitutions $[s/y]$ and $[t/y]$ on $y$, and corresponding to sequent rules $\qrr?s$ and $\qrr?t$. Observe that we maintain the domain of the substitutions on a link as the variables of those existential quantifiers that either linked subformula is (strictly) in scope of. 
 
 The next step, from above right to below left, combines both links, and corresponds to an additive conjunction rule. We require that both substitutions agree (their domains are the same by the above observation); hence this step could not have been performed before the previous two, corresponding to the non-permutability of the generated inference rules.
 \[
@@ -880,7 +880,7 @@ By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance
 	\end{array}\right.
 \]
 
-Since we will be working with a graphical representation, we will adopt \defn{Barendregt's convention}, that bound variable names are globally unique identifiers, in the following form. In a sequent $\seq AB$, we assume all quantifiers to have a unique binding variable, distinct from any free variable. In a proof $\pi$ over $\seq AB$, a variable $x$ that is universally quantified as $\forall x.C$ in $\seq AB$ is an \defn{eigenvariable}. A $\qrr!$ rule on $\forall x.C$ is considered to bind all free occurrences of the eigenvariable $x$ in its direct subproof. Accordingly, we assume that $x$ does not occur free outside these subproofs (which can be guaranteed by globally renaming $x$). We take variable names to be persistent throughout a proof, in the sense that we don't admit alpha-conversion between proof rules. We thus have unique bound variable names in $\seq AB$, but in $\pi$ all rules on the subformula $\forall x.C$ share the same eigenvariable $x$.
+Since we will be working with a graphical representation, we will adopt \defn{Barendregt's convention}, that bound variable names are globally unique identifiers, in the following form. In a sequent $\seq AB$ we assume all quantifiers to have a unique binding variable, distinct from any free variable. In a proof $\pi$ over $\seq AB$, a variable $x$ that is universally quantified as $\forall x.C$ in $\seq AB$ is an \defn{eigenvariable}. A $\qrr!$ rule on $\forall x.C$ is considered to bind all free occurrences of the eigenvariable $x$ in its direct subproof. Accordingly, we assume that $x$ does not occur free outside these subproofs (which can be guaranteed by globally renaming $x$). We take variable names to be persistent throughout a proof, in the sense that we don't admit alpha-conversion between proof rules. We thus have unique bound variable names in $\seq AB$, but in $\pi$ all $\qrr!$ rules on the subformula $\forall x.C$ share the same eigenvariable $x$.
 
 
 % ..................................................
