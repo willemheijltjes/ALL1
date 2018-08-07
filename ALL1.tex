@@ -1096,7 +1096,7 @@ An \all1 \defn{witness proof net} or \defn{witness net} is a witness pre-net $\n
 \end{definition}
 % ..................................................
 
-We conclude this section by establishing that sequentialization and de-sequentialization for witness nets are inverses.
+We conclude this section by establishing that sequentialization and de-sequentialization for witness nets are inverses, and that witness nets are canonical.
 
 % ..................................................
 \begin{theorem}
@@ -1125,6 +1125,15 @@ it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\la
 The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
 \end{proof}
 % ..................................................
+
+\begin{theorem}
+Witness nets are canonical: $[\pi]=[\phi]$ if and only if $\pi\sim\phi$.
+\end{theorem}
+
+\begin{proof}
+From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in Appendix~\ref{sec:permutations}.
+\end{proof}
+
 
 % ..................................................
 \begin{figure}[!t]
@@ -1208,15 +1217,14 @@ Both conditions are captured naturally by coalescence, as can be observed from t
 
 \paragraph*{Slices}
 
-A \defn{slice} is the fraction of a proof that depends on a given choice of one branch (or projection) on each product formula $A\*B$. Important to additive proof theory is that many operations can be performed on a per-slice basis, such as normalization, or proof net correctness. We will here use slices for the latter purpose.
-%
-As in the propositional case \cite{Hughes-vanGlabbeek-2005}, we define a \defn{slice} of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$. We extend the propositional criterion in two ways:
+A \defn{slice} is the fraction of a proof that depends on a given choice of one branch (or projection) on each product formula $A\*B$. Important to additive proof theory is that many operations can be performed on a per-slice basis, such as normalization, or proof net correctness. We will here use slices for the latter purpose. As in the propositional case \cite{Hughes-vanGlabbeek-2005}, we define a \defn{slice} of a sequent $\seq AB$ as a set of potential links, of which exactly one must be realized in a proof net $\net{\lambda_\Sigma}AB$. We extend the propositional criterion in two ways:
 
 \begin{description}
 	\item[Expansion]
-When defining slices, we interpret an existential quantification $\exists x.A$ as a sum over all witnesses $t_i$ to $x$ that occur in the pre-net, $A[t_1/x]\+\dots\+A[t_n/x]$. This captures the non-permutability of a product rule over distinct instantiations, as below left.
+When defining slices, we interpret an existential quantification $\exists x.A$ as a sum over all witnesses $t_i$ to $x$ that occur in the pre-net, $A[t_1/x]\+\dots\+A[t_n/x]$. This captures the non-permutability of a product rule over distinct instantiations, as below left. (Technically, a slice of $\exists x.A$ will correspond to an infinite sum over $A[t/x]$ for every term $t$, but only the actually occurring terms $t_i$ will ever be relevant.)
+
 	\item[Dependency]
-We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists x.B$ where the \defn{eigenvariable} $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we require the dependency to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
+We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists y.B$ where the eigenvariable $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we will require this dependency relation to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
 	\item[]
 \[
 \vc{
@@ -1235,15 +1243,15 @@ We define a \defn{dependency} relation between a universal quantification $\fora
 \end{description}
 
 
-\noindent
-Formalizing this, for a witness linking $\lambda_\Sigma$ and variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
-\[
-	\Sigma(x) = \{~\sigma(x)~\mid~\link CD\in\lambda_\Sigma~\}~.
-\]
+%\noindent
+%Formalizing this, for a witness linking $\lambda_\Sigma$ and variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
+%\[
+%	\Sigma(x) = \{~\sigma(x)~\mid~\link CD\in\lambda_\Sigma~\}~.
+%\]
 
 % ..................................................
 \begin{definition}[Slice]
-Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'\leq A$ and $\sigma'\supseteq\sigma$, given by $S=\{(A,\sigma)\}\cup S'$ where:
+A \defn{slice} $S$ of a formula $A$ and a witness map $\sigma$ is a set of pairs $(A',\sigma')$, where $A'\leq A$ and $\sigma'\supseteq\sigma$, given by $S=\{(A,\sigma)\}\cup S'$ where:
 %
 \begin{itemize}
 	\item
@@ -1253,7 +1261,7 @@ Given a witness linking $\lambda_\Sigma$, a \defn{slice} $S$ of a formula $A$ an
 	\item
 \makebox[65pt][l]{If $A = B\*C$}		then $S'$ is a slice of $B$ and $\sigma$ or a slice of $C$ and $\sigma$.
 	\item
-\makebox[65pt][l]{If $A = \exists x.B$}	then $S'=\uplus_{t\,\in\,\Sigma(x)}S_t$ where each $S_t$ is a slice of $B$ and $\sigma[t/x]$.
+\makebox[65pt][l]{If $A = \exists x.B$}	then $S'=\uplus_{t\,\in\,\terms}S_t$ where each $S_t$ is a slice of $B$ and $\sigma[t/x]$.
 	\item
 \makebox[65pt][l]{If $A = \forall x.B$}	then $S'$ is a slice of $B$ and $\sigma$.
 \end{itemize}
@@ -1276,7 +1284,7 @@ In a pre-net $\net{\lambda_\Sigma}AB$, let the \defn{column} of a link $\link CD
 \[
 	\{~(X,\sigma\res{\ex[A]X})~\mid~C\sub X\sub A~\}\cup\{~(Y,\sigma\res{\ex[B]Y})~\mid~D\sub Y\sub B~\}~,
 \]
-with a \defn{dependency} order $(\dep)$: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall x.Y$ and $x\in\rho$.
+with a \defn{dependency} relation $(\dep)$: $(X,\rho)\dep(Y,\tau)$ if $X\leq Y$ or $Y$ occurs as $\forall x.Y$ and $x\in\rho$.
 \end{definition}
 
 % ..................................................
@@ -1350,14 +1358,6 @@ A correct witness pre-net with axiom linking is a witness proof net.
 %\end{proof}
 
 % ..................................................
-
-\begin{theorem}
-Witness nets are canonical: $[\pi]=[\phi]$ if and only if $\pi\sim\phi$.
-\end{theorem}
-
-\begin{proof}
-From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in Appendix~\ref{sec:permutations}.
-\end{proof}
 
 
 % --------------------------------------------------
@@ -1437,7 +1437,7 @@ These compositions may omit proof annotations and witness annotations.
 	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
 	 \infer[\!\!\scriptstyle{\qrr*}]{\Seq A{B_1\*B_2}\vphantom{\dual B}}{\Prf{\pi_1}A{B_1} & \Prf{\pi_2}A{B_2}}
 	 &&
-	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{B_i}C}
+	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{\dual B_i}C}
 	}}
 	&\Rightarrow&
 	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf{\pi_i}A{B_i} && \Prf\phi{\dual B_i}C}}
@@ -1792,9 +1792,9 @@ To reconstruct witnesses by unification, we define the following operations.
 %\]
 
 %
-A link $\link[]ab$ on two atomic formulas is an \defn{axiom} link if there exists a witness map $\sigma$ such that $a\sigma=\dual b\sigma$. To an axiom link $\link[]ab$ over $\seq AB$ we assign an \defn{initial witness map}, which is the least witness map $\sigma$ over the domain $\ex[\!A]a\cup\ex[\!B]b$ such that $a\sigma=\dual b\sigma$. In other words, $\sigma$ is the most general unifier of $a$ and $\dual b$, over the given domain, written $\init ab$. For an axiom linking $\lambda$ over $\seq AB$ the \defn{initial witness pre-net} $\net{\lambda_\star}AB$ is given by
+A link $\link[]ab$ on two atomic formulas is an \defn{axiom} link if there exists a witness map $\sigma$ such that $\dual a\sigma=b\sigma$. To an axiom link $\link[]ab$ over $\seq AB$ we assign an \defn{initial witness map}, which is the least witness map $\sigma$ over the domain $\ex[\!A]a\cup\ex[\!B]b$ such that $\dual a\sigma=b\sigma$. In other words, $\sigma$ is the most general unifier of $\dual a$ and $b$, over the given domain, written $\init{\dual a}b$. For an axiom linking $\lambda$ over $\seq AB$ the \defn{initial witness pre-net} $\net{\lambda_\star}AB$ is given by
 \[
-	\lambda_\star = \{~\link ab~\mid~\link[]ab\in\lambda~,~\sigma=\init ab~\}~.
+	\lambda_\star = \{~\link ab~\mid~\link[]ab\in\lambda~,~\sigma=\init{\dual a}b~\}~.
 \]
 An initial witness pre-net has \emph{exact coverage}, while coalescence will give \emph{local eigenvariables}.
 
@@ -1833,7 +1833,7 @@ An \all1 \defn{unification proof net} or \defn{unification net} is a pre-net $\n
 \end{definition}
 % ..................................................
 
-In the above definition, note that $\lambda_\star^\star=(\lambda_\star)^*$ is the initial proof labelling of $\lambda_\star$, which assigns an axiom rule to each axiom link. For a minimal example, see the introduction. Observe also that unifying coalescence includes strict coalescence, $(\scoal)\subseteq(\ucoal)$. The following two lemmata relate sequentialization for witness nets and unification nets.
+In the above definition, note that $\lambda_\star^\star=(\lambda_\star)^\star$ is the initial proof labelling of $\lambda_\star$, which assigns an axiom rule to each axiom link. For a minimal example, see the introduction. Observe also that unifying coalescence includes strict coalescence, $(\scoal)\subseteq(\ucoal)$. The following two lemmata relate sequentialization for witness nets and unification nets.
 
 % ..................................................
 \begin{lemma}
@@ -1962,9 +1962,9 @@ We have presented two notions of first-order additive proof net, witness nets an
 
 Proof nets with additives and quantifiers existed before as \emph{monomial nets} \cite{Girard-1996}, where slices are managed explicitly with \emph{monomial weights}. These nets are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions}. However, it is possible that additive monomial nets could be restricted to some notion of canonical form. Likewise, coalescence (or contractibility) has not been studied for first-order monomial nets, though it has been extended to a related form of MALL proof nets \cite{Maieli-2007}.
 
-Our slicing condition is closely related to a number of approaches to first-order classical logic. A formula $\exists x.A$ is interpreted as the sum (or classically, the \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. This can be traced back to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices. \emph{Expansion tree proofs} \cite{Miller-1987,Heijltjes-2010} are a graphical proof formalism based on this idea.
+Our slicing condition is loosely related to a number of approaches to first-order classical logic. A formula $\exists x.A$ is interpreted as the sum (or classically, the \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. This can be traced back to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices. \emph{Expansion tree proofs} \cite{Miller-1987,Heijltjes-2010} are a graphical proof formalism based on this idea.
 
-In our slicing condition, the witnesses $t_1,\dots,t_n$ for the expansion $A[t_1/x]\+\dots\+A[t_n/x]$ are collected from the substitutions recorded at the links of the proof net. Expansion trees, in contrast, record the expansion and its terms explicitly. This could be an interesting alternative approach to additive proof nets, which we may explore in future work. It is expected, though, that this would sacrifice \emph{generality} and \emph{direct composition}.
+In our slicing condition, the interpretation of $\exists x.A$ is an infinite sum of which only a finite part $A[t_1/x]\+\dots\+A[t_n/x]$ is relevant, over the witnesses $t_1,\dots,t_n$ actually assigned to $x$ in the proof net. An interesting alternative approach to additive proof nets, which we may explore in future work, could be to take the expansion of $\exists x.A$ to $A[t_1/x]\+\dots\+A[t_n/x]$ as primary, and record it explicitly in the syntax, as expansion tree proofs do for classical logic. It is expected, however, that this would sacrifice \emph{generality} and \emph{direct composition}.
 
 %\paragraph*{Generality}
 
@@ -2000,7 +2000,7 @@ Strict coalescence preserves and reflects correctness.
 \end{lemma}
 
 \begin{proof}
-For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is correct if and only if $R$ is. Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. In each case, exact coverage is immediately preserved and reflected. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices. For dependency-correctness, we will briefly show how acyclicity of the columns of the involved links is preserved.
+For a strict coalescence step $L\scoal R$, we will show that the witness pre-net $L$ is correct if and only if $R$ is. Let $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}AB$. In each case, exact coverage and local eigenvariables are immediately preserved and reflected. For slice-correctness, we will demonstrate that the left-hand side and right-hand side of each rule belong to the same slice of $\seq AB$, or in the case of $\srr?$, naturally corresponding slices. For dependency-correctness, we will briefly show how acyclicity of the columns of the involved links is preserved.
 
 \begin{itemize}
 	\item
@@ -2020,7 +2020,9 @@ Dependency-correctness is immediate, as above.
 	\item
 $\link CD\scoal\link[\sigma\minus x]C{\exists x.D}$
 \\
-The witness sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
+A slice $S$ of $\seq AB$ contains $\link[\tau] C{\exists x.D}$ if and only if it contains all links $\link[\tau{[t/x]}]CD$ for any term $t$. Letting $\tau[t/x]=\sigma$, then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$.
+%
+%The witnesses sets $\Sigma(x)$ and $\Theta(x)$ for $L$ and $R$ need not be the same, since $L$ has $\sigma$ where $R$ has $\sigma\minus x$. Let $\Sigma(x)=\{t,t_1,\dots,t_n\}$ and $\Theta(x)=\{t_1,\dots,t_n\}$, where $\sigma(x)=t$. For every slice $S_B$ of $B$ over $\Sigma$ there is a corresponding slice $S'_B$ over $\Theta$, both (or neither) containing $(\exists x.D,\tau)$ and $(D,\tau[t_i/x])$ for $i\leq n$, but the former in addition having $(D,\tau[t/x])$. Then $S\cap \lambda_\Sigma$ is the singleton $\{\link CD\}$ if and only if $S\cap\kappa_\Theta$ is $\{\link[\sigma\minus x]C{\exists x.D}\}$, where it should be observed that if $t$ is also a witness to $x$ in some other slice of $R$, then $t\in\Theta(x)$ and in fact $S=S'$. 
 
 For dependency-correctness, the column of $\link CD$ is that of $\link[\sigma\minus x]C{\exists x.D}$ plus a pair $(D,\tau)$, which is minimal in $(\dep)$.
 
