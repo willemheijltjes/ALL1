@@ -576,7 +576,8 @@ This is incompatible with a \defn{sequent + links} proof net design, where the c
 
 \defn{Witness nets} record witness assignment in substitution maps attached to each link. The example above left shows the proof net for the sequent proof above. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of an atomic proposition.) Witness nets are canonical for \all1 sequent calculus permutations. Composition is direct, where the witness assignments of links are composed through a simple process of \emph{interaction + hiding} similar to that of game semantics \cite{Mimram-2011}.
 
-\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition is direct, by relational composition. We compare further properties in Figure~\ref{fig:results} in the conclusion, where we also discuss related work and Lambek's notion of \defn{generality} \cite{Lambek-1968, Lambek-1969, Lambek-1972}.
+\defn{Unification nets} omit any witness information, as illustrated above right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition is direct, by relational composition. We compare further properties in Figure~\ref{fig:results} in the conclusion, where we also discuss related work and Lambek's notion of \defn{generality} \cite{Lambek-1968-1972}.
+%\cite{Lambek-1968, Lambek-1969, Lambek-1972}.
 
 \paragraph*{Background}
 
@@ -1214,6 +1215,8 @@ As in the propositional case \cite{Hughes-vanGlabbeek-2005}, we define a \defn{s
 \begin{description}
 	\item[Expansion]
 When defining slices, we interpret an existential quantification $\exists x.A$ as a sum over all witnesses $t_i$ to $x$ that occur in the pre-net, $A[t_1/x]\+\dots\+A[t_n/x]$. This captures the non-permutability of a product rule over distinct instantiations, as below left.
+	\item[Dependency]
+We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists x.B$ where the \defn{eigenvariable} $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we require the dependency to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
 	\item[]
 \[
 \vc{
@@ -1229,9 +1232,8 @@ When defining slices, we interpret an existential quantification $\exists x.A$ a
    }}
    \quad\text{where }x\in\fv(t)
 \]
-	\item[Dependency]
-We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists x.B$ where the \defn{eigenvariable} $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we require the dependency to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
 \end{description}
+
 
 \noindent
 Formalizing this, for a witness linking $\lambda_\Sigma$ and variable $x$, write $\Sigma(x)\subseteq\terms$ for the \defn{witness set} of $x$, which collects the terms assigned to $x$ by the witness maps in $\Sigma$ for every link in $\lambda$:
@@ -1966,7 +1968,9 @@ In our slicing condition, the witnesses $t_1,\dots,t_n$ for the expansion $A[t_1
 
 %\paragraph*{Generality}
 
-The idea of using \emph{generality} as a basis for proof identity originates with Lambek \cite{Lambek-1968,Lambek-1969,Lambek-1972}, who observed that the two canonical proofs of $\seq{A{\+}A}{\dual A}$ can be distinguished by casting each as a specialization (by substituting into propositional variables) of the more general proofs of $\seq{\,a{\+}b}{\dual a}$ and $\seq{\,a{\+}b}{\dual b}$. Curiously, how this extends to the first-order setting is not obvious.
+The idea of using \emph{generality} as a basis for proof identity originates with Lambek \cite{Lambek-1968-1972}, 
+%\cite{Lambek-1968,Lambek-1969,Lambek-1972}, 
+who observed that the two canonical proofs of $\seq{A{\+}A}{\dual A}$ can be distinguished by casting each as a specialization (by substituting into propositional variables) of the more general proofs of $\seq{\,a{\+}b}{\dual a}$ and $\seq{\,a{\+}b}{\dual b}$. Curiously, how this extends to the first-order setting is not obvious.
 
 The natural first-order analogue of $\seq{A{\+}A}{\dual A}$ would be $\seq{\exists x.A}{\dual A}$ where the quantifier is vacuous, as $\exists x.A$ represents the infinite sum over $A$ (for all terms $t$). Where Lambek's generality \emph{distinguishes} the two proofs of $\seq{A{\+}A}{\dual A}$, ours \emph{identifies} the proofs of $\seq{\exists x.A}{\dual A}$: the sequent has one unification net, but infinitely many witness nets (one for each $t$). Interestingly, then, if existential quantification is indeed analogous to a sum, Lambek's notion of generality is more faithfully captured by witness nets than unification nets.
 
