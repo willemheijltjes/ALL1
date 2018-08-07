@@ -1,0 +1,21 @@
+----------------------- REVIEW 3 ---------------------
+PAPER: 38
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem Heijltjes, Dominic Hughes and Lutz Strassburger
+
+Interest: 1 (I quite like this work)
+
+----------- Technical evaluation -----------
+The paper is nicely written, with an accurate sense of the balance between rigor and intuition which is not an easy task, the subject being quite technical and difficult. An expert in proof-nets still learns a lot and I believe a non-expert may read it with profit.
+
+----------- Originality -----------
+The paper puts together a published work on correctness condition for propositional additive proof-nets and the well known acyclicity condition on eigenvariables in proof-nets with first-order quantifiers. Surprisingly enough it seems no particular effort has to be done to gather the two conditions that fit very well together, getting a nice notion of proof-nets for additive linear logic with first order quantifiers. So technically the improvement can be considered as minor relative to previous work by the same authors.
+
+----------- Scholarly contribution -----------
+The authors are very well aware of the relevant work: they are acknowledged experts on the question of correcteness condition for additive linear logic.
+
+----------- Comments to the author -----------
+I don't have advice for improvements, as said before I found the paper very well written. The big question is of course the extension to multiplicative connectives, maybe a word on this issue could be added in the conclusion.
+Although it obviously has been extensively proofread, I could find a few typos.
+On p.4 in the example of strict coalescence at the top of the page the substitution on the right should be t/y and not s/y
+On the second line of p.9 an $\exists x. B$ should be $\exists y.B$; on the third line the phrase "For each link, we require the dependy to be acyclic" is obscure as the dependency order is only defined later.

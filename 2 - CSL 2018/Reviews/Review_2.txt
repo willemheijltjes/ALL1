@@ -1,0 +1,45 @@
+----------------------- REVIEW 2 ---------------------
+PAPER: 38
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem Heijltjes, Dominic Hughes and Lutz Strassburger
+
+Interest: 1 (I quite like this work)
+
+----------- Technical evaluation -----------
+The article provides three interesting characterization of ALL1 proof nets. However, several technical arguments are based on some assumptions which are not clearly justified (as discussed at length in the report). Also, some arguments (discussed in the report too) should be reformulated to make the implicit induction assumptions clearer, as well as to justify them.
+
+----------- Originality -----------
+The paper is related to previous works of the authors on additive nets criterions (based on slices or on coalescence) and on the second author's unification nets, of which they provide an interesting extension to the first-order case.
+
+----------- Scholarly contribution -----------
+The connections with the relevant literature are explained and justified in the introduction. References to Lambek's formulation of the problem of generality (to address which unification nets are conceived) should be added.
+
+----------- Interest -----------
+The article provides solution to an interesting problem, the one of adding first-order quantifiers to additive linear logic. The problem is non trivial as additive superposition forces superposition of witnesses, requiring for some form of implicit treatment of these (either by links with substitutions or by unification nets).
+
+----------- Comments to the author -----------
+In this papers proof nets for First-Order Additive Linear Logic (ALL1) are considered and several formalisms are proposed:
+1 witness nets (WN) with correctness based on coalescence
+2 witness nets with correctness based on slices 
+3 unification nets (UN) with correctness based on coalescence.
+
+WN provide a proof representation invariant with respect to valid sequent calculus permutations of rules. UN (inspired from previous work of the second author), in addition, provide proof representations which are  "most general" in the sense that they quotient proofs under the generality order induced by substitutions (a notion originating in Lambek's work).  
+
+The contributions of the paper are interesting and well-motivated in the introduction. Also, the three solutions proposed look at first quite convincing. However, the verification of some arguments contained in the paper looks quite difficult, due to a general problem with so-called "naming conventions" which I highlight below. In particular, I cannot be completely sure about some claims contained in the article, as their proofs rely on implicit assumptions which are not clearly stated nor justified. 
+
+A witness net over formulas A,B is the given of a linking over the formulas along with a map associating each link with a substitution. The authors provide two ways to check the correctness of a witness nets. First, by defining a first-order generalization of additive coalescence, an approach developed by the first author in previous papers on MALL nets. It is shown that a witness net sequentializes into a proof \pi iff it coalesces into a unique link with proof label \pi. Then a slice based correctness criterion is introduced (inspired from previous work of the second author on MALL nets). An important difference with respect to MALL is that the definition of the slices of a formula depends on a chosen witness linking (as slices contain the sum of all witnesses of \exists-links). It is shown that the two criterions are equivalent (Theorem 14). I observe that in the proofs of theorem 14 (second part) and of corollary 16, the arguments implicitly rely on some form of inductio!
+n, which is not clearly stated. I imagine these arguments are developed by induction on the rewriting induced by coalescence, which I suppose to be strongly normalizing (this seems quite trivial to see). These arguments should be reformulated in a clearer way. 
+
+Composition of witness nets is defined by constructing fixpoints of substitutions. I have two concerns about this part (which might be solved by a reformulation of some relevant statement). The first one is described below in connection with the general issue on naming conventions. The second one is the following: the fixpoint construction need not be finite; however, the authors claim that finiteness follows from the correction criterion. It is not clear to me whether this statement in the text is taken as self-evident (but I cannot see why) or as a consequence of the argument given below and culminating in theorem 19. In this second case, the argument should be taken to show, in addition to what is claimed, the finiteness of the fixpoint construction, by an induction on the (sum of the) complexity of cut-formulas (as at any step is shown that the fixpoint on a complex formulas can be obtained from the fixpoint on a less complex one). In this case, this part of the argument!
+ should be clearly stated and the statement theorem 19 reformulated as something like: if proof nets \lambda_\Sigma and \kappa_\Theta sequentialize to \pi and \phi respectively, then their composition is well-defined and sequentializes to the normal form \psi of \pi;\phi.
+
+Finally, unification nets are defined by dropping the explicit assignment of substitutions to links, and by reconstructing them during coalescence as most-general unifiers. It is shown that unifying coalescence is equivalence to coalescence in the sense that a witness net \lambda_\Sigma coalesces iff there is some unification net which unifying-coalesces and such that the former is related to the latter by a substitution. Hence, unification nets provide "most general" representant of witness nets, the quotient being compatible with cut-elimination. 
+
+I explain now my main concern. Both the definition and the use of witness nets reposes on three "naming conventions"  which are implicitly exploited in the text, making it quite uneasy for the reader to completely follow the arguments. 
+For instance, when defining the "de-sequentialization" of a sequent calculus proof into a witness linking, the authors are probably implicitly assuming that some related conventions hold for sequent calculus proofs, making the verification that the three conventions hold for the witness net obtained trivial. Rather than conventions, these are thus conditions they assume to hold for a witness linking, but one should then verify (at any stage in which this is relevant) that one can actually suppose these conditions to hold. 
+A similar situation occurs in definition 5 (strict sequentialization), in which, as far as I can see, the first two conditions play an implicit role and in definition 18 (composition), which, as it is defined, clearly violates the first condition and probably requires the third condition (to avoid the fixpoint construction to rename variables in a wrong way).
+My experience with quantifiers in proof theory suggests that one must be very careful with naming conventions when defining cut-elimination, as the latter might indeed induce "unwanted" renamings. 
+
+Moreover, I could not make my ideas clear about the third naming convention: it is asked that, for a link (C,D)_\sigma over a sequent A,B, all variables in the range of \sigma which are not universal variables are distinct from existential variables of A,B and "from those of other links". This seems to mean that the variables in the range of \sigma which are neither universal nor existential must be disjoint from those occurring free in the range of \sigma', where \sigma' is the substitution of another link. If this is the right way to read this condition, then definition 3 of desequentialization might fail to produce witness nets satisfying it: for this consider the proof of conclusions A^\bot(t), \exists x(A(t) & A(t)) whose desequentialization is made of two identical links (A^\bot(t), A(x))_[t/x]. In any case, nowhere in the article I could find this condition explicitly used, but I suspect, as observed above, that it might play a relevant role in cut-elimination.
+
+Even though the space is limited, I suggest the authors to be clearer about conventions/conditions and to carefully highlight their use in the proofs. Also the condition of "exact coverage" (def. 4) is used implicitly in some definitions (for instance in def. 5 and def. 18). Finally, as discussed above, the arguments of theorem 14 and corollary 16 should be reformulated so to make the inductions used explicit.

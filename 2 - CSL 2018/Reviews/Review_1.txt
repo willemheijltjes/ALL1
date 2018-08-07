@@ -1,0 +1,90 @@
+----------------------- REVIEW 1 ---------------------
+PAPER: 38
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem Heijltjes, Dominic Hughes and Lutz Strassburger
+
+Interest: 2 (I really like this work)
+
+----------- Technical evaluation -----------
+Linkings as sets of pairs of subformulas do not look to be exactly
+appropriate for coalescence. In particular:
+l.213: clarify how the strict sequentialization relation applies to
+      the net over ~P + ~Q , P + Q containing the two links (~P,P)
+      and (~Q,Q)
+
+Freshness condition is given on links, but does not seem to
+necessarily coincide with what happens in proofs. In particular:
+l.170: explain how you deal with the freshness condition in the
+      de-sequentialization of the following proof:
+           --------     --------
+           ~Px , Px     ~Px , Px
+           --------------------- 
+               ~Px , Px & Px
+             ------------------
+             ~Px , Ey.(Py & Py)
+            --------------------
+            Ex.~Px, Ey.(Py & Py)
+
+----------- Originality -----------
+The work mainly merges [11] and [17]. Given the fact that first-order
+quantifier have a rather additive behaviour, it is not completely
+surprising that the merge works well.
+
+----------- Scholarly contribution -----------
+The relevant literature is mentioned.
+
+----------- Comments to the author -----------
+The paper builds on previous works of the authors [11,17] by
+considering proof nets for unit-free additive linear logic with
+first-order quantifiers.
+
+The introduction is very well written and gives clear ideas of the
+objects under consideration.
+Section 2 defines proof nets for first-order unit-free additive linear
+logic. A net is given by axiom links labelled with substitutions (used
+to encode existential witnesses from proofs). A parsing-style
+correctness criterion (coalescence) is presented and comes with all
+the requested properties for such a criterion (Theorems 7, 8, 13).
+Section 3 moves to a more geometric, thus more interesting, acyclicity
+criterion. The key Definition 9 is not very easy to grasp, more
+explanations or examples would be useful.
+Section 4 studies a big-step cut-elimination process on nets by link
+composition which requires to compute iterated compositions of the
+labelling substitutions to compute the labels of the resulting links.
+Section 5 is more directly related with [17]. Substitutions on
+links are removed and a unification mechanism rebuilds them in the
+coalescence/sequentialization process. The induced nets are called
+unification nets. This abstraction over substitutions leads to a
+stronger quotient: proofs depending on irrelevant existential witness
+choices are identified.
+As shown in the concluding table on Figure 7, the main missing
+ingredient in the paper is a geometric slicing correctness criterion
+for unification nets which would abstract from the
+parsing/sequentialization process given by coalescence.
+
+I think this is the kind of very clean work that could become a
+reference and a milestone in the theory. It clearly deserves to be
+published.
+
+
+
+l.108: right edge of first two nets, [s/y] should be [t/y]
+l.157: justify that \pi\sigma is well defined
+l.220: mention that C(\sigma//x) = C\sigma
+l.254: Ex.B should be Ey.B
+l.263: would it be possible to rephrase this definition with something
+      like thick subtrees [Bou09]?
+l.263: only \Sigma seems to be used in the definition not \lambda_\Sigma
+l.266 and l.268: explain the meaning of \uplus
+l.273: since only S intersected with \lambda_Sigma looks important,
+      would it be possible to simplify Definition 9 by forgetting
+      about \Sigma and by taking union over all terms in the Ex.B
+      case?
+l.280: dependency order should be dependency relation
+l.308: Theorem 17 and its proof could be moved to the end of Section 2
+l.311: v/z should be z/v
+Figure 3: first Bi should be ~Bi
+l.392: the * in exponent is not always the same
+
+[Bou09] Pierre Boudes: Thick Subtrees, Games and Experiments.
+       TLCA 2009: 65-79.
