@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[twoside,a4paper]{article}
 
 %\usepackage {etex}
 \usepackage{geometry}
@@ -25,6 +25,44 @@
 \newcommand{\lutz}[1]{{\color{blue}     \noindent[\![\![{\bf Lutz: }#1]\!]\!]}}
 \newcommand{\todo}[1]{{\color{red}     \noindent[\![\![{\bf TODO: }#1]\!]\!]}}
 \newcommand{\willem}[1]{{\color{green!50!black}     \noindent[\![\![{\bf Willem: }#1]\!]\!]}}
+
+% ============================== for RR
+
+\usepackage{RR}
+
+\RRNo{9201}
+\RRdate{September 2018}
+\RRauthor{Willem B.\ Heijltjes \and Dominic J.D.\ Hughes \and Lutz Stra\ss burger}
+\RRtitle{Reseaux de preuves pour la logique linéaire additive de premier ordre}
+\RRetitle{Proof nets for first-order additive linear logic}
+\RRprojet{Parsifal}
+\RCSaclay
+\RRabstract{
+We present canonical proof nets for first-order additive linear logic, the fragment of linear logic with sum, product, and first-order universal and existential quantification. 
+%
+We present two versions of our proof nets. One, \emph{witness nets}, retains explicit witnessing information to existential quantification. For the other, \emph{unification nets}, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed. 
+%
+Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. Both notions of proof net are defined through coalescence, an additive counterpart to multiplicative contractibility, and for witness nets an additional geometric correctness criterion is provided. 
+% 
+Both capture sequent calculus cut-elimination as a one-step global composition operation.
+}
+
+\RRkeyword{proof nets, additive linear logic, first-order, unification}
+
+\RRresume{%%
+Nous présentons des réseaux de preuve canoniques pour la logique linéaire additive du premier ordre, le fragment de la logique linéaire avec somme, produit et quantificateurs du premier ordre.
+%
+Nous présentons deux versions de nos réseaux de preuves. Pour l'un, \emph{r\'eseaux \`a témoin}, conserve une information de témoin explicite à la quantification existentielle. Pour l'autre, \emph {r\'eseaux d'unification}, cette information est absente mais peut être reconstruite par l'unification. Les r\'esaeux d'unification incarnent une contribution centrale de l'article: les informations sur les témoins de premier ordre peuvent être implicites et reconstruites selon les besoins.
+%
+Les r\'eseaux à témoin sont canoniques pour le calcul des séquents additifs de premier ordre. Les réseaux d’unification excluent en outre tout choix inessentiel pour les témoins existentiels. Les deux notions de réseau de preuve sont définies par la coalescence, un complément additif à la contractibilité multiplicative, et pour les réseaux de témoins, un critère supplémentaire de correction géométrique est fourni.
+%
+Tous deux capturent l'élimination des coupures comme une opération de composition globale en une étape.
+}
+
+\RRmotcle{reseaux de preuves, logique linéaire additive, premier ordre, unification}
+
+\authorhead{Heijltjes \& Hughes \& Stra{\ss}burger}
+\titlehead{Proof nets for first-order additive linear logic}
 
 % ============================== MACROS
 
@@ -461,17 +499,20 @@
 
 \begin{document}
 
+\makeRR
+
 \maketitle
 
-\begin{abstract}
-We present canonical proof nets for first-order additive linear logic, the fragment of linear logic with sum, product, and first-order universal and existential quantification. 
-%
-We present two versions of our proof nets. One, \emph{witness nets}, retains explicit witnessing information to existential quantification. For the other, \emph{unification nets}, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed. 
-%
-Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. Both notions of proof net are defined through coalescence, an additive counterpart to multiplicative contractibility, and for witness nets an additional geometric correctness criterion is provided. 
-% 
-Both capture sequent calculus cut-elimination as a one-step global composition operation.
-\end{abstract}
+%% \begin{abstract}
+
+%%   We present canonical proof nets for first-order additive linear logic, the fragment of linear logic with sum, product, and first-order universal and existential quantification. 
+%% %
+%% We present two versions of our proof nets. One, \emph{witness nets}, retains explicit witnessing information to existential quantification. For the other, \emph{unification nets}, this information is absent but can be reconstructed through unification. Unification nets embody a central contribution of the paper: first-order witness information can be left implicit, and reconstructed as needed. 
+%% %
+%% Witness nets are canonical for first-order additive sequent calculus. Unification nets in addition factor out any inessential choice for existential witnesses. Both notions of proof net are defined through coalescence, an additive counterpart to multiplicative contractibility, and for witness nets an additional geometric correctness criterion is provided. 
+%% % 
+%% Both capture sequent calculus cut-elimination as a one-step global composition operation.
+%% \end{abstract}
 
 
 % ==================================================
