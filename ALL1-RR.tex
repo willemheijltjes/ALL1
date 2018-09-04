@@ -755,8 +755,6 @@ In this paper we will not attempt to settle the question of proof identity. Rath
 Additive proof nets have two natural correctness criteria. \defn{Coalescence} \cite{Heijltjes-Hughes-2015,Hughes-Heijltjes-2016}, a counterpart to multiplicative \emph{contractibility} \cite{Danos-1990,Guerrini-Masini-2001}, provides efficient correctness and sequentialization via local rewriting: it asks that the steps below left result in a single link, connecting both formulas. \defn{Slicing} \cite{Hughes-vanGlabbeek-2005} is a global, geometric criterion: it asks that each \defn{slice}, a choice to remove one subformula of each product along with all connected links, retains a single link.
 %
 \[
-\hspace*{-\parindent}
-\hspace*{\fill}
 \begin{array}{c@{\qquad\qquad\qquad}c}
 	\vc{\begin{tikzpicture}[net]
 		\formula[y=1]{A}
@@ -805,8 +803,7 @@ Additive proof nets have two natural correctness criteria. \defn{Coalescence} \c
 \\
 	\text{\small coalescence}
 &	\text{\small slicing}
-\end{array}	
-\hfill
+\end{array}
 \]
 We extend coalescence to both witness nets and unification nets, and slicing to witness nets. Here, we illustrate the former, and leave a discussion of slicing to the conclusion of the paper.
 
@@ -818,7 +815,6 @@ We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \d
 \newcommand\zs{zs}
 \newcommand\zt{zt}
 \[
-\hspace*{-\parindent}
 \begin{array}{@{}c@{}c@{}c@{}c@{}c@{}}
 	\vc{\begin{tikzpicture}[net]
 		\formula[y=1]{\forall*{x.}\exists*{y.}{\dual P}*\xy}
@@ -926,8 +922,6 @@ The final steps introduce an inference $\exists R,x$ and one $\forall R$. For th
 
 Unifying coalescence, for unification nets, is similar to strict coalescence; two differences allow it to reconstruct witnesses by unification, which we illustrate. To initialize coalescence, the links in the net below left are given, as a substitution map, the \defn{most general unifier} of the two propositions connected by the link. Both links now correspond to sequent axioms.
 \[
-\hspace*{-\parindent}
-\hspace*{\fill}
 \begin{array}{@{}ccccc@{}}
     \vc{\begin{tikzpicture}[net]
     	\formula[y=1]{{\dual P}*{xx}}
@@ -966,7 +960,6 @@ Unifying coalescence, for unification nets, is similar to strict coalescence; tw
 	  \color{black}\infer{\seq{\dual Puu}{Puu}}{}
 	 }}
 \end{array}
-\hfill
 \]
 The second difference is the coalescence step for additive conjunction, above right. Where strict coalescence requires both links to carry identical substitution maps, here we require both maps to be \emph{unifyable}, in the sense that both must have a common, more special (less general) substitution map. This is then applied to the new link. In the example, the terms $s$ and $t$ are unified to $u$, i.e.\ $u$ is a most general term that specializes both $s$ and $t$. Note that in the sequentialization, both subproofs also need to be specialized, from $s$ and $t$ to $u$.
 
