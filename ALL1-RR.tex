@@ -564,8 +564,6 @@ Here, we extend proof nets to first-order additive linear logic (\all1). Beyond 
 \all\ proof nets \cite[Section 4.10]{Hughes-vanGlabbeek-2005} represent a morphism $A\to B$ by a sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between the propositional atoms of $\dual A$ (the dual of $A$) and those of $B$. They are \defn{canonical}: they factor out the permutations of sequent calculus, and correspond 1--1 to morphisms of the free category with binary sums and products. \defn{Composition}, of proof nets over $\seq{\dual A}B$ and $\seq{\dual B}C$ to one over $\seq{\dual A}C$, is by the relational composition of their linkings along the dual formulas $B$ and $\dual B$ and captures sequent-calculus cut-elimination. Below are examples of proof nets and their composition.
 %
 \[
-\hspace*{-\parindent}%
-\hspace*{\fill}%
 \begin{array}{@{}rc@{\qquad}rc@{}}
 	\text{\small diagonal:}
 &	\vc{\begin{tikzpicture}[net]
@@ -623,7 +621,6 @@ Here, we extend proof nets to first-order additive linear logic (\all1). Beyond 
             \Vlink[violet]{[-1]1,1}
             \Vlink[violet]{[1]1,2}
     \end{tikzpicture}}
-\hfill
 % Tightening the text and spacing the 
 \rule[-55pt]{0pt}{110pt}
 \]
@@ -635,17 +632,14 @@ Here, we extend proof nets to first-order additive linear logic (\all1). Beyond 
 We extend additive proof nets with first-order quantification. Our central challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers. Commonly, as in the sequent calculus rule below left, a witness to $\exists x.B$ is given by an immediate substitution $B[t/x]$. To assign different witnesses in different branches of a proof, the subformula is duplicated first, giving $B[s/x]$ and $B[t/x]$, as below right.
 %
 \[
-\hspace*{\fill}
-\hspace*{-\parindent}
 	\vc{\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}}
-\hfill
+\qquad\qquad
 \vc{
 	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
 	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
 	 &&
 	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
    }}
-\hfill
 \]
 %
 This is incompatible with a \defn{sequent\,+\,links} proof net design, where the conclusion sequent remains intact, and a subformula $B$ cannot be the subject of substitution or duplication. Instead, we propose two alternative treatments of witnessing terms, embodied in two notions of proof net: \defn{witness nets} and \defn{unification nets}. Our solutions are based on the second author's recent \defn{unification nets} for first-order multiplicative linear logic \cite{Hughes-2018}. Their main feature is to omit existential witnesses altogether, and reconstruct them by unification.
@@ -657,8 +651,6 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 %\cite{Lambek-1968, Lambek-1969, Lambek-1972}.
 %
 \[
-\hspace*{\fill}
-\hspace*{-\parindent}
 	\text{\small a witness net:}
 	\quad
 	\vc{\begin{tikzpicture}[net]
@@ -667,7 +659,7 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 		\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
 		\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
 	\end{tikzpicture}}
-\hfill
+\qquad\qquad
 	\text{\small a unification net:}
 	\quad
 	\vc{\begin{tikzpicture}[net]
@@ -676,7 +668,6 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 		\Vlink[red]{[-3]4,1}
 		\Vlink[red]{[1]4,6}
 	\end{tikzpicture}}
-\hfill
 \]
 %
 \subsubsection*{Background}
