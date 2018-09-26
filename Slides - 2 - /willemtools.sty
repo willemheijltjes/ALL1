@@ -1,0 +1,166 @@
+% WillemTools v 1.4 
+%
+% Reduced to core essentials
+
+\usepackage{ifthen}
+\usepackage{xargs}
+
+
+
+% WRITING TO CONSOLE:
+%
+% \newlinechar=`\^^J
+%
+% \message{^^JWarning: \noexpand\plop: no plops allowed^^J^^J}%
+%
+% \PackageError{}{}
+% \PackageWarning{}{}
+% \GenericWarning{}{}
+% \errmessage{}
+% \message{}
+
+
+% ================================================== 
+%
+% CASE SWITCH 
+
+% Selects a matching case from a list of <case> - <body> pairs
+%
+%	\SWITCH <tgt> <case-1> <body-1>
+%                 <case-2> <body-2>
+%                        ...
+%                 \DEFAULT <body>
+%
+% if <case-i> == DEFAULT selects <body>
+% if <tgt> /= <case-i> falls through to next line as \SWITCH <tgt>
+% if <tgt> == <case-i> selects <body-i> as
+%	\ENDSWITCH <case-i>
+%
+\newcommand\SWITCH[3]{%
+	\ifthenelse{\equal{#1}{#2}}{\ENDSWITCH{#3}}{%
+	 \ifthenelse{\equal{\DEFAULT}{#2}}{#3}{%
+	  \SWITCH{#1}%
+}}}
+
+% Removes remaining pairs after \SWITCH finds a match
+%
+%   \ENDSWITCH <found> <case-1> <body-1>
+%                      <case-2> <body-2>
+%                             ...
+%                      \DEFAULT <body>
+%
+% if <case-i> == \DEFAULT returns <found>
+% otherwise falls through as \ENDSWITCH <found>
+%
+\newcommand\ENDSWITCH[3]{%
+	\ifthenelse{\equal{#2}{\DEFAULT}}{#1}{\ENDSWITCH{#1}}%
+}
+
+% DEFAULT marker (how to make this a primitive?)
+\newcommand\DEFAULT{DEFAULT}
+
+% ==================================================
+
+
+% FORCE PAPER SIZE FOR DVIPS
+
+\newcommand\setDvipsPaperSize[1]{
+  \SWITCH{#1}
+    {a4}    {\special{papersize = 210mm,297mm}}
+    {A4}    {\special{papersize = 8.3in,11.7in}}
+	{letter}{\special{papersize = 8.5in,11in}}
+  \DEFAULT{\PackageWarning{willemtools}{setDvipsPaperSize: unknown paper size}}
+}
+
+
+% PREPARE FOR BEAMER PRESENTATION
+
+\newcommand\setBeamer[1][{}]{
+	\useoutertheme{default}
+	\setbeamercolor{title}{fg=red!70!black,bg=white!70!red} 
+	\setbeamercolor{frametitle}{fg=red!70!black,bg=white!95!red}
+	\setbeamercolor{structure}{fg=red!70!black,bg=white!95!red}
+	\setbeamercolor{normal text}{fg=black,bg=white!95!red}
+	\setbeamercolor{alerted text}{fg=red,bg=white!95!red}
+	\setbeamercolor{item}{fg=red!70!black,bg=white!95!red}
+	\setbeamercolor{palette primary}{fg=red!70!black,bg=white!85!red}
+	\setbeamercolor{palette secondary}{fg=red!70!black,bg=white!85!red}
+  \SWITCH{#1}
+  {xy} {\newxyColor{bgcolor} {1    0.949 0.949}{rgb}{}}
+  {tikz}{}
+  \DEFAULT{}
+}
+
+% FIX VERTICAL CENTERING
+
+\newcommand\vc[1]{\vcenter{\hbox{$#1$}}}
+
+
+% THEOREM STYLES
+
+\newcommand\makeTheoremDefs{
+	%%
+	\theoremstyle{definition}
+	\newtheorem{definition}{Definition}
+	%%
+	\theoremstyle{plain}
+	\newtheorem{conjecture} [definition]{Conjecture}
+	\newtheorem{corollary}  [definition]{Corollary}
+	\newtheorem{lemma}      [definition]{Lemma}
+	\newtheorem{proposition}[definition]{Proposition}
+	\newtheorem{theorem}    [definition]{Theorem}
+	%%
+	\newtheorem*{remark}{Remark}
+}
+
+\newenvironment{thmenv}[1]{%
+	\let\innerthmenv\undefined%
+	\let\endinnerthmenv\undefined%
+	\newtheorem*{innerthmenv}{#1}%
+	\begin{innerthmenv}%
+}{
+	\end{innerthmenv}%
+}
+
+% BNF GRAMMARS
+
+\makeatletter
+ \newcommand{\coloneqq}{%
+ \mathrel{%
+   \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}\raisebox{-0.3ex}{$\m@th\cdot$}%
+   \rlap{\raisebox{0.3ex}{$\m@th\cdot$}}\raisebox{-0.3ex}{$\m@th\cdot$}%
+ }=}
+\makeatother
+
+\newcommand\Mid{\mid}
+\newcommand\Coloneqq{\coloneqq}
+
+ \newcommand\setMidspace[2][-]{%
+ 	\renewcommand\Mid{\kern#2\mid\kern#2}%
+ 	\ifx#1-\renewcommand\Coloneqq{\kern#2\coloneqq\kern#2}\else\renewcommand\Coloneqq{\kern#1\coloneqq\kern#1}\fi%
+}
+
+
+% small triangles (taken from mathabx.sty)
+
+\DeclareFontFamily{U}{mathb}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathb}{m}{n}{
+      <5> <6> <7> <8> <9> <10> gen * mathb
+      <10.95> mathb10 <12> <14.4> <17.28> <20.74> <24.88> mathb12
+      }{}
+\DeclareSymbolFont{mathb}{U}{mathb}{m}{n}
+\DeclareFontSubstitution{U}{mathb}{m}{n}
+
+%
+\DeclareMathSymbol{\smalltriangleup}   {2}{mathb}{"98}
+\DeclareMathSymbol{\smalltriangledown} {2}{mathb}{"99}
+\DeclareMathSymbol{\smalltriangleleft} {2}{mathb}{"9A}
+\DeclareMathSymbol{\smalltriangleright}{2}{mathb}{"9B}
+\DeclareMathSymbol{\blacktriangleup}   {2}{mathb}{"9C}
+\DeclareMathSymbol{\blacktriangledown} {2}{mathb}{"9D}
+\DeclareMathSymbol{\blacktriangleleft} {2}{mathb}{"9E}
+\DeclareMathSymbol{\blacktriangleright}{2}{mathb}{"9F}
+
+
+
+
