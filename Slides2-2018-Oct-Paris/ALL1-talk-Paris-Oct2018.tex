@@ -10,6 +10,46 @@
 
 \input{frogs/frogspeak}
 
+\def\citecolor{\color{ForestGreen}}
+  \def\normalcolor{\color{black}}
+%  \def\innercolor{\color{RedViolet}}
+  \def\innercolor{\color{Maroon}}
+  \def\conscolor{\color{JungleGreen}}
+  \def\emphcolor{\color{magenta}}
+  \def\thmcolor{\headcolor}
+  \def\remcolor{\color{magenta}}
+  \def\graycolor{\color{gray}}
+  \def\redcolor{\color{red}}
+  \def\greencolor{\color{Green}}
+  \def\headcolor{\color{myblue}}
+  \def\defcolor{\color{BlueViolet}}
+
+  \def\mytitle#1{\frametitle{\headcolor #1}}
+\def\mytitlea#1{\frametitle{\theheadfont\headcolor #1}}
+\def\mytitleb#1{\frametitle{\theheadfontb\headcolor #1}}
+
+\def\citefootnotetext#1{\footnotetext{\citecolor #1}}
+\def\citetext#1{{\footnotesize\citecolor #1}}
+%\def\mytitler#1{\frametitle{\theheadfont\headcolor REDO --- #1}}
+
+\def\emphl#1{{\sl\emphcolor #1}}
+\def\defin#1{{\bf\defcolor #1}}
+\def\boldred#1{{\bf\redcolor #1}}
+\def\boldgreen#1{{\bf\citecolor #1}}
+
+
+\def\lexample{{\bf\defcolor Example: }}
+\def\lremark{{\bf\defcolor Remark: }}
+\def\ldefinition{{\bf\defcolor Definition: }}
+\def\ldefspace{\strut\phantom{\bf\defcolor Definition: }}
+\def\ltheorem{{\bf\thmcolor Theorem: }}
+\def\ltheoremn#1{{\bf\thmcolor Theorem #1: }}
+\def\ltheoremo#1{{\bf\thmcolor Theorem (#1):}}
+\def\lcorol{{\bf\thmcolor Corollary: }}
+
+
+\usecolortheme[named=Blue]{structure}
+
 \makeatletter
 
 % ===== Formulas
@@ -144,75 +184,108 @@
 %  $$\jfrog$$
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\foslide}{%
+  \fopause
+  \defin{Formulas}
+  \[
+  \setMidspace{5pt}
+  \begin{array}{@{}l@{}l}
+    A &\Coloneqq a \Mid \dual a \Mid A\+A \Mid A\*A {\focolor \Mid \exists x.A \Mid \forall x.A}
+    \\[10pt]
+    \focolor a &	\focolor \Coloneqq P(t_1,\dots,t_n)
+    \\[10pt]	
+    \focolor t &	\focolor \Coloneqq f(t_1,\dots,t_n) \Mid x
+  \end{array}
+  \]
+  \fopause
+  \defin{Sequents}
+  \[
+  \seq AB
+  \]
+  \fopause
+  
+  \bigskip
+  \defin{Proofs}
+  \[
+  \infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
+  \qquad
+  \infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
+  \qquad
+  \infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
+  \]
+  \medskip
+  \[
+  \focolor
+  \infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
+  \qquad
+  \infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
+  \]
+}
+
 %-------------------------------
-\begin{frame}{First-order \color{black} additive linear logic}
 
-Formulas
-\[
-\setMidspace{5pt}
-\begin{array}{@{}l@{}l}
-	A &\Coloneqq a \Mid \dual a \Mid A\+A \Mid A\*A \color{darkred} \Mid \exists x.A \Mid \forall x.A
-\\[10pt]
-	\color{darkred} a &	\color{darkred} \Coloneqq P(t_1,\dots,t_n)
-\\[10pt]	
-	\color{darkred} t &	\color{darkred} \Coloneqq f(t_1,\dots,t_n) \Mid x
-\end{array}
-\]
-
-\pause
-
-Sequents
-\[
-	\seq AB
-\]
-
-\pause
-
-Proofs
-\[
-	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
-\qquad
-	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
-\qquad
-	\infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
-\]
-\[
-\color{darkred}
-	\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
-\qquad
-	\infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
-\]
-
-\end{frame}
-%-------------------------------
-\begin{frame}{Features}
-
-{\color{darkred}Compact:}\quad Proof search on $\color{darkred}\seq AB$ is $\color{darkred}\mathcal O(|A|\times|B|)$ propositionally$^1$, and {\color{darkred}NP-complete} for first-order$^2$
-
-\pause
-\bigskip
-
-{\color{darkred}Rich:}\quad Additives $\color{darkred}\+/\*$ (binary choice), Duality $\color{darkred}\dual{\dual A}=A$ (player/opponent), meta-level linear implication/par $\color{darkred}\seq AB$ (parallellism)
-
-\pause
-\bigskip
-
-{\color{darkred}Interesting:}\quad Two-player parallel games, Communication along a two-way channel, the Blass problem (sequential strategies don't compose associatively)$^3$
-
-\pause
-\bigskip
-
-{\color{darkred}Well-behaved:}\quad Canonical proof nets$^4$, also with units$^5$, Fixed-point formulae (mu-lattice hierarchy)$^6$
-
-
-
-\footnotetext{$^1$[Galmiche \&\ Marion 1995]~~$^2$[H.~\&\ Hughes 2015]~~\uncover<3->{$^3$[Abramsky 2003]}\\\uncover<4>{$^4$[Hughes \&\ Van Glabbeek 2005]~~$^5$[H.~2011]~~$^6$[Santocanale 2002]}}
-
-\end{frame}
-%-------------------------------
 \begin{frame}
+  \mytitle{Additive linear logic}
+  \def\focolor{\color{white}}
+  \def\fopause{\pause}
+  \foslide
+\end{frame}
 
-{\color{darkred}Proof nets: sequent + linking}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \mytitle{Features}
+
+  \begin{description}
+    
+  \item[\defin{Compact:}] Proof search on \emphl{$\seq AB$} is
+    \emphl{$\mathcal O(|A|\times|B|)$}
+    propositionally$^1$,\\ and \emphl{NP-complete}\/ for first-order$^2$
+
+    \pause
+    \bigskip
+    
+  \item[\defin{Rich:}] Additives \emphl{$\+/\*$} (binary
+    choice), \\
+    Duality \emphl{$\dual{\dual A}=A$}   (player/opponent),\\
+    meta-level linear implication/par
+    \emphl{$\seq AB$} (parallellism)
+    
+    \pause
+    \bigskip
+    
+  \item[\defin{Interesting:}] Two-player parallel games, \\ Communication
+    along a two-way channel, \\ the Blass problem (sequential strategies
+    don't compose associatively)$^3$
+    
+    \pause
+    \bigskip
+    
+  \item[\defin{Well-behaved:}] Canonical proof nets$^4$, also with
+    units$^5$,\\ Fixed-point formulae (mu-lattice hierarchy)$^6$
+  \end{description}
+
+
+  \citefootnotetext{\citecolor$^1$[Galmiche \&\ Marion 1995]
+    \quad$^2$[Heijltjes \&\ Hughes 2015] %}
+    %%\citefootnotetext{
+    \quad\uncover<3->{$^3$[Abramsky 2003]}\\[1ex]
+    %%\citefootnotetext{
+    \uncover<4>{$^4$[Hughes
+        \&\ Van Glabbeek 2005]\quad $^5$[Heijltjes 2011]\quad $^6$[Santocanale 2002]}\\[1ex]}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Proof nets and cut elimination}
+  \pause
+  \bigskip
+  \defin{Proof net} = sequent + linking
 \[
 \begin{array}{c@{\qquad\quad}c@{\qquad\quad}c@{\qquad\quad}c}
 	\vc{\begin{tikzpicture}[net]
@@ -256,8 +329,9 @@ Proofs
 
 \bigskip
 \bigskip
+\pause
 
-{\color{darkred}Composition/cut elimination: relational composition}
+\defin{Cut elimination} = relational composition
 \[
 \vc{\begin{tikzpicture}[net]
         \formula[y=2.5]{{\dual b}*\+{\dual a}}
@@ -281,10 +355,18 @@ Proofs
 \]
 
 \end{frame}
-%-------------------------------
-\begin{frame}{Correctness}
 
-{\color{darkred}Slicing}$^1$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Correctness}
+  %\bigskip
+  %Two independent correctness criteria:
+  \bigskip
+  \pause
+  
+  \defin{Slicing:}
 \[
 \vc{\begin{tikzpicture}[net]
 		\formula[y=1]{A}
@@ -306,12 +388,14 @@ Proofs
 		\formula[y=0]{{\phantom B}{\phantom{{}\*{}}}C}
 	\end{tikzpicture}}
 \]
+\hfill\citetext{[Hughes \&\ Van Glabbeek 2003]}
 
 \bigskip
 \bigskip
 \bigskip
+\pause
 
-{\color{darkred}Coalescence}$^2$
+\defin{Coalescence:}
 \[
 	\vc{\begin{tikzpicture}[net]
 		\formula[y=1]{A}
@@ -339,52 +423,86 @@ Proofs
 	\end{tikzpicture}}
 \]
 
-\footnotetext{$^1$[Hughes \&\ Van Glabbeek 2005]~~$^2$[H.~\&\ Hughes 2015]}
+\hfill\citetext{[Heijltjes \&\ Hughes 2015]}
 
+\bigskip
+\bigskip
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------
-\begin{frame}{First-order quantification}
 
-Commonly: {\color{darkred}expansion + substitution}$^1$
-\[
-	\exists x.A \quad\Rightarrow\quad A[t_1/x]\+\dots\+A[t_n/x]
-\]
+\begin{frame}
+  \mytitle{{\color{white} First-order} additive linear logic}
+  \def\focolor{\color{white}}
+  \def\fopause{}
+  \foslide
+\end{frame}
 
-\pause
-\[
-\vc{
-	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
-	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
-	 &&
-	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
-   }}
-\]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+  \mytitle{{\color{darkred} First-order} additive linear logic}
+  \def\focolor{\color{darkred}}
+  \def\fopause{}
+  \foslide
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \mytitle{What is first-order quantification in proofs?}
+  \pause
+  
+  Commonly: \emphl{expansion + substitution}$^1$
+  \[
+  \exists x.A \quad\Rightarrow\quad A[t_1/x]\+\dots\+A[t_n/x]
+  \]
+  
+  \pause
+  \[
+  \vc{
+    \infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+      \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+      &&
+      \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
+  }}
+  \]
 
 \pause
 \bigskip
-Incompatible with {\color{darkred}sequent + linking} and {\color{darkred}relational composition}:
-
 \bigskip
-Both {\color{darkred}expansion} and {\color{darkred}substitution} destroy the original formula
 
+\boldred{Problem:~~}
+Incompatible with \emphl{sequent + linking} and \emphl{relational composition}\\[2ex]
+%\medskip
+\strut\phantom{\boldred{Problem:~~}}
+Both \emphl{expansion} and \emphl{substitution} destroy the original formula
 
-\footnotetext{$^1$For classical logic: [Herbrand 1930, Miller 1987, H.\ 2010]}
+\citefootnotetext{\uncover<2->{$^1$For classical logic:
+    [Herbrand 1930, Miller 1987, Heijltjes 2010]\\}}
 
 \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------
-\begin{frame}{Two solutions}
+
+\begin{frame}
+  \mytitle{Two solutions}
 
 \begin{tabular}{@{}l@{\hspace{-20pt}}c@{}}
 &
-	\scriptsize
+	\footnotesize
 	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
 	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
 	 &&
 	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
 	}
 \\ \\ \\
-{\bf Witness nets}: {\color{darkred}explicit substitution}
+\defin{Witness nets:}~ {explicit substitution}
 &
 $\vcenter{\hbox{\begin{tikzpicture}[net]
 	\formula[y=1.2]{\exists x.{\dual P}(x)}
@@ -394,7 +512,7 @@ $\vcenter{\hbox{\begin{tikzpicture}[net]
 \end{tikzpicture}}}
 $
 \\ \\ \\
-{\bf Unification nets}$^1$: {\color{darkred}first-order unification}
+\defin{Unification nets:}~ {first-order unification}$^1$
 &
 $\vcenter{\hbox{
 \begin{tikzpicture}[net]
@@ -406,7 +524,7 @@ $\vcenter{\hbox{
 }}$
 \end{tabular}
 
-\footnotetext{$^1$For MLL: [Hughes 2018]}
+\citefootnotetext{$^1$For MLL: [Hughes 2018]\\}
 
 \end{frame}
 %-------------------------------
@@ -680,6 +798,54 @@ Example: coalescence for witness nets
 \end{frame}
 \end{document}
 %===============================
+
+
+
+
+
+\begin{frame}
+  \mytitle{{\focolor First-order} Additive linear logic}
+
+\defin{Formulas}
+\[
+\setMidspace{5pt}
+\begin{array}{@{}l@{}l}
+	A &\Coloneqq a \Mid \dual a \Mid A\+A \Mid A\*A \uncover<2->{\focolor \Mid \exists x.A \Mid \forall x.A}
+\\[10pt]
+	\focolor a &	\focolor \Coloneqq P(t_1,\dots,t_n)
+\\[10pt]	
+	\focolor t &	\focolor \Coloneqq f(t_1,\dots,t_n) \Mid x
+\end{array}
+\]
+
+\pause
+
+Sequents
+\[
+	\seq AB
+\]
+
+\pause
+
+Proofs
+\[
+	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
+\qquad
+	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
+\qquad
+	\infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
+\]
+\[
+\focolor
+	\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
+\qquad
+	\infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
+\]
+
+\end{frame}
+%-------------------------------
+
+
 %===============================
 \end{document}
 
