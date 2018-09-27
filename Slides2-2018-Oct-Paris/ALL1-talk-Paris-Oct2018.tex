@@ -1,4 +1,4 @@
-\documentclass[xcolor=dvipsnames]{beamer}
+\documentclass[xcolor=dvipsnames,9pt]{beamer}
 
 
 \usepackage{proof}
@@ -7,6 +7,8 @@
 \usepackage{proofnet}
 \usepackage{presenting}
 \usepackage{willemtools}
+
+\input{frogs/frogspeak}
 
 \makeatletter
 
@@ -97,15 +99,39 @@
 
 % ===== TITLE
 
-\title{{\Large Proof nets for first-order additive linear logic}}
+\font\thechapfont=cmssbx10 scaled 1400
+\font\theheadfont=cmssbx10 scaled 1200
+\font\theheadfontb=cmssbx10 scaled 1100
 
-\author{
-  Lutz Stra{\ss}burger\\
-  Inria, Palaiseau\\[10pt] 
-  Joint work with Willem Heijltjes and Dominic Hughes
-}
+%% \setbeamertemplate{navigation symbols}{} 
+%% \usecolortheme[named=Blue]{structure}
 
-\date{\small October 2018}
+\definecolor{myblue}{rgb}{0,0,0.8}
+%\def\headcolor{\color{MidnightBlue}}
+\def\headcolor{\color{myblue}}
+
+\newcommand{\authorboxx}[2]{\centering\large #1\\[1ex] \normalsize #2\\$$\jfrog$$}
+
+\title{{\thechapfont\headcolor 
+    Proof nets for first-order additive linear logic}}
+  
+\author[Lutz Strassburger]{%
+\texorpdfstring{  \begin{columns}
+    \column{.3\linewidth}
+    \authorboxx{Willem Heijltjes}{University of Bath}
+    \column{.3\linewidth}
+    \authorboxx{Dominic Hughes}{UC Berkeley}
+    \column{.3\linewidth}
+    \authorboxx{Lutz~Stra{\ss}burger}{Inria Saclay}
+  \end{columns}
+%\\[2ex]
+%$$\jfrog$$
+}{}}
+
+\date{{\small
+   Joint meeting CRECOGI / GDRI LL / Elica  --- Paris --- October 8--11, 2018
+}}
+
 
 % ===== START
 
@@ -114,10 +140,10 @@
 %===============================
 %===============================
 \begin{frame}
-
-\maketitle
-
+  \titlepage
+%  $$\jfrog$$
 \end{frame}
+
 %-------------------------------
 \begin{frame}{First-order \color{black} additive linear logic}
 
