@@ -286,6 +286,44 @@
   \pause
   \bigskip
   \defin{Proof net} = sequent + linking
+\newcommand\A{{\color{darkred}a}}
+\newcommand\B{{\color{blue}b}}
+\newcommand\C{{\color{orange}c}}
+
+\newcommand\dA{{\color{darkred}\dual a}}
+\newcommand\dB{{\color{blue}\dual b}}
+\newcommand\dC{{\color{orange}\dual c}}
+
+%Proof nets: {\color{darkred} sequent + linking}
+\[
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.5]{(\dA\+\dB)\*(\dA\+\dC)}
+	\formula[y=0]{\A\*(\B\+\C)}
+	\Vlink[red]{2,[-2]1}
+	\Vlink[red]{8,[2]1}
+	\Vlink[blue]{4,4}
+	\Vlink[orange]{10,6}
+\end{tikzpicture}}
+%\]
+%\[
+\qquad\qquad
+\vc{\infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+  \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+    \infer{\seq{\dA\+\dB}{\A}}{
+    }&&
+    \infer{\seq{\dA\+\dB}{\B\+\C}}{
+    }
+  }&&
+  \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+}}}
+\]
+
+%\pause
+\bigskip
+\bigskip
+
+\uncover<3>{%
+\defin{More examples:}
 \[
 \begin{array}{c@{\qquad\quad}c@{\qquad\quad}c@{\qquad\quad}c}
 	\vc{\begin{tikzpicture}[net]
@@ -326,20 +364,23 @@
 &	\text{\small associativity}
 \end{array}
 \]
+}
+\vskip-23ex
+%\vfill
+%% \bigskip
+%% \bigskip
+%% \pause
 
-\bigskip
-\bigskip
-\pause
-
-\defin{Cut elimination} = relational composition
-\[
-\vc{\begin{tikzpicture}[net]
-        \formula[y=2.5]{{\dual b}*\+{\dual a}}
-        \formula[y=1.5]{a*\**(b*\+b*)}
-            \Vlink[red]{1,2}
-            \Vlink[red]{2,1}
-        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
-        \formula[y=0]{b*\*b}
+\uncover<5->{
+  \defin{Cut elimination} = relational composition
+  \[
+  \vc{\begin{tikzpicture}[net]
+      \formula[y=2.5]{{\dual b}*\+{\dual a}}
+      \formula[y=1.5]{a*\**(b*\+b*)}
+      \Vlink[red]{1,2}
+      \Vlink[red]{2,1}
+      \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+      \formula[y=0]{b*\*b}
             \Vlink[blue]{[-1]2,[-1]1}
             \Vlink[blue]{[1]2,[-1]2}
             \Vlink[blue]{[-1]3,[1]1}
@@ -353,8 +394,9 @@
             \Vlink[violet]{[1]1,2}
     \end{tikzpicture}}
 \]
-
+}
 \end{frame}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------
@@ -527,10 +569,13 @@ $\vcenter{\hbox{
 \citefootnotetext{$^1$For MLL: [Hughes 2018]\\}
 
 \end{frame}
-%-------------------------------
-\begin{frame}{Proof identity}
 
-If {\color{darkred}any} witness will do, is the choice significant?
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Proof identity}
+
+If \emphl{any} witness will do, is the choice significant?
 \[
 	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(s)}{\dual P(s)}}{}}}
 	\quad
@@ -541,7 +586,7 @@ If {\color{darkred}any} witness will do, is the choice significant?
 
 \bigskip
 \pause
-What if the quantifier is {\color{darkred}vacuous}?
+What if the quantifier is \emphl{vacuous}?
 \[
 	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
 	\quad
@@ -552,7 +597,7 @@ What if the quantifier is {\color{darkred}vacuous}?
 
 \bigskip
 \pause
-What if a quantified variable occurs only in a {\color{darkred}weakened} formula?
+What if a quantified variable occurs only in a \emphl{weakened} formula?
 \[	
 	\vc{
 	 \infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P{\+}Q(x)}{\dual P}}{
@@ -568,49 +613,74 @@ What if a quantified variable occurs only in a {\color{darkred}weakened} formula
 \]
 
 \end{frame}
-%-------------------------------
-\begin{frame}{Generality}
 
-{\color{darkred}Witness nets} 
-\\
-make none of these identifications (like {\color{darkred}sequent calculus})
 
-\bigskip
-\bigskip
-
-{\color{darkred}Unification nets}
-\\
-make all of them
-
-\end{frame}
-%-------------------------------
-\begin{frame}{Results}
-
-\begin{tabular}{@{}l@{}ccc@{}}
-  &	Monomial$^1$ & Witness & Unification
-\\ & nets & nets & nets
-\\\hline
-   Canonicity          &    ?   & \vmark & \vmark
-\\ Generality          & \xmark & \xmark & \vmark
-\\ Direct composition  & \xmark & \vmark & \vmark
-\\ Coalescence         &    ?   & \vmark & \vmark
-\\ Slicing             & \vmark & \vmark &   ?
-\end{tabular}  
-
-\footnotetext{$^1$[Girard 1987, 1996]}
-
-\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------
 \begin{frame}
+  \mytitle{Generality}
 
-\begin{center}
-Example: coalescence for witness nets
-\end{center}
-
+  \begin{tabular}{rl}
+    \defin{Witness nets:}& 
+    make \emphl{none} of these identifications (like {sequent calculus})\\[3ex]
+    \defin{Unification nets:}&
+    make \emphl{all} of these identifications
+  \end{tabular}
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------
 \begin{frame}
+  \mytitle{Composition / cut elimination}
+  \begin{tabular}{@{\qquad}c@{\quad\qquad}c@{\quad\qquad}c@{\quad}}
+    relational composition
+    &
+    $+$
+    &
+    composition of substitution\\[2ex]
+    $\vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=1.5]{a*\**(b*\+b*)}
+            \Vlink[red]{1,2}
+            \Vlink[red]{2,1}
+        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+        \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+      \quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}$
+    &
+    &
+    $\vc{\begin{tikzpicture}[net]
+      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
+      \formula[right,y=0]{*{\forall x.\exists y.\forall z.\,}P}
+      \Vlink[red,l,label={$\scriptstyle[f(x)/y,z/v]$~~}]{1,1}
+      \formula[right,y=-.5]{*{\exists x.\forall y.\exists z.\,}{\dual P}}
+      \formula[right,y=-1.7]{P}
+      \Vlink[blue,l,label={$\scriptstyle[t/x,g(y)/z]$~~}]{1,1}
+      \path(0,-2)--(1,-2);
+    \end{tikzpicture}}
+    \vc{\begin{tikzpicture}[net]
+      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
+      \formula[right,y=-1.7]{P}
+      \Vlink[violet,l,label={$\quad\Rightarrow\quad\scriptstyle[g(f(t))/v]\quad$}]{1,1}
+      \path(0,-2)--(1,-2);
+    \end{tikzpicture}}$
+  \end{tabular}
+\end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
 \[
 	\begin{tikzpicture}[net]
 		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
@@ -644,7 +714,7 @@ Example: coalescence for witness nets
 \end{frame}
 %-------------------------------
 \begin{frame}
-
+\mytitle{Coalescence for witness nets (example)}
 \[
 	\begin{tikzpicture}[net]
 		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
@@ -678,7 +748,7 @@ Example: coalescence for witness nets
 \end{frame}
 %-------------------------------
 \begin{frame}
-
+\mytitle{Coalescence for witness nets (example)}
 \[
 	\begin{tikzpicture}[net]
 		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
@@ -713,7 +783,7 @@ Example: coalescence for witness nets
 \end{frame}
 %-------------------------------
 \begin{frame}
-
+\mytitle{Coalescence for witness nets (example)}
 \[
 	\begin{tikzpicture}[net]
 		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
@@ -742,7 +812,7 @@ Example: coalescence for witness nets
 \end{frame}
 %-------------------------------
 \begin{frame}
-
+\mytitle{Coalescence for witness nets (example)}
 \[
 	\begin{tikzpicture}[net]
 		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
@@ -770,7 +840,7 @@ Example: coalescence for witness nets
 \end{frame}
 %-------------------------------
 \begin{frame}
-
+\mytitle{Coalescence for witness nets (example)}
 \[
 	\begin{tikzpicture}[net]
 		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
@@ -796,6 +866,48 @@ Example: coalescence for witness nets
 
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Summary}
+
+  \begin{center}
+    \begin{tabular}{@{}l@{}ccc@{}}
+      &	Monomial & Witness & Unification
+      \\ & nets$^1$ & nets$^2$ & nets$^2$
+      \\\hline
+      Canonicity          &    ?   & \vmark & \vmark
+      \\ Generality          & \xmark & \xmark & \vmark
+      \\ Direct composition  & \xmark & \vmark & \vmark
+      \\ Coalescence         &    ?   & \vmark & \vmark
+      \\ Slicing             & \vmark & \vmark &   ?
+    \end{tabular}  
+  \end{center}
+  \vfill
+  \pause
+  \hfill\speakgreen[1]{5em}{Questions?}
+  \citefootnotetext{$^1$[Girard 1987, 1996]\quad $^2$[Inria RR-9201]\\}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}
+%%   \Huge
+%%   $$
+%%   \speakgreen[1]{5em}{Questions?}
+%%   $$
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \end{document}
 %===============================
 
@@ -847,43 +959,120 @@ Proofs
 
 
 %===============================
-\end{document}
+%\end{document}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand\A{{\color{darkred}A}}
-\newcommand\B{{\color{blue}B}}
-\newcommand\C{{\color{orange}C}}
-
-\newcommand\dA{{\color{darkred}\dual A}}
-\newcommand\dB{{\color{blue}\dual B}}
-\newcommand\dC{{\color{orange}\dual C}}
-
-Proof nets: {\color{darkred} sequent + linking}
+\begin{frame}
+  \mytitle{Proof nets and cut elimination}
+  \pause
+  \bigskip
+  \defin{Proof net} = sequent + linking
 \[
-\begin{tikzpicture}[net]
+\begin{array}{c@{\qquad\quad}c@{\qquad\quad}c@{\qquad\quad}c}
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}}
+		\formula[y=0]{a\*a}
+		\Vlink[red]{[-2]1,1}
+		\Vlink[red]{[2]1,3}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}}
+		\formula[y=0]{a\+b}
+		\Vlink[red]{1,1}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}\+{\dual b}}
+		\formula[y=0]{b\*a}
+		\Vlink[red]{1,3}
+		\Vlink[red]{3,1}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{*{\phantom(}{\dual a}*{\phantom)}
+		 {{\+}}*({\dual b}*{\phantom)}
+		 {{\+}}*{\phantom(}{\dual c}*)}
+		\formula[y=0]{*(a*{\phantom)}
+		{{\*}}*{\phantom(}b*)
+		{{\*}}*{\phantom(}c*{\phantom)}}
+		\Vlink[red]{1,1}
+		\Vlink[red]{3,3}
+		\Vlink[red]{5,5}
+	\end{tikzpicture}}
+\\ \\
+	\text{\small diagonal}
+&	\text{\small injection}	
+&   \text{\small symmetry}
+&	\text{\small associativity}
+\end{array}
+\]
+
+\bigskip
+\bigskip
+\pause
+
+\defin{Cut elimination} = relational composition
+\[
+\vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=1.5]{a*\**(b*\+b*)}
+            \Vlink[red]{1,2}
+            \Vlink[red]{2,1}
+        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+        \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+\quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}
+\]
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \newcommand\A{{\color{darkred}A}}
+  \newcommand\B{{\color{blue}B}}
+  \newcommand\C{{\color{orange}C}}
+  
+  \newcommand\dA{{\color{darkred}\dual A}}
+  \newcommand\dB{{\color{blue}\dual B}}
+  \newcommand\dC{{\color{orange}\dual C}}
+  
+  Proof nets: {\color{darkred} sequent + linking}
+  \[
+  \begin{tikzpicture}[net]
 	\formula[y=1.5]{(\dA\+\dB)\*(\dA\+\dC)}
 	\formula[y=0]{\A\*(\B\+\C)}
 	\Vlink[red]{2,[-2]1}
 	\Vlink[red]{8,[2]1}
 	\Vlink[blue]{4,4}
 	\Vlink[orange]{10,6}
-\end{tikzpicture}
-\]
-
-\[
-	\infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
-	 \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
-	  \infer{\seq{\dA\+\dB}{\A}}{
-	  }&&
-	  \infer{\seq{\dA\+\dB}{\B\+\C}}{
-	  }
-	 }&&
-	 \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
-	}}
-\]
-
-
-
+  \end{tikzpicture}
+  \]
+  
+  \[
+  \infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+    \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+      \infer{\seq{\dA\+\dB}{\A}}{
+      }&&
+      \infer{\seq{\dA\+\dB}{\B\+\C}}{
+      }
+    }&&
+    \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+  }}
+  \]
+  
 
 \[
 \begin{array}{@{}ccccc@{}}
@@ -924,6 +1113,7 @@ Proof nets: {\color{darkred} sequent + linking}
 	  \color{black}\infer{\seq{\dual Puu}{Puu}}{}
 	 }}
 \end{array}
+\end{frame}
 
 
-
+\end{document}
