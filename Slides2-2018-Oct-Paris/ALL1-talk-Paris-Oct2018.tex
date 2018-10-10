@@ -8,6 +8,7 @@
 \usepackage{presenting}
 \usepackage{willemtools}
 
+\usepackage[noxy]{virginialake}
 \input{frogs/frogspeak}
 
 \def\citecolor{\color{ForestGreen}}
@@ -120,6 +121,10 @@
 }
 \newcommand\@urr[1]{+\mathrm U,{#1}}
 
+% ===== Other
+
+\newcommand\dom[1]{\textsc{dom}(#1)}
+\newcommand\minus{\mathop{\!/\mathchoice{\kern-3pt}{\kern-3pt}{\kern-2.5pt}{\kern-2pt}/\!}}
 
 % ===== Examples
 
@@ -264,7 +269,8 @@
     \bigskip
     
   \item[\defin{Well-behaved:}] Canonical proof nets$^4$, also with
-    units$^5$,\\ Fixed-point formulae (mu-lattice hierarchy)$^6$
+    units$^5$, \\
+    ~Fixed-point formulae (mu-lattice hierarchy)$^6$
   \end{description}
 
 
@@ -307,15 +313,35 @@
 %\]
 %\[
 \qquad\qquad
-\vc{\infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
-  \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
-    \infer{\seq{\dA\+\dB}{\A}}{
-    }&&
-    \infer{\seq{\dA\+\dB}{\B\+\C}}{
-    }
-  }&&
-  \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
-}}}
+\vc{%
+   \scalebox{.9}{$
+  \vlderivation{
+    \vliin{}{\Qrr*}{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+      \vliin{}{\Qrr*}{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+        \vlin{}{\Qrr+1}{\seq{\dA\+\dB}{\A}}{
+          \vlin{}{\Qrr1}{\seq{\dA}{\A}}{
+            \vlhy{}}}}{
+        \vlin{}{\Qrr+2}{\seq{\dA\+\dB}{\B\+\C}}{
+          \vlin{}{\Qrr+1}{\seq{\dB}{\B\+\C}}{
+            \vlin{}{\Qrr1}{\seq{\dB}{\B}}{
+              \vlhy{}}}}}}{
+      \vliin{}{\Qrr*}{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+        \vlin{}{\Qrr+1}{\seq{\dA\+\dC}{\A}}{
+          \vlin{}{\Qrr1}{\seq{\dA}{\A}}{
+            \vlhy{}}}}{
+        \vlin{}{\Qrr+2}{\seq{\dA\+\dC}{\B\+\C}}{
+          \vlin{}{\Qrr+2}{\seq{\dC}{\B\+\C}}{
+            \vlin{}{\Qrr1}{\seq{\dC}{\C}}{
+              \vlhy{}}}}}}}$}}
+%% \vc{\infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+%%   \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+%%     \infer{\seq{\dA\+\dB}{\A}}{
+%%     }&&
+%%     \infer{\seq{\dA\+\dB}{\B\+\C}}{
+%%     }
+%%   }&&
+%%   \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+%% }}}
 \]
 
 %\pause
@@ -630,51 +656,106 @@ What if a quantified variable occurs only in a \emphl{weakened} formula?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %-------------------------------
+
 \begin{frame}
-  \mytitle{Composition / cut elimination}
-  \begin{tabular}{@{\qquad}c@{\quad\qquad}c@{\quad\qquad}c@{\quad}}
-    relational composition
-    &
-    $+$
-    &
-    composition of substitution\\[2ex]
-    $\vc{\begin{tikzpicture}[net]
-        \formula[y=2.5]{{\dual b}*\+{\dual a}}
-        \formula[y=1.5]{a*\**(b*\+b*)}
-            \Vlink[red]{1,2}
-            \Vlink[red]{2,1}
-        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
-        \formula[y=0]{b*\*b}
-            \Vlink[blue]{[-1]2,[-1]1}
-            \Vlink[blue]{[1]2,[-1]2}
-            \Vlink[blue]{[-1]3,[1]1}
-            \Vlink[blue]{[1]3,[1]2}
-    \end{tikzpicture}}
-      \quad\Rightarrow\quad
+  \mytitle{Witness nets and Unification nets}
+  \pause
+  \bigskip
+  \defin{Witness net} = sequent + linking with substitution
+  $$
+  \qquad
+  \vcenter{\hbox{\begin{tikzpicture}[net]
+	\formula[y=1.2]{\exists x.{\dual P}(x)}
+	\formula[y=0]{P(s)\*P(t)}
+	\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
+	\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
+  \end{tikzpicture}}}
+  \qquad\qquad\qquad
+  \vcenter{\scalebox{.9}{%
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}}}}
+  $$
+  \vfill
+  \pause
+  \defin{Unification net} = sequent + linking %%( + unification condition)
+  $$
+  \qquad
+  \vcenter{\hbox{\begin{tikzpicture}[net]
+	\formula[y=1.2]{\exists x.{\dual P}(x)}
+	\formula[y=0]{P(s)\*P(t)}
+	\Vlink[red]{[-3]4,1}
+	\Vlink[red]{[1]4,6}
+      \end{tikzpicture}}}
+  \qquad\qquad\qquad
+  \vcenter{\scalebox{.9}{%
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}}}}
+  $$
+  \pause
+  (such that ``sequent + linking with mgu'' forms a witness net)
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Coalescence for witness nets \uncover<2->{(rewrite rules)}}
+  \pause
+\[
+\begin{array}{ccc@{\hspace{50pt}}ccc}
     \vc{\begin{tikzpicture}[net]
-        \formula[y=2.5]{{\dual b}*\+{\dual a}}
-        \formula[y=0]{b*\*b}
-            \Vlink[violet]{[-1]1,1}
-            \Vlink[violet]{[1]1,2}
-    \end{tikzpicture}}$
-    &
-    &
-    $\vc{\begin{tikzpicture}[net]
-      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
-      \formula[right,y=0]{*{\forall x.\exists y.\forall z.\,}P}
-      \Vlink[red,l,label={$\scriptstyle[f(x)/y,z/v]$~~}]{1,1}
-      \formula[right,y=-.5]{*{\exists x.\forall y.\exists z.\,}{\dual P}}
-      \formula[right,y=-1.7]{P}
-      \Vlink[blue,l,label={$\scriptstyle[t/x,g(y)/z]$~~}]{1,1}
-      \path(0,-2)--(1,-2);
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{1,1}
     \end{tikzpicture}}
+&\scoal& 
     \vc{\begin{tikzpicture}[net]
-      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
-      \formula[right,y=-1.7]{P}
-      \Vlink[violet,l,label={$\quad\Rightarrow\quad\scriptstyle[g(f(t))/v]\quad$}]{1,1}
-      \path(0,-2)--(1,-2);
-    \end{tikzpicture}}$
-  \end{tabular}
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}
+&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\exists x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{x\,\in\,\dom\sigma}\scoal&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\exists x.D}
+    	\Vlink[red,label={~$\scriptstyle{\sigma\minus x}$}]{1,1}
+    \end{tikzpicture}}   
+\\ \\[2ex]   
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-1]1,1}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{[1]1,3}
+    \end{tikzpicture}}
+&\scoal&
+	\vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}   
+&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\forall x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{x\,\notin\,\sigma}\scoal&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\forall x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,1}
+    \end{tikzpicture}}
+\end{array}
+\]
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -865,6 +946,55 @@ What if a quantified variable occurs only in a \emphl{weakened} formula?
 \]
 
 
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Composition / cut elimination}
+  \begin{tabular}{@{\qquad}c@{\quad\qquad}c@{\quad\qquad}c@{\quad}}
+    relational composition
+    &
+    $+$
+    &
+    composition of substitution\\[2ex]
+    $\vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=1.5]{a*\**(b*\+b*)}
+            \Vlink[red]{1,2}
+            \Vlink[red]{2,1}
+        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+        \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+      \quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}$
+    &
+    &
+    $\vc{\begin{tikzpicture}[net]
+      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
+      \formula[right,y=0]{*{\forall x.\exists y.\forall z.\,}P}
+      \Vlink[red,l,label={$\scriptstyle[f(x)/y,z/v]$~~}]{1,1}
+      \formula[right,y=-.5]{*{\exists x.\forall y.\exists z.\,}{\dual P}}
+      \formula[right,y=-1.7]{P}
+      \Vlink[blue,l,label={$\scriptstyle[t/x,g(y)/z]$~~}]{1,1}
+      \path(0,-2)--(1,-2);
+    \end{tikzpicture}}
+    \vc{\begin{tikzpicture}[net]
+      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
+      \formula[right,y=-1.7]{P}
+      \Vlink[violet,l,label={$\quad\Rightarrow\quad\scriptstyle[g(f(t))/v]\quad$}]{1,1}
+      \path(0,-2)--(1,-2);
+    \end{tikzpicture}}$
+  \end{tabular}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
