@@ -1,0 +1,97 @@
+\newbox\jfrogbox
+\newbox\jmfrogbox
+\newbox\sfrogbox
+\newbox\ofrogbox
+\newbox\vfrogbox
+\newbox\kfrogbox
+\newbox\halloweenfrogbox
+
+\setbox\jfrogbox=\hbox{\includegraphics[height=18pt]{frogs/Frog2a}}
+\setbox\jmfrogbox=\hbox{\includegraphics[height=18pt]{frogs/Frog2aFlipped}}
+%\setbox\sfrogbox=\hbox{\includegraphics[height=15pt]{frogs/BigFrog}}
+\setbox\sfrogbox=\hbox{\includegraphics[height=15pt]{frogs/SmallFrog.png}}
+\setbox\ofrogbox=\hbox{\includegraphics[height=15pt]{frogs/SmallFrog-flip-orange.png}}
+\setbox\vfrogbox=\hbox{\includegraphics[height=15pt]{frogs/SmallFrog-flip-violet.png}}
+\setbox\kfrogbox=\hbox{\includegraphics[height=19pt]{frogs/Frog4}}
+\setbox\halloweenfrogbox=\hbox{\includegraphics[height=30pt]{frogs/halloween-frog.png}}
+
+\def\jfrog{\copy\jfrogbox}
+\def\jmfrog{\copy\jmfrogbox}
+\def\sfrog{\copy\sfrogbox}
+\def\ofrog{\copy\ofrogbox}
+\def\kfrog{\copy\kfrogbox}
+\def\halloweenfrog{\copy\halloweenfrogbox}
+
+\newcommand{\bgfrog}[1][4.5ex]{%
+  {\includegraphics[height=#1]{frogs/SmallFrog.png}}}
+
+\newcommand{\bofrog}[1][4.5ex]{%
+  {\includegraphics[height=#1]{frogs/SmallFrog-flip-orange.png}}}
+
+\newcommand{\bvfrog}[1][4.5ex]{%
+  {\includegraphics[height=#1]{frogs/SmallFrog-flip-violet.png}}}
+
+
+\def\cornerfrog{%
+    \vskip-15pt\strut\hfill\hbox{\sfrog}}
+
+
+\newcommand{\speechbubbleright}[3][1]{%
+  \newdimen\witdim
+  \witdim=#2
+  \newdimen\heidim
+  \heidim=#1\baselineskip \advance\heidim by 1.2ex
+  \includegraphics[height=\heidim,width=1.3\witdim]{frogs/SprechblaseNeuFlip.png}%
+  \hskip-1.045\witdim%
+  \raise1.2ex\hbox{\parbox[b]{\witdim}{#3\strut}}%
+  \hskip.045\witdim%
+}
+  
+\newcommand{\speechbubbleleft}[3][1]{%
+  \newdimen\witdim
+  \witdim=#2
+  \newdimen\heidim
+  \heidim=#1\baselineskip \advance\heidim by 1.2ex
+  \includegraphics[height=\heidim,width=1.3\witdim]{frogs/SprechblaseNeu.png}%
+  \hskip-1.245\witdim%
+  \raise1.2ex\hbox{\parbox[b]{\witdim}{#3\strut}}%
+  \hskip.245\witdim%
+}
+  
+\newcommand\speakgreen[3][1]{%
+  \newdimen\risdim
+  \risdim=\ifcase#1 2.5ex\or 2.5ex \or 1.5ex\or .5ex\or 0ex \or -1ex 
+  \or -3.5ex \or -4.5ex \else -8.5ex \fi
+  %%\ifcase#3 2.5 \or 1.5\or .5\or 0 \else -1 \fi xx #3
+  \bgfrog\!%
+  \raise\risdim\hbox{\speechbubbleright[#1]{#2}{#3}}}
+
+\newcommand\speakorange[3][1]{%
+  \newdimen\risdim
+  \risdim=\ifcase#1 2.5ex\or 2.5ex \or 1.5ex\or .5ex\or 0ex \or 
+  -1ex \or -3.5ex\else -6.5ex \fi
+  \raise\risdim\hbox{\speechbubbleleft[#1]{#2}{#3}}%
+  \!\bofrog%
+}
+
+\newcommand\speakviolet[3][1]{%
+  \newdimen\risdim
+  \risdim=\ifcase#1 2.5ex\or 2.5ex \or 1.5ex\or .5ex\or 0ex \or 
+  -1ex \or -3.5ex\else -6.5ex \fi
+  \raise\risdim\hbox{\speechbubbleleft[#1]{#2}{#3}}%
+  \!\bvfrog%
+}
+
+\newcommand\speakingobjectleft[5]{%
+  \raise#1\hbox{\speechbubbleleft[#2]{#3}{#4}}%
+  #5%
+}
+  
+\newcommand\speakingobjectright[5]{%
+  \raise#1\hbox{\speechbubbleright[#2]{#3}{#4}}%
+  #5%
+}
+  
+  
+\endinput
+
