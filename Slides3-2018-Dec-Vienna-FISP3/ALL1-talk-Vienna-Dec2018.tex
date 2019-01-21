@@ -1,0 +1,1278 @@
+\documentclass[xcolor=dvipsnames,9pt]{beamer}
+
+
+\usepackage{proof}
+\usepackage{tikz}
+
+\usepackage{proofnet}
+\usepackage{presenting}
+\usepackage{willemtools}
+
+\usepackage[noxy]{virginialake}
+\input{frogs/frogspeak}
+
+\def\citecolor{\color{ForestGreen}}
+  \def\normalcolor{\color{black}}
+%  \def\innercolor{\color{RedViolet}}
+  \def\innercolor{\color{Maroon}}
+  \def\conscolor{\color{JungleGreen}}
+  \def\emphcolor{\color{magenta}}
+  \def\thmcolor{\headcolor}
+  \def\remcolor{\color{magenta}}
+  \def\graycolor{\color{gray}}
+  \def\redcolor{\color{red}}
+  \def\greencolor{\color{Green}}
+  \def\headcolor{\color{myblue}}
+  \def\defcolor{\color{BlueViolet}}
+
+  \def\mytitle#1{\frametitle{\headcolor #1}}
+\def\mytitlea#1{\frametitle{\theheadfont\headcolor #1}}
+\def\mytitleb#1{\frametitle{\theheadfontb\headcolor #1}}
+
+\def\citefootnotetext#1{\footnotetext{\citecolor #1}}
+\def\citetext#1{{\footnotesize\citecolor #1}}
+%\def\mytitler#1{\frametitle{\theheadfont\headcolor REDO --- #1}}
+
+\def\emphl#1{{\sl\emphcolor #1}}
+\def\defin#1{{\bf\defcolor #1}}
+\def\boldred#1{{\bf\redcolor #1}}
+\def\boldgreen#1{{\bf\citecolor #1}}
+
+
+\def\lexample{{\bf\defcolor Example: }}
+\def\lremark{{\bf\defcolor Remark: }}
+\def\ldefinition{{\bf\defcolor Definition: }}
+\def\ldefspace{\strut\phantom{\bf\defcolor Definition: }}
+\def\ltheorem{{\bf\thmcolor Theorem: }}
+\def\ltheoremn#1{{\bf\thmcolor Theorem #1: }}
+\def\ltheoremo#1{{\bf\thmcolor Theorem (#1):}}
+\def\lcorol{{\bf\thmcolor Corollary: }}
+
+
+\usecolortheme[named=Blue]{structure}
+
+\makeatletter
+
+% ===== Formulas
+
+\newcommand\+{+}
+\renewcommand\*{\times}
+\newcommand\dual[1]{\overline{#1}}
+\newcommand\seq[2]{{\vdash\,}#1,#2}
+
+% ===== Proofs
+
+\newcommand\prf[3]{#1\vdash\!#2,#3}
+\newcommand\Seq{\vphantom(\seq}
+\newcommand\Prf[3]{\deduce{\Seq{#2}{#3}}{\vphantom(#1}}
+
+% ===== Nets
+
+\newcommand\net[3]{#1\triangleright #2,#3}
+
+
+% ===== Check mark symbols
+
+\usepackage{pifont}
+	\newcommand\xmark{{\color{darkred}\ding{55}}}
+	\newcommand\vmark{{\color{darkgreen}\ding{51}}}
+
+
+% ===== Coalescence
+
+\newcommand\link[3][\sigma]{(#2,#3)_{#1}}
+
+\newcommand\scoal{\rightarrow} %{\leadsto}
+\newcommand\ucoal{\rightsquigarrow}
+
+\newcommand\Qrr{\!\!\scriptstyle\qrr}
+
+\newcommand\qrr[1]{
+  \ifx#1+\expandafter\@qrr\else
+  \ifx#1*\*\mathrm R\else
+  \ifx#1!\forall\mathrm R\else
+  \ifx#1?\expandafter\@@qrr\else
+  \ifx#11\mathrm{ax}\else
+  \ifx#1.\mathrm{cut}\else
+  #1\mathrm R
+  \fi\fi\fi\fi\fi\fi
+}
+\newcommand\@qrr[1]{+\mathrm R,#1}
+\newcommand\@@qrr[1]{\exists\mathrm R,#1}
+
+\newcommand\srr[1]{
+  \ifx#1+\expandafter\@srr\else
+  \ifx#1*\*\mathrm S\else
+  \ifx#1!\forall\mathrm S\else
+  \ifx#1?\exists\mathrm S\else 
+  \ifx#11\mathrm{axS}\else
+  #1\mathrm S  \fi\fi\fi\fi\fi
+}
+\newcommand\@srr[1]{+\mathrm S,{#1}}
+
+\newcommand\urr[1]{
+  \ifx#1+\expandafter\@urr\else
+  \ifx#1*\*\mathrm U\else
+  \ifx#1!\forall\mathrm U\else
+  \ifx#1?\exists\mathrm U\else 
+  \ifx#11\mathrm{axU}\else
+  #1\mathrm U
+  \fi\fi\fi\fi\fi
+}
+\newcommand\@urr[1]{+\mathrm U,{#1}}
+
+% ===== Other
+
+\newcommand\dom[1]{\textsc{dom}(#1)}
+\newcommand\minus{\mathop{\!/\mathchoice{\kern-3pt}{\kern-3pt}{\kern-2.5pt}{\kern-2pt}/\!}}
+
+% ===== Examples
+
+\newcommand\xs{(x,\!s)}
+\newcommand\xt{(x,\!t)}
+\newcommand\xy{(x,\!y)}
+\newcommand\zs{(z,\!s)}
+\newcommand\zt{(z,\!t)}
+%
+%\newcommand\xs{xs}
+%\newcommand\xt{xt}
+%\newcommand\xy{xy}
+%\newcommand\zs{zs}
+%\newcommand\zt{zt}
+
+\makeatother
+
+% ===== TITLE
+
+\font\thechapfont=cmssbx10 scaled 1400
+\font\theheadfont=cmssbx10 scaled 1200
+\font\theheadfontb=cmssbx10 scaled 1100
+
+%% \setbeamertemplate{navigation symbols}{} 
+%% \usecolortheme[named=Blue]{structure}
+
+\definecolor{myblue}{rgb}{0,0,0.8}
+%\def\headcolor{\color{MidnightBlue}}
+\def\headcolor{\color{myblue}}
+
+\newcommand{\authorboxx}[2]{\centering\large #1\\[1ex] \normalsize #2\\$$\jfrog$$}
+
+\title{{\thechapfont\headcolor 
+    Proof nets for first-order additive linear logic}}
+  
+\author[Lutz Strassburger]{%
+\texorpdfstring{  \begin{columns}
+    \column{.3\linewidth}
+    \authorboxx{Willem Heijltjes}{University of Bath}
+    \column{.3\linewidth}
+    \authorboxx{Dominic Hughes}{UC Berkeley}
+    \column{.3\linewidth}
+    \authorboxx{Lutz~Stra{\ss}burger}{Inria Saclay}
+  \end{columns}
+%\\[2ex]
+%$$\jfrog$$
+}{}}
+
+\date{{\small
+   3rd FISP Meeting --- TU Wien --- December 7-8, 2018
+}}
+
+
+% ===== START
+
+
+\begin{document}
+%===============================
+%===============================
+\begin{frame}
+  \titlepage
+%  $$\jfrog$$
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\foslide}{%
+  \fopause
+  \defin{Formulas}
+  \[
+  \setMidspace{5pt}
+  \begin{array}{@{}l@{}l}
+    A &\Coloneqq a \Mid \dual a \Mid A\+A \Mid A\*A {\focolor \Mid \exists x.A \Mid \forall x.A}
+    \\[10pt]
+    \focolor a &	\focolor \Coloneqq P(t_1,\dots,t_n)
+    \\[10pt]	
+    \focolor t &	\focolor \Coloneqq f(t_1,\dots,t_n) \Mid x
+  \end{array}
+  \]
+  \fopause
+  \defin{Sequents}
+  \[
+  \seq AB
+  \]
+  \fopause
+  
+  \bigskip
+  \defin{Proofs}
+  \[
+  \infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
+  \qquad
+  \infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
+  \qquad
+  \infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
+  \]
+  \medskip
+  \[
+  \focolor
+  \infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
+  \qquad
+  \infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
+  \]
+}
+
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Additive linear logic}
+  \def\focolor{\color{white}}
+  \def\fopause{\pause}
+  \foslide
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \mytitle{Features}
+
+  \begin{description}
+    
+  \item[\defin{Compact:}] Proof search on \emphl{$\seq AB$} is
+    \emphl{$\mathcal O(|A|\times|B|)$}
+    propositionally$^1$,\\ and \emphl{NP-complete}\/ for first-order$^2$
+
+    \pause
+    \bigskip
+    
+  \item[\defin{Rich:}] Additives \emphl{$\+/\*$} (binary
+    choice), \\
+    Duality \emphl{$\dual{\dual A}=A$}   (player/opponent),\\
+    meta-level linear implication/par
+    \emphl{$\seq AB$} (parallellism)
+    
+    \pause
+    \bigskip
+    
+  \item[\defin{Interesting:}] Two-player parallel games, \\ Communication
+    along a two-way channel, \\ the Blass problem (sequential strategies
+    don't compose associatively)$^3$
+    
+    \pause
+    \bigskip
+    
+  \item[\defin{Well-behaved:}] Canonical proof nets$^4$, also with
+    units$^5$, \\
+    ~Fixed-point formulae (mu-lattice hierarchy)$^6$
+  \end{description}
+
+
+  \citefootnotetext{\citecolor$^1$[Galmiche \&\ Marion 1995]
+    \quad$^2$[Heijltjes \&\ Hughes 2015] %}
+    %%\citefootnotetext{
+    \quad\uncover<3->{$^3$[Abramsky 2003]}\\[1ex]
+    %%\citefootnotetext{
+    \uncover<4>{$^4$[Hughes
+        \&\ Van Glabbeek 2005]\quad $^5$[Heijltjes 2011]\quad $^6$[Santocanale 2002]}\\[1ex]}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Proof nets and cut elimination}
+  \pause
+  \bigskip
+  \defin{Proof net} = sequent + linking
+\newcommand\A{{\color{darkred}a}}
+\newcommand\B{{\color{blue}b}}
+\newcommand\C{{\color{orange}c}}
+
+\newcommand\dA{{\color{darkred}\dual a}}
+\newcommand\dB{{\color{blue}\dual b}}
+\newcommand\dC{{\color{orange}\dual c}}
+
+%Proof nets: {\color{darkred} sequent + linking}
+\[
+\vc{\begin{tikzpicture}[net]
+	\formula[y=1.5]{(\dA\+\dB)\*(\dA\+\dC)}
+	\formula[y=0]{\A\*(\B\+\C)}
+	\Vlink[red]{2,[-2]1}
+	\Vlink[red]{8,[2]1}
+	\Vlink[blue]{4,4}
+	\Vlink[orange]{10,6}
+\end{tikzpicture}}
+%\]
+%\[
+\qquad\qquad
+\vc{%
+   \scalebox{.9}{$
+  \vlderivation{
+    \vliin{}{\Qrr*}{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+      \vliin{}{\Qrr*}{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+        \vlin{}{\Qrr+1}{\seq{\dA\+\dB}{\A}}{
+          \vlin{}{\Qrr1}{\seq{\dA}{\A}}{
+            \vlhy{}}}}{
+        \vlin{}{\Qrr+2}{\seq{\dA\+\dB}{\B\+\C}}{
+          \vlin{}{\Qrr+1}{\seq{\dB}{\B\+\C}}{
+            \vlin{}{\Qrr1}{\seq{\dB}{\B}}{
+              \vlhy{}}}}}}{
+      \vliin{}{\Qrr*}{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+        \vlin{}{\Qrr+1}{\seq{\dA\+\dC}{\A}}{
+          \vlin{}{\Qrr1}{\seq{\dA}{\A}}{
+            \vlhy{}}}}{
+        \vlin{}{\Qrr+2}{\seq{\dA\+\dC}{\B\+\C}}{
+          \vlin{}{\Qrr+2}{\seq{\dC}{\B\+\C}}{
+            \vlin{}{\Qrr1}{\seq{\dC}{\C}}{
+              \vlhy{}}}}}}}$}}
+%% \vc{\infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+%%   \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+%%     \infer{\seq{\dA\+\dB}{\A}}{
+%%     }&&
+%%     \infer{\seq{\dA\+\dB}{\B\+\C}}{
+%%     }
+%%   }&&
+%%   \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+%% }}}
+\]
+
+%\pause
+\bigskip
+\bigskip
+
+\uncover<3>{%
+\defin{More examples:}
+\[
+\begin{array}{c@{\qquad\quad}c@{\qquad\quad}c@{\qquad\quad}c}
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}}
+		\formula[y=0]{a\*a}
+		\Vlink[red]{[-2]1,1}
+		\Vlink[red]{[2]1,3}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}}
+		\formula[y=0]{a\+b}
+		\Vlink[red]{1,1}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}\+{\dual b}}
+		\formula[y=0]{b\*a}
+		\Vlink[red]{1,3}
+		\Vlink[red]{3,1}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{*{\phantom(}{\dual a}*{\phantom)}
+		 {{\+}}*({\dual b}*{\phantom)}
+		 {{\+}}*{\phantom(}{\dual c}*)}
+		\formula[y=0]{*(a*{\phantom)}
+		{{\*}}*{\phantom(}b*)
+		{{\*}}*{\phantom(}c*{\phantom)}}
+		\Vlink[red]{1,1}
+		\Vlink[red]{3,3}
+		\Vlink[red]{5,5}
+	\end{tikzpicture}}
+\\ \\
+	\text{\small diagonal}
+&	\text{\small injection}	
+&   \text{\small symmetry}
+&	\text{\small associativity}
+\end{array}
+\]
+}
+\vskip-23ex
+%\vfill
+%% \bigskip
+%% \bigskip
+%% \pause
+
+\uncover<5->{
+  \defin{Cut elimination} = relational composition
+  \[
+  \vc{\begin{tikzpicture}[net]
+      \formula[y=2.5]{{\dual b}*\+{\dual a}}
+      \formula[y=1.5]{a*\**(b*\+b*)}
+      \Vlink[red]{1,2}
+      \Vlink[red]{2,1}
+      \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+      \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+\quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}
+\]
+}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Correctness}
+  %\bigskip
+  %Two independent correctness criteria:
+  \bigskip
+  \pause
+  
+  \defin{Slicing:}
+\[
+\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\begin{scope}[black!40]
+		\formula[y=0]{B\*C}
+		\Vlink[red]{[-1]1,1}
+		\Vlink{[1]1,3}
+		\end{scope}
+		\formula[y=0]{B{\phantom{{}\*{}}}{\phantom C}}
+	\end{tikzpicture}}
+\qquad
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\begin{scope}[black!40]
+		\formula[y=0]{B\*C}
+		\Vlink{[-1]1,1}
+		\Vlink[red]{[1]1,3}
+		\end{scope}
+		\formula[y=0]{{\phantom B}{\phantom{{}\*{}}}C}
+	\end{tikzpicture}}
+\]
+\hfill\citetext{[Hughes \&\ Van Glabbeek 2003]}
+
+\bigskip
+\bigskip
+\bigskip
+\pause
+
+\defin{Coalescence:}
+\[
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\*C}
+		\Vlink[red]{[-2]1,1}
+		\Vlink[red]{[2]1,3}
+	\end{tikzpicture}}
+~\scoal~
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\*C}
+		\Vlink[red]{1,2}
+	\end{tikzpicture}}
+\qquad\qquad
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\+C}
+		\Vlink[red]{1,1}
+	\end{tikzpicture}}
+~\scoal~
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{A}
+		\formula[y=0]{B\+C}
+		\Vlink[red]{1,2}
+	\end{tikzpicture}}
+\]
+
+\hfill\citetext{[Heijltjes \&\ Hughes 2015]}
+
+\bigskip
+\bigskip
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{{\color{white} First-order} additive linear logic}
+  \def\focolor{\color{white}}
+  \def\fopause{}
+  \foslide
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+  \mytitle{{\color{darkred} First-order} additive linear logic}
+  \def\focolor{\color{darkred}}
+  \def\fopause{}
+  \foslide
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \mytitle{What is first-order quantification in proofs?}
+  \pause
+  
+  Commonly: \emphl{expansion + substitution}$^1$
+  \[
+  \exists x.A \quad\Rightarrow\quad A[t_1/x]\+\dots\+A[t_n/x]
+  \]
+  
+  \pause
+  \[
+  \vc{
+    \infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+      \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+      &&
+      \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
+  }}
+  \]
+
+\pause
+\bigskip
+\bigskip
+
+\boldred{Problem:~~}
+Incompatible with \emphl{sequent + linking} and \emphl{relational composition}\\[2ex]
+%\medskip
+\strut\phantom{\boldred{Problem:~~}}
+Both \emphl{expansion} and \emphl{substitution} destroy the original formula
+
+\citefootnotetext{\uncover<2->{$^1$For classical logic:
+    [Herbrand 1930, Miller 1987, Heijltjes 2010]\\}}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Two solutions}
+
+\begin{tabular}{@{}l@{\hspace{-20pt}}c@{}}
+&
+	\footnotesize
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
+	}
+\\ \\ \\
+\defin{Witness nets:}~ {explicit substitution}
+&
+$\vcenter{\hbox{\begin{tikzpicture}[net]
+	\formula[y=1.2]{\exists x.{\dual P}(x)}
+	\formula[y=0]{P(s)\*P(t)}
+	\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
+	\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
+\end{tikzpicture}}}
+$
+\\ \\ \\
+\defin{Unification nets:}~ {first-order unification}$^1$
+&
+$\vcenter{\hbox{
+\begin{tikzpicture}[net]
+	\formula[y=1.2]{\exists x.{\dual P}(x)}
+	\formula[y=0]{P(s)\*P(t)}
+	\Vlink[red]{[-3]4,1}
+	\Vlink[red]{[1]4,6}
+\end{tikzpicture}
+}}$
+\end{tabular}
+
+\citefootnotetext{$^1$For MLL: [Hughes 2018]\\}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Proof identity}
+
+If \emphl{any} witness will do, is the choice significant?
+\[
+	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(s)}{\dual P(s)}}{}}}
+	\quad
+	\stackrel?\equiv
+	\quad
+	\vc{\infer={\seq{\exists x.P(x)}{\exists y.\dual P(y)}}{\infer{\seq{P(t)}{\dual P(t)}}{}}}
+\]
+
+\bigskip
+\pause
+What if the quantifier is \emphl{vacuous}?
+\[
+	\vc{\infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
+	\quad
+	\stackrel?\equiv
+	\quad	
+	\vc{\infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P}{\dual P}}{\infer{\seq P{\dual P}}{}}}
+\]
+
+\bigskip
+\pause
+What if a quantified variable occurs only in a \emphl{weakened} formula?
+\[	
+	\vc{
+	 \infer[\!\!\scriptstyle{\qrr?s}]{\seq{\exists x.P{\+}Q(x)}{\dual P}}{
+	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P{\+}Q(s)}{\dual P}}{\infer{\seq P{\dual P}}{}}
+	}}
+	\quad
+	\stackrel?\equiv
+	\quad	
+	\vc{
+	 \infer[\!\!\scriptstyle{\qrr?t}]{\seq{\exists x.P{\+}Q(x)}{\dual P}}{
+	  \infer[\!\!\scriptstyle{\qrr+1}]{\seq{P{\+}Q(t)}{\dual P}}{\infer{\seq P{\dual P}}{}}
+	}}
+\]
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Generality}
+
+  \begin{tabular}{rl}
+    \defin{Witness nets:}& 
+    make \emphl{none} of these identifications (like {sequent calculus})\\[3ex]
+    \defin{Unification nets:}&
+    make \emphl{all} of these identifications
+  \end{tabular}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+  \mytitle{Witness nets and Unification nets}
+  \pause
+  \bigskip
+  \defin{Witness net} = sequent + linking with substitution
+  $$
+  \qquad
+  \vcenter{\hbox{\begin{tikzpicture}[net]
+	\formula[y=1.2]{\exists x.{\dual P}(x)}
+	\formula[y=0]{P(s)\*P(t)}
+	\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
+	\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
+  \end{tikzpicture}}}
+  \qquad\qquad\qquad
+  \vcenter{\scalebox{.9}{%
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}}}}
+  $$
+  \vfill
+  \pause
+  \defin{Unification net} = sequent + linking %%( + unification condition)
+  $$
+  \qquad
+  \vcenter{\hbox{\begin{tikzpicture}[net]
+	\formula[y=1.2]{\exists x.{\dual P}(x)}
+	\formula[y=0]{P(s)\*P(t)}
+	\Vlink[red]{[-3]4,1}
+	\Vlink[red]{[1]4,6}
+      \end{tikzpicture}}}
+  \qquad\qquad\qquad
+  \vcenter{\scalebox{.9}{%
+	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
+	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
+	 &&
+	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}}}}
+  $$
+  \pause
+  (such that ``sequent + linking with mgu'' forms a witness net)
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Coalescence for witness nets \uncover<2->{(rewrite rules)}}
+  \pause
+\[
+\begin{array}{ccc@{\hspace{50pt}}ccc}
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{1,1}
+    \end{tikzpicture}}
+&\scoal& 
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\+}}D*{_2}}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}
+&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\exists x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{x\,\in\,\dom\sigma}\scoal&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\exists x.D}
+    	\Vlink[red,label={~$\scriptstyle{\sigma\minus x}$}]{1,1}
+    \end{tikzpicture}}   
+\\ \\[2ex]   
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+    	\Vlink[red,label={$\scriptstyle\sigma~$},l]{[-1]1,1}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{[1]1,3}
+    \end{tikzpicture}}
+&\scoal&
+	\vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{D*{_1}{{\*}}D*{_2}}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,2}
+    \end{tikzpicture}}   
+&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\forall x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,4}
+    \end{tikzpicture}}
+&\stackrel{x\,\notin\,\sigma}\scoal&
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=2]{C}
+    	\formula[y=1]{\forall x.D}
+    	\Vlink[red,label={~$\scriptstyle\sigma$}]{1,1}
+    \end{tikzpicture}}
+\end{array}
+\]
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[red,l,label={$\scriptstyle[x/z,s/y]~~$}]{[-3]3,2}
+		\Vlink[blue,r,label={\makebox[0pt][l]{$~~\scriptstyle[x/z,t/y]$}}]{[1]3,4}
+	\end{tikzpicture}
+\]
+
+\pause
+\bigskip
+\bigskip
+
+\[
+	\color{white}
+	\infer[\Qrr!]{\seq{\forall x.\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	 \infer[\Qrr?x]{\seq{\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	  \infer[\Qrr*]{\seq{\exists y.\dual P\xy}{P\xs\*P\xt}}{
+	   \infer[\Qrr?s]{\seq{\exists y.\dual P\xy}{P\xs}}{
+	    \color{darkred}
+	    \infer{\seq{\dual P\xs}{P\xs}}{}
+	   }
+	   &&
+	   \infer[\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{
+	    \color{blue}
+	    \infer{\seq{\dual P\xt}{P\xt}}{}
+	   }
+	}}}
+\]
+
+\end{frame}
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[red,l,label={$\scriptstyle[x/z]~$}]{[-2]2,2}
+		\Vlink[blue,r,label={\makebox[0pt][l]{$~~\scriptstyle[x/z,t/y]$}}]{[1]3,4}
+	\end{tikzpicture}
+\]
+
+\bigskip
+\bigskip
+
+\[
+	\color{white}
+	\infer[\Qrr!]{\seq{\forall x.\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	 \infer[\Qrr?x]{\seq{\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	  \infer[\Qrr*]{\seq{\exists y.\dual P\xy}{P\xs\*P\xt}}{
+	   \color{darkred}
+	   \infer[\Qrr?s]{\seq{\exists y.\dual P\xy}{P\xs}}{
+	    \color{gray}
+	    \infer{\seq{\dual P\xs}{P\xs}}{}
+	   }
+	   &&
+	   \infer[\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{
+	    \color{blue}
+	    \infer{\seq{\dual P\xt}{P\xt}}{}
+	   }
+	}}}
+\]
+
+\end{frame}
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[red,l,label={$\scriptstyle[x/z]~$}]{[-2]2,2}
+		\Vlink[blue,r,label={$~~\scriptstyle[x/z]$}]{[2]2,4}
+	\end{tikzpicture}
+\]
+
+\bigskip
+\bigskip
+
+\[
+	\color{white}
+	\infer[\Qrr!]{\seq{\forall x.\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	 \infer[\Qrr?x]{\seq{\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	  \infer[\Qrr*]{\seq{\exists y.\dual P\xy}{P\xs\*P\xt}}{
+	   \color{darkred}
+	   \infer[\Qrr?s]{\seq{\exists y.\dual P\xy}{P\xs}}{
+	    \color{gray}
+	    \infer{\seq{\dual P\xs}{P\xs}}{}
+	   }
+	   &&
+	   \color{blue}
+	   \infer[\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{
+	    \color{gray}
+	    \infer{\seq{\dual P\xt}{P\xt}}{}
+	   }
+	}}}
+\]
+
+\end{frame}
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[violet,r,label={$~~\scriptstyle[x/z]$}]{2,3}
+	\end{tikzpicture}
+\]
+
+\bigskip
+\bigskip
+
+\[
+	\color{white}
+	\infer[\Qrr!]{\seq{\forall x.\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	 \infer[\Qrr?x]{\seq{\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	  \color{violet}
+	  \infer[\Qrr*]{\seq{\exists y.\dual P\xy}{P\xs\*P\xt}}{
+	   \color{gray}
+	   \infer[\Qrr?s]{\seq{\exists y.\dual P\xy}{P\xs}}{\infer{\seq{\dual P\xs}{P\xs}}{}}
+	   &&
+	   \color{gray}
+	   \infer[\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{\infer{\seq{\dual P\xt}{P\xt}}{}}
+	}}}
+\]
+
+\end{frame}
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[violet]{2,1}
+	\end{tikzpicture}
+\]
+
+\bigskip
+\bigskip
+
+\[
+	\color{white}
+	\infer[\Qrr!]{\seq{\forall x.\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	 \color{violet}
+	 \infer[\Qrr?x]{\seq{\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	  \color{gray}
+	  \infer[\Qrr*]{\seq{\exists y.\dual P\xy}{P\xs\*P\xt}}{
+	   \infer[\Qrr?s]{\seq{\exists y.\dual P\xy}{P\xs}}{\infer{\seq{\dual P\xs}{P\xs}}{}}
+	   &&
+	   \infer[\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{\infer{\seq{\dual P\xt}{P\xt}}{}}
+	}}}
+\]
+
+\end{frame}
+%-------------------------------
+\begin{frame}
+\mytitle{Coalescence for witness nets (example)}
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[violet]{1,1}
+	\end{tikzpicture}
+\]
+
+\bigskip
+\bigskip
+
+\[
+	\color{violet}
+	\infer[\Qrr!]{\seq{\forall x.\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	 \color{gray}
+	 \infer[\Qrr?x]{\seq{\exists y.\dual P\xy}{\exists z.P\zs\*P\zt}}{
+	  \infer[\Qrr*]{\seq{\exists y.\dual P\xy}{P\xs\*P\xt}}{
+	   \infer[\Qrr?s]{\seq{\exists y.\dual P\xy}{P\xs}}{\infer{\seq{\dual P\xs}{P\xs}}{}}
+	   &&
+	   \infer[\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{\infer{\seq{\dual P\xt}{P\xt}}{}}
+	}}}
+\]
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+
+\begin{frame}
+\mytitle{Slicing for witness nets}
+
+\pause
+\defin{Correctness conditions:}
+\begin{itemize}
+\item<3-> \emph{local eigenvariables}
+\item<5-> \emph{exact coverage}
+\item<6-> \emph{slice-correctness}~~ (every slice is a singleton)
+\item<7-> \emph{dependency-correctness}~~ \rlap{(dependency relation for each link is a partial order) }
+\end{itemize}
+
+%\pause
+\bigskip
+\bigskip
+
+\uncover<4->{
+\[
+	\begin{tikzpicture}[net]
+		\formula[y=1.5]{\forall*{x.~}\exists*{y.~}{\dual P}*\xy}
+		\formula[y=0]{\exists*{z.~}P*\zs\*P*\zt}
+		\Vlink[red,l,label={$\scriptstyle[x/z,s/y]~~$}]{[-3]3,2}
+		\Vlink[blue,r,label={\makebox[0pt][l]{$~~\scriptstyle[x/z,t/y]$}}]{[1]3,4}
+	\end{tikzpicture}
+\]
+}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Composition / cut elimination}
+  \begin{tabular}{@{\qquad}c@{\quad\qquad}c@{\quad\qquad}c@{\quad}}
+    relational composition
+    &
+    $+$
+    &
+    composition of substitution\\[2ex]
+    $\vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=1.5]{a*\**(b*\+b*)}
+            \Vlink[red]{1,2}
+            \Vlink[red]{2,1}
+        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+        \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+      \quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}$
+    &
+    &
+    $\vc{\begin{tikzpicture}[net]
+      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
+      \formula[right,y=0]{*{\forall x.\exists y.\forall z.\,}P}
+      \Vlink[red,l,label={$\scriptstyle[f(x)/y,z/v]$~~}]{1,1}
+      \formula[right,y=-.5]{*{\exists x.\forall y.\exists z.\,}{\dual P}}
+      \formula[right,y=-1.7]{P}
+      \Vlink[blue,l,label={$\scriptstyle[t/x,g(y)/z]$~~}]{1,1}
+      \path(0,-2)--(1,-2);
+    \end{tikzpicture}}
+    \vc{\begin{tikzpicture}[net]
+      \formula[right,y=1.2]{*{\exists v.}{\dual P}}
+      \formula[right,y=-1.7]{P}
+      \Vlink[violet,l,label={$\quad\Rightarrow\quad\scriptstyle[g(f(t))/v]\quad$}]{1,1}
+      \path(0,-2)--(1,-2);
+    \end{tikzpicture}}$
+  \end{tabular}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------
+\begin{frame}
+  \mytitle{Summary}
+
+  \begin{center}
+    \begin{tabular}{@{}l@{}ccc@{}}
+      &	Monomial & Witness & Unification
+      \\ & nets$^1$ & nets$^2$ & nets$^2$
+      \\\hline
+      Canonicity          &    ?   & \vmark & \vmark
+      \\ Generality          & \xmark & \xmark & \vmark
+      \\ Direct composition  & \xmark & \vmark & \vmark
+      \\ Coalescence         &    ?   & \vmark & \vmark
+      \\ Slicing             & \vmark & \vmark &   ?
+    \end{tabular}  
+  \end{center}
+  \vfill
+  \pause
+  \hfill\speakgreen[1]{5em}{Questions?}
+  \citefootnotetext{$^1$[Girard 1987, 1996]\quad $^2$[Inria RR-9201]\\}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}
+%%   \Huge
+%%   $$
+%%   \speakgreen[1]{5em}{Questions?}
+%%   $$
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+%===============================
+
+
+
+
+
+\begin{frame}
+  \mytitle{{\focolor First-order} Additive linear logic}
+
+\defin{Formulas}
+\[
+\setMidspace{5pt}
+\begin{array}{@{}l@{}l}
+	A &\Coloneqq a \Mid \dual a \Mid A\+A \Mid A\*A \uncover<2->{\focolor \Mid \exists x.A \Mid \forall x.A}
+\\[10pt]
+	\focolor a &	\focolor \Coloneqq P(t_1,\dots,t_n)
+\\[10pt]	
+	\focolor t &	\focolor \Coloneqq f(t_1,\dots,t_n) \Mid x
+\end{array}
+\]
+
+\pause
+
+Sequents
+\[
+	\seq AB
+\]
+
+\pause
+
+Proofs
+\[
+	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
+\qquad
+	\infer[\Qrr+i]{\seq A{B_1\+B_2}}{\seq A{B_i}}
+\qquad
+	\infer[\Qrr*]{\seq A{B\*C}}{\seq AB & \seq AC}
+\]
+\[
+\focolor
+	\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}
+\qquad
+	\infer[\Qrr!~(x\,\notin\,\textsc{fv}(A))]{\seq A{\forall x.B}}{\seq AB}
+\]
+
+\end{frame}
+%-------------------------------
+
+
+%===============================
+%\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \mytitle{Proof nets and cut elimination}
+  \pause
+  \bigskip
+  \defin{Proof net} = sequent + linking
+\[
+\begin{array}{c@{\qquad\quad}c@{\qquad\quad}c@{\qquad\quad}c}
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}}
+		\formula[y=0]{a\*a}
+		\Vlink[red]{[-2]1,1}
+		\Vlink[red]{[2]1,3}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}}
+		\formula[y=0]{a\+b}
+		\Vlink[red]{1,1}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{{\dual a}\+{\dual b}}
+		\formula[y=0]{b\*a}
+		\Vlink[red]{1,3}
+		\Vlink[red]{3,1}
+	\end{tikzpicture}}
+&
+	\vc{\begin{tikzpicture}[net]
+		\formula[y=1]{*{\phantom(}{\dual a}*{\phantom)}
+		 {{\+}}*({\dual b}*{\phantom)}
+		 {{\+}}*{\phantom(}{\dual c}*)}
+		\formula[y=0]{*(a*{\phantom)}
+		{{\*}}*{\phantom(}b*)
+		{{\*}}*{\phantom(}c*{\phantom)}}
+		\Vlink[red]{1,1}
+		\Vlink[red]{3,3}
+		\Vlink[red]{5,5}
+	\end{tikzpicture}}
+\\ \\
+	\text{\small diagonal}
+&	\text{\small injection}	
+&   \text{\small symmetry}
+&	\text{\small associativity}
+\end{array}
+\]
+
+\bigskip
+\bigskip
+\pause
+
+\defin{Cut elimination} = relational composition
+\[
+\vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=1.5]{a*\**(b*\+b*)}
+            \Vlink[red]{1,2}
+            \Vlink[red]{2,1}
+        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+        \formula[y=0]{b*\*b}
+            \Vlink[blue]{[-1]2,[-1]1}
+            \Vlink[blue]{[1]2,[-1]2}
+            \Vlink[blue]{[-1]3,[1]1}
+            \Vlink[blue]{[1]3,[1]2}
+    \end{tikzpicture}}
+\quad\Rightarrow\quad
+    \vc{\begin{tikzpicture}[net]
+        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+        \formula[y=0]{b*\*b}
+            \Vlink[violet]{[-1]1,1}
+            \Vlink[violet]{[1]1,2}
+    \end{tikzpicture}}
+\]
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \newcommand\A{{\color{darkred}A}}
+  \newcommand\B{{\color{blue}B}}
+  \newcommand\C{{\color{orange}C}}
+  
+  \newcommand\dA{{\color{darkred}\dual A}}
+  \newcommand\dB{{\color{blue}\dual B}}
+  \newcommand\dC{{\color{orange}\dual C}}
+  
+  Proof nets: {\color{darkred} sequent + linking}
+  \[
+  \begin{tikzpicture}[net]
+	\formula[y=1.5]{(\dA\+\dB)\*(\dA\+\dC)}
+	\formula[y=0]{\A\*(\B\+\C)}
+	\Vlink[red]{2,[-2]1}
+	\Vlink[red]{8,[2]1}
+	\Vlink[blue]{4,4}
+	\Vlink[orange]{10,6}
+  \end{tikzpicture}
+  \]
+  
+  \[
+  \infer{\seq{(\dA\+\dB)\*(\dA\+\dC)}{\A\*(\B\+\C)}}{
+    \infer{\seq{\dA\+\dB}{\A\*(\B\+\C)}}{
+      \infer{\seq{\dA\+\dB}{\A}}{
+      }&&
+      \infer{\seq{\dA\+\dB}{\B\+\C}}{
+      }
+    }&&
+    \infer{\seq{\dA\+\dC}{\A\*(\B\+\C)}}{
+  }}
+  \]
+  
+
+\[
+\begin{array}{@{}ccccc@{}}
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=1]{{\dual P}*{xx}}
+    	\formula[y=0]{P*{ys}\*P*{tz}}
+    	\Vlink[red]{[-2]1,1}
+    	\Vlink[blue]{[2]1,3}
+    \end{tikzpicture}}
+&\ucoal& 
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=1]{{\dual P}*{xx}}
+    	\formula[y=0]{P*{ys}\*P*{tz}}
+    	\Vlink[red,l,label={$\scriptstyle[s/y,s/x]$~~}]{[-2]1,1}
+    	\Vlink[blue,r,label={~~$\scriptstyle[t/z,t/x]$}]{[2]1,3}
+    \end{tikzpicture}}
+&\ucoal& 
+    \vc{\begin{tikzpicture}[net]
+    	\formula[y=1]{{\dual P}*{xx}}
+    	\formula[y=0]{P*{ys}\*P*{tz}}
+    	\Vlink[violet,r,label={~~$\scriptstyle[u/z,u/y,u/x]$}]{1,2}
+    \end{tikzpicture}}
+\\ \\
+&\qquad\qquad&
+\text{\scriptsize
+	\color{white}
+	 \infer{\vphantom{\dual P}}{
+	  \color{darkred}\infer{\seq{\dual Pss}{Pss}}{}
+       &&
+	  \color{blue}\infer{\seq{\dual Ptt}{Ptt}}{}
+	 }}
+&\qquad\qquad&
+\text{\scriptsize
+	\color{violet}
+	 \infer[\!\Qrr*]{\seq{\dual Puu}{Puu\*Puu}}{
+	  \color{black}\infer{\seq{\dual Puu}{Puu}}{}
+       &&
+	  \color{black}\infer{\seq{\dual Puu}{Puu}}{}
+	 }}
+\end{array}
+\end{frame}
+
+
+\end{document}
