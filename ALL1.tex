@@ -1,4 +1,4 @@
-\documentclass[UKenglish]{lipics-v2018}
+\documentclass[UKenglish]{lipics-v2019}
 
 %\usepackage {etex}
 
@@ -6,6 +6,7 @@
 \usepackage{latexsym}
 \usepackage{microtype}
 \usepackage{proof}
+\usepackage{refcount}
 \usepackage{stmaryrd}
 \usepackage{xargs}
 
@@ -29,8 +30,8 @@
 
 \makeatletter
 
-\theoremstyle{plain}
-\newtheorem{proposition}[theorem]{Proposition}
+%\theoremstyle{plain}
+%\newtheorem{proposition}[theorem]{Proposition}
 
 
 % ===== Definitions
@@ -431,7 +432,11 @@
 
 \Copyright{Willem B.\ Heijltjes, Dominic J.D.\ Hughes, and Lutz Stra\ss burger}
 
-\subjclass{F.4.1: Mathematical logic--Proof theory}
+%\subjclass{F.4.1: Mathematical logic--Proof theory}
+% Theory of computation - Logic - Proof theory
+% Theory of computation - Logic - Linear logic
+\ccsdesc[500]{Theory of computation~Proof theory}
+\ccsdesc[300]{Theory of computation~Linear logic}
 \keywords{Linear logic, First-order logic, Proof nets, Herbrand's Theorem}
 
 
@@ -458,11 +463,22 @@ Both capture sequent calculus cut-elimination as a one-step global composition o
 
 \section{Introduction}
 
-Additive linear logic (\all) is the logic of sum, product, and their canonical morphisms: projections, injections, and diagonals. Semantically, the logic represents parallel communication between two parties, with sum and product as respectively the sending and receiving of a binary choice \cite{Joyal-1995, Cockett-Santocanale-2009}, and as such is a core part of \emph{session types} for process calculi \cite{Honda-Vasconcelos-Kubo-1998, Caires-Pfenning-2010, Wadler-2014}.
+%We present two solutions to the \emph{proof-net problem}, finding a canonical representation of proofs, for additive linear logic (\all) extended with first-order quantification (\all1).
+
+%\all is the fragment of linear logic \cite{Girard-1987} that describes sums and products, and their canonical morphisms: projections, injections, and diagonals. The logic represents a rich but tractable microcosm in which to explore important semantic ideas. By the duality between sum and product 
+
+
+
+
+
+
+Additive linear logic (\all) is the logic of sum, product, and their canonical morphisms: projections, injections, and diagonals. Semantically, the logic represents parallel communication between two parties, with sum and product as respectively the sending and receiving of a binary choice \cite{Joyal-1995, Cockett-Santocanale-2009}. As such it is a core part of \emph{session types} for process calculi \cite{Honda-Vasconcelos-Kubo-1998, Caires-Pfenning-2010, Wadler-2014}.
 
 A microcosm of parallellism, \all\ already demonstrates the \emph{Blass problem} of game semantics \cite{Abramsky-2003}, that sequential strategies do not in general have associative composition. This is resolved by \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which are a canonical, \emph{true-concurrency} presentation of \all.
 
 Here, we extend proof nets to first-order additive linear logic (\all1). Beyond the solution to the proof-net problem, a main contribution is the (further) development of the two techniques we consider: \emph{explicit substitutions} for witness assignment, and reconstruction of witness information through \emph{unification}, as pioneered for MLL by the second author \cite{Hughes-2018}. We expect to apply these to first-order logics more generally.
+
+Proofs have been relegated to the appendix---for a full version see the report \cite{Heijltjes-Hughes-Strassburger-2018}.
 
 %Additive linear logic $(\all)$ is the logic of product $(\*)$, sum $(\+)$, and their canonical morphisms: projections, injections, and diagonals. It is naturally captured in \defn{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which describe a morphism $A\to B$ by a sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between the propositional atoms of $\dual A$ and those of $B$. Four examples are illustrated below left.
 %
@@ -607,10 +623,6 @@ Here, we extend proof nets to first-order additive linear logic (\all1). Beyond 
 % Tightening the text and spacing the 
 \rule[-55pt]{0pt}{110pt}
 \]
-%
-% ALTERNATIVE (cuts one line) 
-%
-%We present proof nets for first-order additive linear logic (\all1). Our main challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers, into additive proof nets. Commonly, as in the sequent rule below left, a witness to $\exists x.B$ is assigned by a substitution $B[t/x]$. To assign different witnesses in different branches of a proof, the subformula is copied first, giving $B[s/x]$ and $B[t/x]$, as below right.
 %
 We extend additive proof nets with first-order quantification. Our central challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers. Commonly, as in the sequent calculus rule below left, a witness to $\exists x.B$ is given by an immediate substitution $B[t/x]$. To assign different witnesses in different branches of a proof, the subformula is duplicated first, giving $B[s/x]$ and $B[t/x]$, as below right.
 %
@@ -1024,7 +1036,6 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
  ^{\makebox[0pt][l]{$\scriptstyle{#3\,,\,#4}$}}%
  \rule{35pt}{0pt}
 }
-%
 \begin{align*}
 	\XDeseq{\,\infer[\Qrr1]{\seq a{\dual a}}{}}bc &\quad=\quad \{\link bc\}
 \\ \\[-5pt]
@@ -1049,6 +1060,31 @@ The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the w
 	& \quad=\quad 
 	  \Deseq{\Prf\pi AB}{A'}{B'}
 \end{align*}
+%
+%\begin{align*}
+%	\XDeseq{\,\infer[\Qrr1]{\seq a{\dual a}}{}}bc &\quad=\quad \{\link bc\}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr+i]{\seq A {B_1\+B_2}}{\prf \pi A{B_i}}} {A'} {B_1'\+B'_2} 
+%	& \quad=\quad 
+%	\deseq{\prf\pi A{B_i}} {A'} {B_i'}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr*]{\seq A{B\*C}}{
+%	 \prf\pi AB && \prf{\pi'}AC 
+%	}}{A'}{B'\*C'}
+%	& \quad=\quad 
+%	  \deseq{\prf\pi AB}{A'}{B'}
+%	  \cup
+%	  \deseq{\prf{\pi'}AC}{A'}{C'}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr?t]{\seq A{\exists x.B}}{\prf\pi A{B[t/x]}}}{A'}{\exists x.B'}
+%	& \quad=\quad 
+%	 \deseq[{\sigma[t/x]}]{\prf\pi A{B[t/x]}} {A'} {B'}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr!]
+%	  {\seq A{\forall x.B}}{\prf\pi AB}} {A'} {\forall x.B'}
+%	& \quad=\quad 
+%	  \deseq{\prf\pi AB}{A'}{B'}
+%\end{align*}
 \end{definition}
 
 % ..................................................
@@ -1184,9 +1220,9 @@ We conclude this section by establishing that sequentialization and de-sequentia
 For any \all1 proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
 \end{theorem}
 
-\begin{proof}
-It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
-\end{proof}
+%\begin{proof}
+%It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
+%\end{proof}
 % ..................................................
 
 % ..................................................
@@ -1195,24 +1231,25 @@ It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{
 If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$, then $[\pi]$ is $\net{\lambda_\Sigma}AB$. 
 \end{theorem}
 
-\begin{proof}
-By induction on the sequentialization path 
-$\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
-it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
-\[
-	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
-\]
-The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
-\end{proof}
+%\begin{proof}
+%By induction on the sequentialization path 
+%$\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
+%it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
+%\[
+%	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
+%\]
+%The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
+%\end{proof}
 % ..................................................
 
 \begin{theorem}
+\label{thm:canonical}
 Witness nets are canonical: $[\pi]=[\phi]$ if and only if $\pi\sim\phi$.
 \end{theorem}
 
-\begin{proof}
-From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in Appendix~\ref{sec:permutations}.
-\end{proof}
+%\begin{proof}
+%From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in Appendix~\ref{sec:permutations}.
+%\end{proof}
 
 
 % ..................................................
@@ -1305,7 +1342,7 @@ When defining slices, we interpret an existential quantification $\exists x.A$ a
 
 	\item[Dependency]
 We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists y.B$ where the eigenvariable $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we will require this dependency relation to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
-	\item[]
+	%\item[]
 \[
 \vc{
 	\infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
@@ -1378,32 +1415,34 @@ A witness pre-net is \defn{correct} if:
 \end{definition}
 % ..................................................
 
-In the remainder of this section we will establish that the two correctness conditions, by coalescence and by slicing, are equivalent. The geometric condition further gives \emph{strong} coalescence: since it is preserved, no coalescence step yields an incorrect, and thus non-coalescing, pre-net. Finally, canonicity follows by inspecting the critical pairs of sequentialization.
+%In the remainder of this section we will establish that the two correctness conditions, by coalescence and by slicing, are equivalent. The geometric condition further gives \emph{strong} coalescence: since it is preserved, no coalescence step yields an incorrect, and thus non-coalescing, pre-net. Finally, canonicity follows by inspecting the critical pairs of sequentialization.
+
+To conclude this section we will establish that both correctness conditions, by coalescence and by slicing, are equivalent. Moreover, both are equivalent to \emph{strong} coalescence.
 
 % ..................................................
-\newcounter{lemcorrect}
-\setcounter{lemcorrect}{\thetheorem}
-\begin{lemma}
-\label{lem:correct}
-Strict coalescence preserves and reflects correctness.
-\end{lemma}
+%\newcounter{lemcorrect}
+%\setcounter{lemcorrect}{\thetheorem}
+%\begin{lemma}
+%\label{lem:correct}
+%Strict coalescence preserves and reflects correctness.
+%\end{lemma}
 
-\begin{proof}
-See the appendix.
-\end{proof}
+%\begin{proof}
+%See the appendix.
+%\end{proof}
 
 % ..................................................
 
-\newcounter{lemcoalescenceapplies}
-\setcounter{lemcoalescenceapplies}{\thetheorem}
-\begin{lemma}
-\label{lem:coalescence applies}
-To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies, unless it is fully coalesced already, $\lambda_\Sigma=\{\link[\varnothing]AB\}$.
-\end{lemma}
+%\newcounter{lemcoalescenceapplies}
+%\setcounter{lemcoalescenceapplies}{\thetheorem}
+%\begin{lemma}
+%\label{lem:coalescence applies}
+%To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies, unless it is fully coalesced already, $\lambda_\Sigma=\{\link[\varnothing]AB\}$.
+%\end{lemma}
 
-\begin{proof}
-See the appendix.
-\end{proof}
+%\begin{proof}
+%See the appendix.
+%\end{proof}
 
 % ..................................................
 
@@ -1413,12 +1452,12 @@ See the appendix.
 A witness pre-net that strict-coalesces is correct, and a correct witness pre-net strongly strict-coalesces. 
 \end{theorem}
 
-\begin{proof}
-For the first statement, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:correct} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
-
-For the second statement, let $\net{\lambda_\Sigma}AB$ be correct. %We proceed by induction on the \emph{depth} of the links in $\net{\lambda_\Sigma}AB$, their distance to the roots of $A$ and $B$, and observe that this measure strictly decreases for any coalescence step. 
-By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of any coalescence step is again correct. Since links strictly move towards the roots of both formula trees, it follows that this process terminates, and the pre-net $\net{\lambda_\Sigma}AB$ strongly strict-coalesces.
-\end{proof}
+%\begin{proof}
+%For the first statement, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:correct} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
+%
+%For the second statement, let $\net{\lambda_\Sigma}AB$ be correct. %We proceed by induction on the \emph{depth} of the links in $\net{\lambda_\Sigma}AB$, their distance to the roots of $A$ and $B$, and observe that this measure strictly decreases for any coalescence step. 
+%By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of any coalescence step is again correct. Since links strictly move towards the roots of both formula trees, it follows that this process terminates, and the pre-net $\net{\lambda_\Sigma}AB$ strongly strict-coalesces.
+%\end{proof}
 
 % ..................................................
 
@@ -1428,16 +1467,34 @@ A correct witness pre-net with axiom linking is a witness proof net.
 
 % ..................................................
 
-%\begin{corollary}
-%\label{cor:strong coalescence}
-%A correct witness pre-net strongly strict-coalesces.
-%\end{corollary}
-%
-%\begin{proof}
-%By Theorem~\ref{thm:correctness} a correct pre-net coalesces, and by Lemma~\ref{lem:correct} any coalescence step preserves correctness. AAs links strictly move towards the formula roots, this process terminates.
-%\end{proof}
-
 % ..................................................
+\begin{figure}[!t]
+\[
+\begin{array}{ccc}
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
+	 \infer[\!\!\scriptstyle{\qrr*}]{\Seq A{B_1\*B_2}\vphantom{\dual B}}{\Prf{\pi_1}A{B_1} & \Prf{\pi_2}A{B_2}}
+	 &&
+	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{\dual B_i}C}
+	}}
+	&\Rightarrow&
+	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf{\pi_i}A{B_i} && \Prf\phi{\dual B_i}C}}
+\\ \\
+	\vc{
+	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
+	 \infer[\!\!\scriptstyle{\qrr?t}]{\Seq A{\exists x.B}}{\Prf\pi A{B[t/x]}}
+	 &&
+	 \infer[\!\!\scriptstyle{\qrr!}]{\Seq {\forall x.\dual B}C}{\Prf\phi{\dual B}C}
+	}}
+	&\Rightarrow&
+	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf\pi A{B[t/x]} && \Prf{\phi[t/x]}{\dual B[t/x]}C}}
+\end{array}
+\]
+\caption{\all1 cut-elimination steps}
+\label{fig:cut-elim}
+\end{figure}
+% ..................................................
+
 
 
 % --------------------------------------------------
@@ -1507,39 +1564,6 @@ The \defn{composition} $(\net{\lambda_\Sigma^\Pi}AB)\comp(\net{\kappa_\Theta^\Ph
 These compositions may omit proof annotations and witness annotations.
 \end{definition}
 % ..................................................
-
-
-% ..................................................
-\begin{figure}[!t]
-\[
-\begin{array}{ccc}
-	\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
-	 \infer[\!\!\scriptstyle{\qrr*}]{\Seq A{B_1\*B_2}\vphantom{\dual B}}{\Prf{\pi_1}A{B_1} & \Prf{\pi_2}A{B_2}}
-	 &&
-	 \infer[\!\!\scriptstyle{\qrr+i}]{\Seq {\dual B_1\+\dual B_2}C}{\Prf\phi{\dual B_i}C}
-	}}
-	&\Rightarrow&
-	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf{\pi_i}A{B_i} && \Prf\phi{\dual B_i}C}}
-\\ \\
-	\vc{
-	\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{
-	 \infer[\!\!\scriptstyle{\qrr?t}]{\Seq A{\exists x.B}}{\Prf\pi A{B[t/x]}}
-	 &&
-	 \infer[\!\!\scriptstyle{\qrr!}]{\Seq {\forall x.\dual B}C}{\Prf\phi{\dual B}C}
-	}}
-	&\Rightarrow&
-	\vc{\infer[\!\!\scriptstyle{\mathrm{cut}}]{\Seq AC}{\Prf\pi A{B[t/x]} && \Prf{\phi[t/x]}{\dual B[t/x]}C}}
-\end{array}
-\]
-\caption{\all1 cut-elimination steps}
-\label{fig:cut-elim}
-\end{figure}
-% ..................................................
-
-The composition of two links is strongly related to composition of strategies in game semantics. There, two strategies on $\seq AB$ and $\seq{\dual B}C$ are composed by \emph{interaction} on the interface of $B$ and $\dual B$, and subsequently \emph{hiding} that interaction. 
-
-In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization $(\scoal)$ with composition $(\Rightarrow)$ given in Figures~\ref{fig:crit1}--\ref{fig:crit3}, and demonstrate how they are resolved.
 
 \newcommand\yA{2.7}
 \newcommand\yB{1.65}
@@ -1776,6 +1800,13 @@ In the following we will demonstrate that composition gives the desired result: 
 \end{figure}
 % ..................................................
 
+
+The composition of two links is strongly related to composition of strategies in game semantics. There, two strategies on $\seq AB$ and $\seq{\dual B}C$ are composed by \emph{interaction} on the interface of $B$ and $\dual B$, and subsequently \emph{hiding} that interaction. 
+
+In the following we will demonstrate that composition gives the desired result: if a net $L$ sequentializes to $\pi$ and $R$ to $\phi$, then $L\comp R$ sequentializes to a normal form of the composition of $\pi$ and $\phi$ with a cut. To this end we will explore how composition and sequentialization interact. We will consider the critical pairs of sequentialization $(\scoal)$ with composition $(\Rightarrow)$ given in Figures~\ref{fig:crit1}--\ref{fig:crit3}, and demonstrate how they are resolved.
+
+
+
 \begin{itemize}
 	\item 
 $\seq A{B_1{\*}B_2}$ ; $\seq{\dual B_1{\+}\dual B_2}C$\quad (Figure~\ref{fig:crit1})
@@ -1803,16 +1834,15 @@ Resolving these critical pairs gives the soundness of the composition operation,
 
 
 % ..................................................
-\newcounter{thmcomposition}
-\setcounter{thmcomposition}{\thetheorem}
+
 \begin{theorem}
 \label{thm:composition}
 If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ sequentialize to $\pi$ and $\phi$ respectively, then their composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ is well-defined (i.e.\ all fixed points are finite) and sequentializes to a normal form $\psi$ of $\pi\comp\phi$.
 \end{theorem}
 
-\begin{proof}
-See the appendix.
-\end{proof}
+%\begin{proof}
+%See the appendix.
+%\end{proof}
 
 % --------------------------------------------------
 
@@ -1922,21 +1952,21 @@ In the above definition, note that $\lambda_\star^\star=(\lambda_\star)^\star$ i
 In ($\ucoal$), if $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ then $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
 \end{lemma}
 
-\begin{proof}
-The sequentialization path
-$
-	\net{\lambda_\Sigma^\star}AB = 
-	L_1 \ucoal L_2 \ucoal \dots \ucoal L_n = 
-	\net{\link[\varnothing]AB^\pi}AB
-$
-has a corresponding path
-$
-	\net{\lambda_\star^\star}AB = 
-	R_1 \ucoal R_2 \ucoal \dots \ucoal R_n =
-	\net{\link[\varnothing]AB^{\pi'}}AB
-$
-where the same links (but with potentially different witness maps) are coalesced. It follows by induction on this path (where the base case is $L_1$ and $R_1$) that for every corresponding pair of links $\link CD^\phi$ in $L_i$ and $\link[\tau]CD^\psi$ in $R_i$ we have $\tau\leq\sigma$ and $\psi\leq\phi$.
-\end{proof}
+%\begin{proof}
+%The sequentialization path
+%$
+%	\net{\lambda_\Sigma^\star}AB = 
+%	L_1 \ucoal L_2 \ucoal \dots \ucoal L_n = 
+%	\net{\link[\varnothing]AB^\pi}AB
+%$
+%has a corresponding path
+%$
+%	\net{\lambda_\star^\star}AB = 
+%	R_1 \ucoal R_2 \ucoal \dots \ucoal R_n =
+%	\net{\link[\varnothing]AB^{\pi'}}AB
+%$
+%where the same links (but with potentially different witness maps) are coalesced. It follows by induction on this path (where the base case is $L_1$ and $R_1$) that for every corresponding pair of links $\link CD^\phi$ in $L_i$ and $\link[\tau]CD^\psi$ in $R_i$ we have $\tau\leq\sigma$ and $\psi\leq\phi$.
+%\end{proof}
 % ..................................................
 
 % ..................................................
@@ -1945,78 +1975,59 @@ where the same links (but with potentially different witness maps) are coalesced
 If $\net{\lambda_\star}AB$ unifying-sequentializes to $\pi$ then there exists a witness assignment $\Sigma$ and substitution $\rho$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\lambda_\Sigma=\lambda_\star\rho$.
 \end{lemma}
 
-\begin{proof}
-By induction on the sequentialization path $\net{\lambda_\star}AB\ucoal^*\net{\link[\varnothing]AB^\pi}AB$. For the end result, the statement holds with $\rho=\varnothing$. For the inductive step, consider a step $L\ucoal R$. We show the case ($\urr*$); the other cases are immediate.
-%
-\begin{itemize}
-	\item
-$\link C{D_1},\link[\tau]C{D_2}\ucoal\link[\sigma\join\tau]C{D_1{\*}D_2}$
-\\
-By the inductive hypothesis, $R\rho'$ strict-sequentializes to $\pi$. Let $\sigma\join\tau=\sigma\rho''=\tau\rho''$ and let $\rho=\rho''\rho'$. Then $L\rho$ strict-sequentializes to $\pi$ by 
-\[
-	\link[\sigma\rho]C{D_1},\link[\tau\rho]C{D_2}\scoal\link[(\sigma\join\tau)\rho']C{D_1{\*}D_2}~.
-\qedhere
-\]
-\end{itemize}
-\end{proof}
+%\begin{proof}
+%By induction on the sequentialization path $\net{\lambda_\star}AB\ucoal^*\net{\link[\varnothing]AB^\pi}AB$. For the end result, the statement holds with $\rho=\varnothing$. For the inductive step, consider a step $L\ucoal R$. We show the case ($\urr*$); the other cases are immediate.
+%%
+%\begin{itemize}
+%	\item
+%$\link C{D_1},\link[\tau]C{D_2}\ucoal\link[\sigma\join\tau]C{D_1{\*}D_2}$
+%\\
+%By the inductive hypothesis, $R\rho'$ strict-sequentializes to $\pi$. Let $\sigma\join\tau=\sigma\rho''=\tau\rho''$ and let $\rho=\rho''\rho'$. Then $L\rho$ strict-sequentializes to $\pi$ by 
+%\[
+%	\link[\sigma\rho]C{D_1},\link[\tau\rho]C{D_2}\scoal\link[(\sigma\join\tau)\rho']C{D_1{\*}D_2}~.
+%\qedhere
+%\]
+%\end{itemize}
+%\end{proof}
 % ..................................................
 
 We can then show that sequentialization and de-sequentialization for unification nets are inverses up to generality, and that composition is sound.
 
 % ..................................................
 \begin{theorem}
+\label{thm:unet deseq-seq}
 If $[\prf\pi AB]$ is $\net{\lambda_\Sigma}AB$ then $\net\lambda AB$ unifying-sequentializes to $\pi'\leq \pi$.
 \end{theorem}
 
-\begin{proof}
-By Theorem~\ref{thm:proof->net->proof}, $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ in $(\scoal)$, and hence also in $(\ucoal)$. Then by Lemma~\ref{lem:ucoal generality} $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
-\end{proof}
+%\begin{proof}
+%By Theorem~\ref{thm:proof->net->proof}, $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ in $(\scoal)$, and hence also in $(\ucoal)$. Then by Lemma~\ref{lem:ucoal generality} $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
+%\end{proof}
 % ..................................................
 
 
 % ..................................................
 \begin{theorem}
+\label{thm:unet seq-deseq}
 If $\net\lambda AB$ sequentializes to $\pi$, then $[\pi]=\net{\lambda_\Sigma} AB$ for some $\Sigma$.
 \end{theorem}
 
-\begin{proof}
-By Lemma~\ref{lem:unifying implies strict coalescence}, since $\net\lambda AB$ sequentializes to $\pi$ there is a net $\net{\lambda_\Sigma} AB$ that sequentializes to $\pi$. By Theorem~\ref{thm:net->proof->net}, $[\pi]=\net{\lambda_\Sigma} AB$.
-\end{proof}
+%\begin{proof}
+%By Lemma~\ref{lem:unifying implies strict coalescence}, since $\net\lambda AB$ sequentializes to $\pi$ there is a net $\net{\lambda_\Sigma} AB$ that sequentializes to $\pi$. By Theorem~\ref{thm:net->proof->net}, $[\pi]=\net{\lambda_\Sigma} AB$.
+%\end{proof}
 % ..................................................
 
 
 % ..................................................
 \begin{theorem}
+\label{thm:unet composition}
 If $\net\lambda AB$ sequentializes to $\pi$ and $\net\kappa{\dual B}C$ to $\phi$ then their composition $\net{\lambda\comp\kappa}AC$ sequentializes to a proof $\psi'\leq\psi$ where $\psi$ is a normal form of $\pi\comp\phi$.
-%\[
-%	\psi~=~
-%	\vc{\infer[\Qrr.]{\seq AC}{
-%	 \Prf\pi AB & \Prf\phi{\dual B}C
-%	}}~.
-%\]
 \end{theorem}
 
-\begin{proof}
-By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labellings $\Sigma$ and $\Theta$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$. By Theorem~\ref{thm:composition} their composition $(\net{\lambda_\Sigma\comp\kappa_\Theta)}AC$ strict-sequentializes to a normal form $\psi$ of $\pi\comp\phi$. By Lemma~\ref{lem:ucoal generality} the net $\net{(\lambda\comp\kappa)_\star}AC$ unifying-sequentializes to $\psi'\leq\psi$.
-\end{proof}
+%\begin{proof}
+%By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labellings $\Sigma$ and $\Theta$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$. By Theorem~\ref{thm:composition} their composition $(\net{\lambda_\Sigma\comp\kappa_\Theta)}AC$ strict-sequentializes to a normal form $\psi$ of $\pi\comp\phi$. By Lemma~\ref{lem:ucoal generality} the net $\net{(\lambda\comp\kappa)_\star}AC$ unifying-sequentializes to $\psi'\leq\psi$.
+%\end{proof}
 
 % --------------------------------------------------
-%
-%\begin{figure}[!t]
-%\begin{center}
-%\begin{tabular}{lcccc}
-% &	Monomial nets & Expansion trees$^\ast$ & Witness nets & Unification nets
-%\\\hline
-%   Canonicity & \xmark & \vmark$^\ast$ & \vmark & \vmark
-%\\ Generality & \xmark &\xmark&\xmark& \vmark
-%\\ Direct composition &(\vmark) &\xmark& \vmark & \vmark
-%\\ Coalescence & ? & ? & \vmark & \vmark
-%\\ Slicing &\vmark &\vmark$^\ast$& \vmark & ?
-%\end{tabular}  
-%  \caption{Comparison of different notions of proof nets for quantifiers and additive connectives}
-%  \label{fig:results}
-%\end{center}
-%\end{figure}
 
 \begin{figure}[!t]
 \begin{center}
@@ -2032,6 +2043,7 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
   \caption{Comparison of different notions of proof nets for quantifiers and additive connectives}
   \label{fig:results}
 \end{center}
+\vskip-8pt
 \end{figure}
 
 % --------------------------------------------------
@@ -2039,13 +2051,15 @@ By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labelli
 
 \section{Conclusion and related work}
 
-We have presented two notions of first-order additive proof net, \emph{witness nets} and \emph{unification nets}, to canonically capture the two natural notions of proof identity for first-order additive linear logic. Figure~\ref{fig:results} summarizes our results, along with some observations we make below. 
+We have presented two notions of first-order additive proof net, \emph{witness nets} and \emph{unification nets}, to canonically capture two natural notions of proof identity for first-order additive linear logic. Figure~\ref{fig:results} summarizes our results, along with some observations we make below. 
 
 Proof nets with additives and quantifiers existed before as \emph{monomial nets} \cite{Girard-1996}. These are not generally canonical: they admit the permutation (and duplication) of proof rules past implicit \emph{contractions} (that is, the shared context of the additive conjunction rule). However, it might be possible to restrict additive monomial nets to some notion of canonical form. Likewise, coalescence (or contractibility) has not been studied for first-order monomial nets, though it has been extended to a related form of MALL proof nets \cite{Maieli-2007}.
 
 Our slicing condition is loosely related to a number of approaches to first-order \emph{classical} logic. A formula $\exists x.A$ is interpreted as the sum (or classically, the \emph{disjunction}) over a fixed number of instantiations $A[t_1/x]\+\dots\+A[t_n/x]$. This can be traced to Herbrand's Theorem \cite{Herbrand-1930}: $\exists x.A$ is equivalent to the infinite sum over $A[t/x]$ for all terms $t$ in the language, but for any given proof a finite set of terms suffices. \emph{Expansion tree proofs} \cite{Miller-1987,Heijltjes-2010} are a graphical proof formalism based on this idea.
 %
-In our slicing condition, the interpretation of $\exists x.A$ is an infinite sum of which only a finite part $A[t_1/x]\+\dots\+A[t_n/x]$ is relevant, over the witnesses $t_1,\dots,t_n$ actually assigned to $x$ in the proof net. An interesting alternative approach to additive proof nets, which we may explore in future work, could be to take the expansion of $\exists x.A$ to $A[t_1/x]\+\dots\+A[t_n/x]$ as primary, and record it explicitly in the syntax, as expansion tree proofs do for classical logic. It is expected, however, that this would sacrifice \emph{generality} and \emph{direct composition}.
+In our slicing condition, the interpretation of $\exists x.A$ is an infinite sum of which only a finite part $A[t_1/x]\+\dots\+A[t_n/x]$ is relevant, over the witnesses $t_1,\dots,t_n$ actually assigned to $x$ in the proof net. An interesting alternative approach to additive proof nets, which we may explore in future work, is to take the expansion of $\exists x.A$ to $A[t_1/x]\+\dots\+A[t_n/x]$ as primary, and record it explicitly in the syntax, as expansion tree proofs do for classical logic. It is expected, however, that this would sacrifice \emph{generality} and \emph{direct composition}.
+
+Hetzl \cite{Hetzl-2010} explores \emph{explicit substitution} for first-order classical sequent calculus.
 
 %\paragraph*{Generality}
 %
@@ -2056,27 +2070,79 @@ In our slicing condition, the interpretation of $\exists x.A$ is an infinite sum
 Lambek observed that the two canonical proofs of $\seq{A{\+}A}{\dual A}$ can be distinguished by casting each as a specialization (by substituting into propositional variables) of the more general proofs of $\seq{\,a{\+}b}{\dual a}$ and $\seq{\,a{\+}b}{\dual b}$ (corresponding to the two injections of a sum). He proposed to use this idea of \emph{generality} as the basis for a notion of \emph{proof identity}: two proofs are equivalent if their most general forms are isomorphic \cite{Lambek-1968-1972}. How this extends to first order is not obvious. The natural first-order analogue of $\seq{A{\+}A}{\dual A}$ would be $\seq{\exists x.A}{\dual A}$ where the quantifier is vacuous, as $\exists x.A$ represents the infinite sum over $A$ (for all terms $t$). Where Lambek's generality \emph{distinguishes} the two proofs of $\seq{A{\+}A}{\dual A}$, ours \emph{identifies} the proofs of $\seq{\exists x.A}{\dual A}$: the sequent has one unification net, but infinitely many witness nets (one for each term $t$). If existential quantification is indeed analogous to a sum, Lambek's notion of generality is more faithfully captured by witness nets than unification nets.
 
 
+
+
 % --------------------------------------------------
 
 
-\subsection*{Acknowledgements}
-
-We would like to thank the anonymous referees for their constructive feedback. Dominic would like to thank his host, Wes Holliday, at the UC Berkeley Logic Group.
+%\subsection*{Acknowledgements}
+%
+%We would like to thank the anonymous referees for their constructive feedback. Dominic would like to thank his host, Wes Holliday, at the UC Berkeley Logic Group. The first author was supported by EPSRC Project EP/R029121/1.
 
 
 \bibliography{ALL1}
 
 % ==================================================
 
+%\end{document}
+
 \newpage
 \appendix
 
-\section{Postponed proofs}
+\theoremstyle{theorem}
+\newtheorem{retheorem}{Theorem}
+\newtheorem{relemma}[retheorem]{Lemma}
 
+
+\section{Proofs}
+
+In this appendix we restate and prove all theorems, and add two supporting lemmata.
+
+% .................................................
+\setcounterref{retheorem}{thm:proof->net->proof}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+For any \all1 proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
+\end{retheorem}
+
+\begin{proof}
+It follows by induction on $\pi$ that if $\lambda_\Sigma=\deseq{\prf\pi AB}{A'}{B'}$ where $A'\sigma=A$ and $B'\sigma=B$, then $\net{\lambda^\star_\Sigma}AB$ reduces in $(\scoal)$ to $\net{\{\link{A'}{B'}^\pi\}}AB$. The statement is the case $\sigma=\varnothing$.
+\end{proof}
 % ..................................................
 
-\setcounter{theorem}{\thelemcorrect}
-\begin{lemma}[Restatement]
+% ..................................................
+\setcounterref{retheorem}{thm:net->proof->net}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$, then $[\pi]$ is $\net{\lambda_\Sigma}AB$. 
+\end{retheorem}
+
+\begin{proof}
+By induction on the sequentialization path 
+$\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
+it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
+\[
+	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
+\]
+The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
+\end{proof}
+% ..................................................
+
+% ..................................................
+\setcounterref{retheorem}{thm:canonical}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+Witness nets are canonical: $[\pi]=[\phi]$ if and only if $\pi\sim\phi$.
+\end{retheorem}
+
+\begin{proof}
+From left to right is by inspection of the critical pairs of sequentialization ($\scoal$). From right to left is by inspection of the rule permutations in Figure~\ref{fig:permutations} in Appendix~\ref{sec:permutations}.
+\end{proof}
+% ..................................................
+
+% ..................................................
+\begin{lemma}
+\label{lem:correct}
 Strict coalescence preserves and reflects correctness.
 \end{lemma}
 
@@ -2116,11 +2182,11 @@ For dependency-correctness, the column of $\link CD$ is that of $\link C{\forall
 \qedhere
 \end{itemize}
 \end{proof}
-
 % ..................................................
 
-\setcounter{theorem}{\thelemcoalescenceapplies}
-\begin{lemma}[Restatement]
+% ..................................................
+\begin{lemma}
+\label{lem:coalescence applies}
 To a correct witness pre-net $\net{\lambda_\Sigma}AB$ a coalescence step applies, unless it is fully coalesced already, $\lambda_\Sigma=\{\link[\varnothing]AB\}$.
 \end{lemma}
 
@@ -2196,13 +2262,28 @@ Otherwise, if $x\in\sigma_D$ and $y\in\sigma_C$ then
 \]
 \end{itemize}
 \end{proof}
-
 % ..................................................
 
-\setcounter{theorem}{\thethmcomposition}
-\begin{theorem}[Restatement]
+% ..................................................
+\setcounterref{retheorem}{thm:correctness}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+A witness pre-net that strict-coalesces is correct, and a correct witness pre-net strongly strict-coalesces. 
+\end{retheorem}
+
+\begin{proof}
+For the first statement, we proceed by induction on the coalescence path from $\net{\lambda_\Sigma}AB$ to $\net{\{\link[\varnothing]AB\}}AB$, with the end result as the base case. It is slice-correct: every slice of $\seq AB$ contains $\link[\varnothing]AB$, so every slice of $\net{\{\link[\varnothing]AB\}}AB$ is the singleton $\{\link[\varnothing]AB\}$. It is also dependency-correct: the column of $\link[\varnothing]AB$ is the set $\{(A,\varnothing),(B,\varnothing)\}$, where $A$ and $B$ are unrelated in $(\dep)$. For the inductive step, by Lemma~\ref{lem:correct} coalescence reflects correctness, so that any pre-net along the coalescence path is correct, in particular $\net{\lambda_\Sigma}AB$.
+
+For the second statement, let $\net{\lambda_\Sigma}AB$ be correct. By Lemma~\ref{lem:coalescence applies} either the net has coalesced, or a coalescence step applies. By Lemma~\ref{lem:correct} the result of any coalescence step is again correct. Since links strictly move towards the roots of both formula trees, it follows that this process terminates, and the pre-net $\net{\lambda_\Sigma}AB$ strongly strict-coalesces.
+\end{proof}
+% ..................................................
+
+% ..................................................
+\setcounterref{retheorem}{thm:composition}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
 If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ sequentialize to $\pi$ and $\phi$ respectively, then their composition $(\net{\lambda_\Sigma}AB)\comp(\net{\kappa_\Theta}{\dual B}C)$ is well-defined (i.e.\ all fixed points are finite) and sequentializes to a normal form $\psi$ of $\pi\comp\phi$.
-\end{theorem}
+\end{retheorem}
 
 \begin{proof}
 By Corollary~\ref{cor:strong coalescence} the proof nets $L=\net{\lambda_\Sigma}AB$ and $R=\net{\kappa_\Theta}{\dual B}C$ strongly coalesce. We may then interleave their coalescence sequences as follows: if a synchronized step in $L$ and $R$ on the interface $B$ and $\dual B$ is available, apply it; otherwise perform steps in $L$ on $A$ and in $R$ on $C$ until it is. This gives the following combined sequence.
@@ -2225,35 +2306,102 @@ Each square of the diagram converges as one of the critical pairs of sequentiali
 
 Finally, in $L$ and $R$ every link is an axiom link. Any link in $L\comp R$ is composed from two links $\link ab$ in $L$ and $\link[\tau]{\dual b}c$ in $R$, which yields $\link[\rho]ac$ where $\rho = \sigma_a\tau_c\dcom\fix{\sigma_b\tau\subdual b}$. This sequentializes to the axiom $\infer{\seq{a\rho}{c\rho}}{}$, which is in normal form. Then $L\comp R$ is a proof net (it has an axiom linking and it coalesces), and it sequentializes to a normal form of $\psi$.
 \end{proof}
-
-% --------------------------------------------------
-
-\section{Permutations}\label{sec:permutations}
-
 % ..................................................
 
-\begin{figure}[!ht]
+% ..................................................
+\setcounterref{retheorem}{lem:ucoal generality}
+\addtocounter{retheorem}{-1}
+\begin{relemma}
+In ($\ucoal$), if $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ then $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
+\end{relemma}
+
+\begin{proof}
+The sequentialization path
+$
+	\net{\lambda_\Sigma^\star}AB = 
+	L_1 \ucoal L_2 \ucoal \dots \ucoal L_n = 
+	\net{\link[\varnothing]AB^\pi}AB
+$
+has a corresponding path
+$
+	\net{\lambda_\star^\star}AB = 
+	R_1 \ucoal R_2 \ucoal \dots \ucoal R_n =
+	\net{\link[\varnothing]AB^{\pi'}}AB
+$
+where the same links (but with potentially different witness maps) are coalesced. It follows by induction on this path (where the base case is $L_1$ and $R_1$) that for every corresponding pair of links $\link CD^\phi$ in $L_i$ and $\link[\tau]CD^\psi$ in $R_i$ we have $\tau\leq\sigma$ and $\psi\leq\phi$.
+\end{proof}
+% ..................................................
+
+% ..................................................
+\setcounterref{retheorem}{lem:unifying implies strict coalescence}
+\addtocounter{retheorem}{-1}
+\begin{relemma}
+If $\net{\lambda_\star}AB$ unifying-sequentializes to $\pi$ then there exists a witness assignment $\Sigma$ and substitution $\rho$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\lambda_\Sigma=\lambda_\star\rho$.
+\end{relemma}
+
+\begin{proof}
+By induction on the sequentialization path $\net{\lambda_\star}AB\ucoal^*\net{\link[\varnothing]AB^\pi}AB$. For the end result, the statement holds with $\rho=\varnothing$. For the inductive step, consider a step $L\ucoal R$. We show the case ($\urr*$); the other cases are immediate.
+%
+\begin{itemize}
+	\item
+$\link C{D_1},\link[\tau]C{D_2}\ucoal\link[\sigma\join\tau]C{D_1{\*}D_2}$
+\\
+By the inductive hypothesis, $R\rho'$ strict-sequentializes to $\pi$. Let $\sigma\join\tau=\sigma\rho''=\tau\rho''$ and let $\rho=\rho''\rho'$. Then $L\rho$ strict-sequentializes to $\pi$ by 
 \[
-\renewcommand\+{{+}}
-\renewcommand\*{{\times}}
-\scalebox{0.85}{$
-\begin{array}{c@{\qquad}c}
-	\permAC   & \permEC   
-\\	\downperm & \downperm \\
-	\permCA   & \permCE
-\\ \\[20pt]
-	\permPC   & \permXC 
-\\	\downperm & \downperm \\
-	\permCP   & \permCX
-\end{array}
-\begin{array}{c}
-	\permCD \\ \downperm \\ \permDC
-\end{array}
-$}
+	\link[\sigma\rho]C{D_1},\link[\tau\rho]C{D_2}\scoal\link[(\sigma\join\tau)\rho']C{D_1{\*}D_2}~.
+\qedhere
 \]
-\caption{Cut-permutations}
-\label{fig:cut-permutations}
-\end{figure}
+\end{itemize}
+\end{proof}
+% ..................................................
+
+
+% ..................................................
+\setcounterref{retheorem}{thm:unet deseq-seq}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+If $[\prf\pi AB]$ is $\net{\lambda_\Sigma}AB$ then $\net\lambda AB$ unifying-sequentializes to $\pi'\leq \pi$.
+\end{retheorem}
+
+\begin{proof}
+By Theorem~\ref{thm:proof->net->proof}, $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$ in $(\scoal)$, and hence also in $(\ucoal)$. Then by Lemma~\ref{lem:ucoal generality} $\net{\lambda_\star}AB$ sequentializes to $\pi'\leq\pi$.
+\end{proof}
+% ..................................................
+
+
+% ..................................................
+\setcounterref{retheorem}{thm:unet seq-deseq}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+If $\net\lambda AB$ sequentializes to $\pi$, then $[\pi]=\net{\lambda_\Sigma} AB$ for some $\Sigma$.
+\end{retheorem}
+
+\begin{proof}
+By Lemma~\ref{lem:unifying implies strict coalescence}, since $\net\lambda AB$ sequentializes to $\pi$ there is a net $\net{\lambda_\Sigma} AB$ that sequentializes to $\pi$. By Theorem~\ref{thm:net->proof->net}, $[\pi]=\net{\lambda_\Sigma} AB$.
+\end{proof}
+% ..................................................
+
+
+% ..................................................
+\setcounterref{retheorem}{thm:unet composition}
+\addtocounter{retheorem}{-1}
+\begin{retheorem}
+If $\net\lambda AB$ sequentializes to $\pi$ and $\net\kappa{\dual B}C$ to $\phi$ then their composition $\net{\lambda\comp\kappa}AC$ sequentializes to a proof $\psi'\leq\psi$ where $\psi$ is a normal form of $\pi\comp\phi$.
+\end{retheorem}
+
+\begin{proof}
+By Lemma~\ref{lem:unifying implies strict coalescence} there are witness labellings $\Sigma$ and $\Theta$ such that $\net{\lambda_\Sigma}AB$ strict-sequentializes to $\pi$ and $\net{\kappa_\Theta}{\dual B}C$ to $\phi$. By Theorem~\ref{thm:composition} their composition $(\net{\lambda_\Sigma\comp\kappa_\Theta)}AC$ strict-sequentializes to a normal form $\psi$ of $\pi\comp\phi$. By Lemma~\ref{lem:ucoal generality} the net $\net{(\lambda\comp\kappa)_\star}AC$ unifying-sequentializes to $\psi'\leq\psi$.
+\end{proof}
+% ..................................................
+
+
+
+
+% --------------------------------------------------
+\newpage
+\section{Permutations}\label{sec:permutations}
+
+In this section we give the rule permutations of {\all1} sequent calculus.
 
 % ..................................................
 
@@ -2283,6 +2431,32 @@ $}
 \caption{Cut-free rule permutations}
 \label{fig:permutations}
 \end{figure}
+
+% ..................................................
+
+\begin{figure}[!ht]
+\[
+\renewcommand\+{{+}}
+\renewcommand\*{{\times}}
+\scalebox{0.85}{$
+\begin{array}{c@{\qquad}c}
+	\permAC   & \permEC   
+\\	\downperm & \downperm \\
+	\permCA   & \permCE
+\\ \\[20pt]
+	\permPC   & \permXC 
+\\	\downperm & \downperm \\
+	\permCP   & \permCX
+\end{array}
+\begin{array}{c}
+	\permCD \\ \downperm \\ \permDC
+\end{array}
+$}
+\]
+\caption{Cut-permutations}
+\label{fig:cut-permutations}
+\end{figure}
+
 
 
 \end{document}
