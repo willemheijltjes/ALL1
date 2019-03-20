@@ -1,0 +1,130 @@
+Dear Lutz, 
+
+I am sorry to inform you that your submission 
+
+21: Proof nets for first-order additive linear logic 
+
+to FSCD 2018 has not been accepted.  The PC received a total of 65 submissions (62 research papers and 3 system descriptions) of which 27 were accepted (26 research papers and 1 system description).
+
+The reviews of your submission are attached below. I hope they will be useful for you to improve your paper.
+
+Please note that  FSCD is part of FLoC 2018 and a number of associated workshops will be held on 7, 8 and 13 July.
+Their deadline is 15 April 2018.
+More information can be found at http://www.cs.le.ac.uk/events/fscd2018/.
+
+I yet hope to seeing you at the conference in Oxford.
+
+Sincerely,  
+Helene Kirchner 
+PC chair
+
+
+----------------------- REVIEW 1 ---------------------
+PAPER: 21
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem Heijltjes, Dominic Hughes and Lutz Strassburger
+
+Overall evaluation: -1 (weak reject)
+
+----------- Overall evaluation -----------
+This paper proposes two different types proof nets for first order additive linear logic. The first is called Witness nets includes explicitly the term/eigenvalue used in quantifiers introductions, while the second called Unification nets uses ideas from logic programming where the logical variables are used and solved using unification. 
+
+I have some problems with this paper:
+
+1) Witness proof nets do not very interesting being a rather straight-forward extension of usual proof nets. Unification nets, on the other hand, are more interesting involving (for the first-time?) unification in proof nets. Unfortunately, the paper focuses much more on Witness nets, instead of the Unification nets. This is rather disappointing. Could you please elucidate the conceptual advances of witness nets?
+
+2) Comparison with related work and in particular with the paper "A Multi-Focused Proof System Isomorphic to
+Expansion Proofs" is missing. I believe this is a very related work that has to be better compared with.
+
+3) Poor presentation: The presentation of the paper lacks better explanations of figure, contains some dubious statements, etc. More details below.
+
+Detailed comments:
+
+page 2:
+Respective examples are below -> rather cryptic examples. Please add explanations of why they are useful in anyway;
+
+Figure 1 -> I am not sure how to interpret this figure. Please add more explanations!
+
+page 4: 
+monomial nets and weights -> please define!
+
+We believe (though have not technically verified) ... to the following approach. -> Rather bad way of starting a section.
+
+Finally, available space does not permit a ... a journal version -> Please rephrase. 
+
+page 13:
+Unlike for proof nets, this notion ... from their respective subproofs -> This seems very important. Please elaborate.
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 21
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem Heijltjes, Dominic Hughes and Lutz Strassburger
+
+Overall evaluation: 1 (weak accept)
+
+----------- Overall evaluation -----------
+Overview
+======
+
+
+In this paper the authors study proof nets for 
+first-order additive linear logic (ALL1) in general 
+and witness assignment to existential quantifiers 
+in particular. For solving the problems occurring 
+in this context the authors propose two solutions: 
+
+- they use witness nets and pre-nets 
+  (witness nets replace the implicit substitutions of 
+   sequent proofs with explicit substitutions, 
+   recorded at each link)
+
+- then they study unification nets (which omit
+  any witness information, which is then reconstructed 
+  by coalescence). 
+
+The authors prove that sequentialization and de-sequentialization
+for witness nets are inverses, then show that a witness 
+pre-net is correct if and only if it strict-coalesces, 
+and that proof nets are canonical. 
+
+Then they describe the composition of two witness nets by
+a global operation and study properties of composition. 
+
+Finally, unification nets and unifying sequentialization is 
+studied.
+
+Evaluation 
+=======
+
+The paper is clearly in the scope of the conference. 
+The results described are as far as I can judge original
+and interesting. Full proofs are included 
+for the main theorems; the appendix contains proofs for 
+most of the remaining results. 
+I recommend acceptance. 
+
+However, I recommend the authors to clearly describe the 
+main results of their paper and indicate explicitly their 
+significance - an overview of the results is given in the 
+introduction; it might be a good idea to do this also in 
+the conclusions: At the moment the paper finishes brusquely, 
+immediately after the proof of Theorem 26. I think that a 
+new summary of the main results and of their importance 
+would improve the presentation.
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 21
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem Heijltjes, Dominic Hughes and Lutz Strassburger
+
+Overall evaluation: 2 (accept)
+
+----------- Overall evaluation -----------
+GENERAL COMMENTS:
+
+The paper under review establishes two novel versions of proof nets for first-order additive linear logic: witness nets, which explicitly specify the witness to existential quantification in the syntax, as well as unification nets, which rely on unification to represent the witness. Correspondingly these two formulation represent two extremes in the identity of proofs: witness nets even distinghish between proofs, which are only syntactically different, while unification nets are a lot more general. For both variants geometrical correcteness criteria are established.
+
+The paper is an important step towards the cut-elmination of combinatorial proofs, introduced by the second author, but in some sense propelled by all authors. This is solid piece of work, nicely presented and should be accepted.
+

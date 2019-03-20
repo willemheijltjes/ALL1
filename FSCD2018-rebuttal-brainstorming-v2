@@ -1,0 +1,120 @@
+We thank the reviewers for their effort.
+
+We agree with everything Reviewer 3 said.
+
+Reviewer 2 suggests a better overview of results in the introduction
+and adding a conclusion; we will do so.
+
+Reviewer 3 has several complaints that we all address below.
+
+1) The reviewer thinks that witness nets are not very interesting but
+unification nets are, thus the focus in the paper is unbalanced.
+
+We disagree. Witness nets are essential for developping unification
+nets. the section on unification nets is so short because it builds on
+the theory of witness nets that had to be developped before.
+
+1') witness nets are straightforward extension of usual proof nets.
+
+It only looks that way for you because we did an excellent job
+presenting them. It took us hard work to simplify the presentation in
+such a way that it looks straightforward. If it was that easy as you
+think, then why took it 30 years for someone to come up with the idea?
+
+2) Comparison to multi-focusing.
+
+We are well aware of the work on multi-focusing and its relation to
+expansion trees. First, observe that that work is about classical
+logic and we are here dealing with linear logic, which is a different
+world. And second, we do explain the relation to expansion trees in
+section 1.2. Whether we can obtain a notion of focusing which
+identifies the same proofs as our proof nets is a question for future
+research, and you cannot expect an answer to that in this paper.
+
+3) The reviewer is not happy with the presentation and justifies this
+with the following points, that are (except for the last one) all
+about the introduction, and that we address below:
+
+- "page 2, cryptic examples": as said in the paragraph above, one
+  example is a witness net and the other is a unification net for the
+  same conclusion, and as we say in the text, witness nets carry the
+  substitution explicitely at the links, and the unification nets
+  don't.
+
+- Figure 1: This figure is a running example that we use several times
+  in the paper (p.2,p.6, and p.8) it is in the introduction because
+  here it is mentioned for the first time. It contains a correct
+  witness net (top left) together with a coalescence sequence
+  veryfying its correctness, ending with a single link carrying the
+  empty substitution (top right). Below is a corresponding sequent
+  calculus proofs.
+
+- "page 4, define monomial nets": We did not give the definition in
+  this paper because this alone would fill another paper (see [6,7])
+  and is not relevant for us. We mention them because they are the
+  only known version of proof nets for ALL1 so far, and not mentioning
+  them would have made another referee complain. The point here is
+  that witness nets (that you consider straightforward) are already a
+  considerable improvement over monomial nets.
+
+- "... bad way of starting a section": Since when is honesty bad? We
+  make a statement about monomial nets that is not really relevant to
+  our results but puts them a bit more in perspective.
+
+- "Finally, available space... Rephrase": How should we rephrase a
+  statement about the restriction of space in conference papers? We
+  could, however, remove the sentence.
+
+- "page 13: ... This seems very important. Please elaborate.": This is
+  a factual observation about sequent calculus which is interesting,
+  but not very important. The display below the paragraph explains it
+  very well, and we don't see what there is to elaborate.
+  
+
+
+
+Review 1:
+=========
+
+We are rather disappointed with this review. It does not give an evaluation of the paper, and merely lists three perceived issues: 1) it asks why the paper does not give more focus to the more interesting of the two presented notions; 2) it complains that a particular reference is not cited; and 3) it suggests that some aspects of the presentation could be improved. These are very minor concerns, and the latter two are easily fixed in a final version. It is mysterious to us why the review would focus on these three marginal points, instead of discussing the content of the paper.
+
+We will consider the review's concerns in turn.
+
+"1) Witness proof nets do not very interesting being a rather straight-forward extension of usual proof nets. [...] Could you please elucidate the conceptual advances of witness nets?"
+
+Witness nets are the first canonical proof nets for first-order additive linear logic (according to the standard semantics, which distinguishes proofs with different existential witnesses). The technical innovations are the following. First, to find the right way of recording witness information to make canonicity possible, which is indeed very subtle. Second, we give a contractibility-based correctness condition for efficient parsing, plus a geometric condition that is semantically revealing, and prove both correct.
+ 
+"Unification nets, on the other hand, are more interesting involving (for the first-time?) unification in proof nets. Unfortunately, the paper focuses much more on Witness nets, instead of the Unification nets. This is rather disappointing."
+
+Unification nets are fully described in the paper. The technical development proceeds naturally via witness nets, which therefore receive more focus.
+
+"2) Comparison with related work and in particular with the paper "A Multi-Focused Proof System Isomorphic to Expansion Proofs" is missing. I believe this is a very related work that has to be better compared with."
+
+In fact, this paper is not immediately relevant. It presents a sequent-calculus version of Expansion Proofs, for first-order classical logic, to which we do compare our work.
+
+"3) Poor presentation: The presentation of the paper lacks better explanations of figure, contains some dubious statements, etc. More details below."
+
+We are confused why the very few (six, to be precise) detailed comments would amount to "poor presentation". We will discuss these in turn.
+
+-- "Respective examples are below -> rather cryptic examples. Please add explanations of why they are useful in anyway; [...] Figure 1 -> I am not sure how to interpret this figure. Please add more explanations!"
+
+This example was chosen to be small but comprehensive. We will add further explanations to the final version.
+
+-- "page 4: monomial nets and weights -> please define!"
+
+Monomial nets are in the literature, as referenced, and are not the subject of the paper.
+
+-- "We believe (though have not technically verified) ... to the following approach. -> Rather bad way of starting a section."
+
+Why?
+
+-- "Finally, available space does not permit a ... a journal version -> Please rephrase."
+
+This seems a completely reasonable sentence to us, and a completely reasonable thing to write in a conference paper.
+
+-- "page 13: Unlike for proof nets, this notion ... from their respective subproofs -> This seems very important. Please elaborate."
+
+This concerns an interesting observation about sequent calculus: the idea of "generality" for witnessing terms, which works well for proof nets, does not behave well under the permutations of sequent proofs. It is not important to the technical development, but we could expand on it in a final version.
+
+
+
