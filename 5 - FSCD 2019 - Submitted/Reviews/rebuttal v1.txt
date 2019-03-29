@@ -25,9 +25,9 @@ We believe, yes, but none of us is an expert.
 
 (D) Both proofs and witness nets are not considered up to alpha-equivalence.
 
-In fact, we may alpha-convert at the level of proofs and proof nets; but for the sanity of the translations both ways, not at the level of individual formulas in a sequent proof.
+In fact, we may alpha-convert at the level of proofs and proof nets; but for the sanity of the translations between them, not at the level of individual formulas in a sequent proof.
 
-Normally, indeed, every universal instantiation must have a unique eigenvariable. But for our proof nets, we only need (and have) this property for each slice individually.
+Normally in proof nets, indeed, every universal instantiation should have a unique eigenvariable. But here we only need this property for each slice individually.
 
 
 ==============================
@@ -42,4 +42,13 @@ The situation is mixed. There are two ways forward that are likely to succeed:
  - combine unification nets and MALL conflict nets [Hughes &
    Heijltjes 2016], using a coalescence criterion.
 For both, there are still significant combinatorial challenges (e.g. because coalescence for MALL is not a straightforward extension of that for ALL). Other combinations are unlikely to work, or the groundwork is still incomplete: slice nets do not support coalescence (this looks fundamentally problematic), and conflict nets do not yet have a slicing criterion (work in progress).
+
+
+==============================
+
+Review 3:
+
+(F) Unification seems to break the variable naming convention.
+
+Indeed - a naive unification algorithm would. We should stipulate explicitly that an "initial witness map" (the MGU for a link) uses fresh variables in its range, distinct from any existentially quantified ones (which occur in its domain); then all is well.
 
