@@ -1,0 +1,40 @@
+----------------------- REVIEW 3 ---------------------
+PAPER: 3
+TITLE: Proof nets for first-order additive linear logic
+AUTHORS: Willem B. Heijltjes, Dominic J. D. Hughes and Lutz Straßburger
+
+Overall evaluation: 2 (accept)
+
+----------- Overall evaluation -----------
+The paper presents two notions of proof nets for the first-order additive fragment of linear logic ALL1. This additive fragment features only additive connectives (sum and product, plus the quantifiers), and can be represented via a very simple sequent system, where a sequent contains only two formulas. Additive proof nets have been studied before in the propositional case, eg, through proof nets for MALL, so the interesting part of this work is in handling the quantifiers, in particular in representing the witness to the existential quantifiers in proofs. The authors propose two ways of dealing with this: one by encoding directly the substitution corresponding to the instantiation of existentially quantified variables in the links in the proof net, and the other where the witness is implicit and checked through unification. The authors then show some standard results, in particular: sequentialisation of proof nets, geometric correctness (via rewrite rules, called coalescenc!
+e) on proof nets, cut-elimination (composition) and the correspondence between the two styles of proof nets.
+
+The notion of proof nets considered here is simple and elegant; at the basic level, a proof net is just a formula with links between its subformulas.  Moreover, they are canonical and contributes to some extent to the question of identity of proofs. The concept of unification net is new, as far as I know.
+
+The paper is overall well written, though at times can be a bit too concise and assumes some familiarity with proof nets for MALL. I did not check the detailed proofs but most results are believable -- I checked some parts related to the handling of eigenvariables in substitutions (eg, scoping issues) and was satisfied that these are properly addressed.  
+
+On the negative side: the logic considered (ALL1) seems a bit too simple, and it is not so clear what are the interests in this logic. There is a mention of applications in session types in the introduction, but it seems one can only model two-party communication in this logic so its application is quite limited. I was wondering what was the issue with extending this to first-order MALL? Some discussions on this would be interesting, e.g., what are the difficulties with adding the multiplicatives, given that proof nets for MALL are already known?
+
+Minor comments:
+
+- In the sequentialization of unifiation nets, the rule (\exists S) replaces a substitution \sigma with \sigma//x, where the latter is defined (in page 6) as 'undefined on x and as \sigma otherwise'.
+However, in the case of unification nets, the range of \sigma may potentially contain existential variables. For example, in the sequent
+
+|- exists x.Px, exists y.~Py
+
+the initial pre-net would contain (Px, ~Py)_\sigma, where \sigma = MGU(Px, ~Py) = {y/x} (assuming this is a standard first-order unification, eg as in Martelli-Montanari algorithm).  
+So we may have a situation where applying (\exists S) will result in a variable that is both bound and free in a sequent in a proof, e.g., if we rewrite
+
+(Px, ~Py)_\sigma^\pi --> (Px, exists y.~Py)_{y/x}^\psi.
+
+Here the end sequent of \psi would be. |- Py, exists y.~Py.
+
+This seems to break the variable naming convention.
+
+The same issue could also occur in the `join' operation on two substitutions (as they are essentially unification on the ranges of the substitutions).
+
+- End of page 12: the inference figure on the bottom right: the premise and the conclusion of the last rule should be swapped.
+
+- Def 3 and 4: it should be stated that the symmetric cases are not shown but are part of the definitions.
+
+------------------------------------------------------
