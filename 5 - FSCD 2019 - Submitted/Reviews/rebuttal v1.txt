@@ -50,5 +50,5 @@ Review 3:
 
 (F) Unification seems to break the variable naming convention.
 
-Indeed - a naive unification algorithm would. We should stipulate explicitly that an "initial witness map" (the MGU for a link) uses fresh variables in its range, distinct from any existentially quantified ones (which occur in its domain); then all is well.
+Indeed - the standard unification algorithm would. We should stipulate explicitly that an "initial witness map" (the MGU for a link) uses fresh variables in its range, distinct from any existentially quantified ones (which occur in its domain); then all is well.
 
