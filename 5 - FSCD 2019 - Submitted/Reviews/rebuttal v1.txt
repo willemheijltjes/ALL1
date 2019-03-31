@@ -3,9 +3,11 @@ Review 1:
 
 (A) Why isn't there any **leap** edge?
 
-There are! We formulate these as a "dependency" relation, which is standard practice for graphical first-order proofs (see e.g. Miller's Expansion Tree Proofs).
+There are! We have these in the form of a "dependency" relation. (This is standard for graphical first-order proofs; see e.g. Miller's Expansion Tree Proofs.)
 
 The purpose of a leap edge is to explicitly record the dependency between quantifiers: when the eigenvariable (x) of a universal quantifier is used in the witnessing term (t{x}) to an existential quantifier. We capture this in our "dependency" relation (Definition 10). The relevant part can be paraphrased: if (x) is the eigenvariable for a quantification "forall x.Y", and an explicit substitution [t{x}/y] ranges over a formula X, then there is a dependence (i.e. a "leap", or a "jump") between Y and X.
+
+Just like the "leaps" in Hughes's MLL1 nets, our dependency is not explicit, but derived from the data structure (from the occurrences of eigenvariables in the explicit substitutions).
 
 We do not need leap edges for coalescence; we believe that likewise, contractibility for MLL1 unification nets would not need them.
 
@@ -13,7 +15,7 @@ We do not need leap edges for coalescence; we believe that likewise, contractibi
 
 Yes. For geometric correctness, it seems essential to reconstruct dependencies globally. In MLL1, where there are no slices, a single global unifier (for all links) can be constructed, from which the dependency is then derived (as "leap" edges). 
 
-With slices, the situation is much more involved. Dependencies must be made explicit between existential quantifiers and products (see "Expansion", pages 8--9) as well as universal quantifiers. These interact in highly intricate ways, which the unifying coalescence algorithm resolves incrementally and locally. To do so globally, as would be necessary for a geometric criterion, is a huge combinatorial challenge, beyond the scope of this paper.
+With slices, the situation is much more involved. Dependencies must be made explicit between existential quantifiers and products (see "Expansion", pages 8--9) as well as existential and universal quantifiers. These interact in highly intricate ways - which the unifying coalescence algorithm resolves incrementally and locally. To do so globally, as would be necessary for a geometric criterion, is a huge combinatorial challenge, beyond the scope of this paper.
 
 
 
