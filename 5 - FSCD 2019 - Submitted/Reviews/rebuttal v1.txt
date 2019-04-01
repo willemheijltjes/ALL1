@@ -1,15 +1,16 @@
 
 Review 1:
 
-(A) Why isn't there any **leap** edge?
+(A) Why isn't there any **leap** edge in the slicing criterion?
 
-There are! We have these in the form of a "dependency" relation. (This is standard for graphical first-order proofs; see e.g. Miller's Expansion Tree Proofs.)
+There are! We have these in the form of a "dependency" relation, part of the geometric correctness criterion. (This is standard for graphical first-order proofs; see e.g. Miller's Expansion Tree Proofs.)
 
 The purpose of a leap edge is to explicitly record the dependency between quantifiers: when the eigenvariable (x) of a universal quantifier is used in the witnessing term (t{x}) to an existential quantifier. We capture this in our "dependency" relation (Definition 10). The relevant part can be paraphrased: if (x) is the eigenvariable for a quantification "forall x.Y", and an explicit substitution [t{x}/y] ranges over a formula X, then there is a dependence (i.e. a "leap", or a "jump") between Y and X.
 
-Just like the "leaps" in Hughes's MLL1 nets, our dependency is not explicit, but derived from the data structure (from the occurrences of eigenvariables in the explicit substitutions).
+Just like the "leaps" in Hughes's MLL1 nets, our dependency is not explicit, but derived from the data structure (from the occurrences of eigenvariables in the explicit substitutions). But note that in MLL1, the derived leaps are explicitly part of the "switching graphs" of the correctness criterion, so that they can interact with tensors to create cycles. In ALL1 there are no tensors to interact with leaps, so we can have a completely separate “dependency acyclicity” condition (our "dependency-correct" condition).
 
-We do not need leap edges for coalescence; we believe that likewise, contractibility for MLL1 unification nets would not need them.
+In contrast with geometric correctness, we do not need leap edges for coalescence; we believe that likewise, contractibility for MLL1 unification nets would not need them.
+
 
 (B) Is there a mismatch between slicing and unification?
 
@@ -40,12 +41,12 @@ Reviews 2 and 3:
 
 (E) Can this be extended to MALL1?
 
-The situation is mixed. There are two ways forward that are likely to succeed:
+The situation is mixed. There are two ways forward that could succeed:
  - combine witness nets and MALL slice nets [Hughes & Van
    Glabbeek 2005], using a slicing criterion;
  - combine unification nets and MALL conflict nets [Hughes &
    Heijltjes 2016], using a coalescence criterion.
-For both, there are still significant combinatorial challenges (e.g. because coalescence for MALL is not a straightforward extension of that for ALL). Other combinations are unlikely to work, or the groundwork is still incomplete: slice nets do not support coalescence (this looks fundamentally problematic), and conflict nets do not yet have a slicing criterion (work in progress).
+For both, there are still significant combinatorial challenges (e.g. because coalescence for MALL is not a straightforward extension of that for ALL). Other combinations are unlikely to work, or the groundwork is still incomplete: MALL slice nets do not support coalescence (this looks fundamentally problematic), and MALL conflict nets do not yet have a slicing criterion (work in progress).
 
 
 ==============================
