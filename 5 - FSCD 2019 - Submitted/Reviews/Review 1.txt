@@ -7,50 +7,41 @@ Overall evaluation: 0 (borderline paper)
 
 ----------- Overall evaluation -----------
 [Overview]
-The paper concerns a proof-theory for first-order Additive Linear Logic (ALL1),
-in terms of linkings with subformula-trees (called proof-nets by the authors).
-ALL is a logical counterpart of categorical product and coproduce so that
-its cut-elimination corresponds to composition of the nets as morphisms.
-The main parts (from Section2  to Section4) of the paper concern 1 and 2:
-1. Presenting witness proof-nets for the first-order existential quantifier.
-2. Showing equivalence of the following two correctness criteria for the proof-nets of1
+The paper concerns a proof-theory for first-order Additive Linear Logic (ALL1), in terms of linkings with subformula-trees (called proof-nets by the authors). ALL is a logical counterpart of categorical product and coproduce so that its cut-elimination corresponds to composition of the nets as morphisms. The main parts (from Section 2 to Section 4) of the paper concern 1 and 2:
+  1. Presenting witness proof-nets for the first-order existential quantifier.
+  2. Showing equivalence of the following two correctness criteria for the proof-nets of 1.
        (i) Coalescence by Heijltjes and Hughes [11,17]
        (ii) Slicing by Hughes-Van Glabbeek [18]
-While the criterion (i) is a syntactic rewriting relation abstracting top-down sequentialization,
-the criterion (ii)  is more graphical, freely from rewriting.
+While the criterion (i) is a syntactic rewriting relation abstracting top-down sequentialization, the criterion (ii) is more graphical, freely from rewriting.
 
-The above 1 and 2 are both inspired from Hughes’ unification nets [19] for MLL1,
-hence accordingly the paper ends briefly with (Section 5):
-3.   Unification Nets, dropping the witness of 1, though which is shown to be reconstructed.
+The above 1 and 2 are both inspired from Hughes’ unification nets [19] for MLL1, hence accordingly the paper ends briefly with (Section 5): 3. Unification Nets, dropping the witness of 1, though which is shown to be reconstructed.
 
-The paper is an attempt to extend Hughes [19] to another tandem of ALL1 by employing
-the coalescence correctness [11,17] specific to the additive fragment.
-The paper is written in a condensed style with number of definitions on net-syntax and of theorems.
-No single line is devoted to (even the outlines of) the proofs,  instead there appear many figures
-explaining definitions.  Proofs are demonstrated precisely  in the appendix.  This style is due to the nature
-of the paper’s topic such that appropriate understanding of the definitions naturally leads to the proofs of the theorems.
+The paper is an attempt to extend Hughes [19] to another tandem of ALL1 by employing the coalescence correctness [11,17] specific to the additive fragment. The paper is written in a condensed style with number of definitions on net-syntax and of theorems. No single line is devoted to (even the outlines of) the proofs,  instead there appear many figures explaining definitions.  Proofs are demonstrated precisely  in the appendix.  This style is due to the nature of the paper’s topic such that appropriate understanding of the definitions naturally leads to the proofs of the theorems.
 
 [Main Comments]
-The referee  has the following two questions A and B.  
-The issue on the questions needs to be explained explicitly in the paper
-for the publication in the proceedings.
+The referee  has the following two questions A and B. The issue on the questions needs to be explained explicitly in the paper for the publication in the proceedings.
 
-(A) Why isn’t there any **leap** edge in this paper’s slicing criterion  for ALL1,
-which edge existed in the slicing for MLL1 [19] ?
-As far as the referee understands, the leap plays a similar role as Girard’s jump in [18]
-when drawing graphs in the MLL1 unification nets. The jump is  well known
-to become crucial when additive connectives are concerned, as the jump
-is redundant in MLL. It seems paradoxical to the referee how this paper
-concerning the additives could omit the notion of leap,
-which is expected to become more crucial for the additives.
+(A) Why isn’t there any **leap** edge in this paper’s slicing criterion  for ALL1, which edge existed in the slicing for MLL1 [19] ?
+As far as the referee understands, the leap plays a similar role as Girard’s jump in [18] when drawing graphs in the MLL1 unification nets. The jump is  well known to become crucial when additive connectives are concerned, as the jump is redundant in MLL. It seems paradoxical to the referee how this paper concerning the additives could omit the notion of leap, which is expected to become more crucial for the additives.
 
-(B)  The paper’s contribution seems confined to a partial solution, as the slicing criterion
-is left  open for the ALL1 unification nets (without witness) (cf. the bottom right-hand of Fig7).
-On the other hand,  the original MLL1 unification nets [19] have a slicing criterion in terms
-of acyclicity for slices arisen in subformula-trees + linkings by switchings.  
-Could the authors explain the status of explicit witness for obtaining the more graphical criterion
-of slicing for the additives ?  In particular, is there any mismatch between
-slicing and the notion of generality the unification embodies ?
+(B)  The paper’s contribution seems confined to a partial solution, as the slicing criterion is left  open for the ALL1 unification nets (without witness) (cf. the bottom right-hand of Fig7). On the other hand,  the original MLL1 unification nets [19] have a slicing criterion in terms of acyclicity for slices arisen in subformula-trees + linkings by switchings. Could the authors explain the status of explicit witness for obtaining the more graphical criterion of slicing for the additives? In particular, is there any mismatch between slicing and the notion of generality the unification embodies ?
 
 [Minor Comment]
 (l.45 and l.297) Is the relational composition of linkings to do with the categorical composition for the relations ?
+
+-------------------------
+Added after rebuttal:
+
+Yes. I agree now to accept the paper provided
+that the authors could add a short remark
+on (A) on the leap for the benefit to the readers.
+
+The referee understands the status of the **leap** (or **jump** alternatively) for the two kinds of correctness (i) coalescence and (ii) slicing for ALL1 in comparison to the preceding work for MLL1.
+The crucial point to the referee is that  contrarily to the tensor of MLL1, the coproduct of ALL1 does NOT interact with the leap. The referee agrees that this is the case unless superposition of plural slices is taken into account.
+
+% In contrast with geometric correctness, we do not need leap edges for
+% coalescence; we believe that likewise, contractibility for MLL1
+% unification nets would not need them.
+
+The referee thinks this worth mentioning as a future work (a conjecture) for MLL1, as the readers may be reminded that the leap for ALL1 remains implicit allover the present paper.
+
