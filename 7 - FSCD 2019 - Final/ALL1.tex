@@ -474,13 +474,13 @@ Both capture sequent calculus cut-elimination as a one-step global composition o
 
 \section{Introduction}
 
-%We investigate the \emph{proof-net problem}, finding a canonical representation of proofs, for additive linear logic (\all) extended with first-order quantification (\all1). \all\ is the fragment of linear logic \cite{Girard-1987} that describes sums and products, and their canonical morphisms: projections, injections, and diagonals. It is rich, well-behaved, and compact: an ideal microcosm in which to explore semantic and proof-theoretic ideas. Here, we explore two techniques to account for the witness information that is essential to first-order proof: \emph{explicit substitution} and first-order \emph{unification}. 
+%We investigate the \emph{proof-net problem}, finding a canonical representation of proofs, for additive linear logic (\all) extended with first-order quantification (\all{\textnormal 1}). \all\ is the fragment of linear logic \cite{Girard-1987} that describes sums and products, and their canonical morphisms: projections, injections, and diagonals. It is rich, well-behaved, and compact: an ideal microcosm in which to explore semantic and proof-theoretic ideas. Here, we explore two techniques to account for the witness information that is essential to first-order proof: \emph{explicit substitution} and first-order \emph{unification}. 
 
 Additive linear logic (\all) is the logic of sum, product, and their canonical morphisms: projections, injections, and diagonals. Semantically, the logic represents parallel communication between two parties, with sum and product as respectively the sending and receiving of a binary choice \cite{Joyal-1995, Cockett-Santocanale-2009}. As such it is a core part of \emph{session types} for process calculi \cite{Honda-Vasconcelos-Kubo-1998, Caires-Pfenning-2010, Wadler-2014}.
 
 A microcosm of parallellism, \all\ already demonstrates the \emph{Blass problem} of game semantics \cite{Abramsky-2003}, that sequential strategies do not in general have associative composition. This is resolved by \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which are a canonical, \emph{true-concurrency} presentation of \all.
 
-Here, we extend proof nets to first-order additive linear logic (\all1). Beyond the solution to the proof-net problem, a main contribution is the (further) development of the two techniques we consider: \emph{explicit substitutions} for witness assignment, and reconstruction of witness information through \emph{unification}, as pioneered for MLL by the second author \cite{Hughes-2018}. We expect to apply these to first-order logics more generally.
+Here, we extend proof nets to first-order additive linear logic (\all{\textnormal 1}). Beyond the solution to the proof-net problem, a main contribution is the (further) development of the two techniques we consider: \emph{explicit substitutions} for witness assignment, and reconstruction of witness information through \emph{unification}, as pioneered for MLL by the second author \cite{Hughes-2018}. We expect to apply these to first-order logics more generally.
 
 Proofs have been relegated to the appendix---for a full version see the report \cite{Heijltjes-Hughes-Strassburger-2018}.
 
@@ -647,7 +647,7 @@ We extend additive proof nets with first-order quantification. Our central chall
 This is incompatible with a \defn{sequent\,+\,links} proof net design, where the conclusion sequent remains intact, and a subformula $B$ cannot be the subject of substitution or duplication. Instead, we propose two alternative treatments of witnessing terms, embodied in two notions of proof net: \defn{witness nets} and \defn{unification nets}. Our solutions are based on the second author's recent \defn{unification nets} for first-order multiplicative linear logic \cite{Hughes-2018}. Their main feature is to omit existential witnesses altogether, and reconstruct them by unification.
 %
 
-\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example below left shows the proof net for the sequent proof earlier. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of an atomic proposition.) Witness nets are canonical for \all1 sequent calculus permutations. Composition is direct, where the witness assignments of links are composed through a simple process of \emph{interaction\,+\,hiding} similar to that of game semantics \cite{Mimram-2011}.
+\defn{Witness nets} record witness assignment in substitution maps attached to each link. The example below left shows the proof net for the sequent proof earlier. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of an atomic proposition.) Witness nets are canonical for \all{\textnormal 1} sequent calculus permutations. Composition is direct, where the witness assignments of links are composed through a simple process of \emph{interaction\,+\,hiding} similar to that of game semantics \cite{Mimram-2011}.
 
 \defn{Unification nets} omit any witness information, as illustrated below right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition is direct, by relational composition. We compare further properties in Figure~\ref{fig:results} in the conclusion, where we also discuss related work and Lambek's notion of \defn{generality} \cite{Lambek-1968-1972}.
 %\cite{Lambek-1968, Lambek-1969, Lambek-1972}.
@@ -2044,7 +2044,7 @@ In this appendix we restate and prove all theorems, and add two supporting lemma
 \setcounterref{retheorem}{thm:proof->net->proof}
 \addtocounter{retheorem}{-1}
 \begin{retheorem}
-For any \all1 proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
+For any \all{\textnormal 1} proof $\pi$, the witness net $[\pi]$ sequentializes to $\pi$. 
 \end{retheorem}
 
 \begin{proof}
