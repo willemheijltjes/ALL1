@@ -1865,7 +1865,7 @@ If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ seque
 In this final section we explore a second notion of \all1 proof net: \defn{unification nets} omit any witness information, which is then reconstructed by coalescence. This yields a natural notion of \emph{most general} proof net, where every other proof net is obtained by introducing more witness information. Conversely, every witness net has an underlying unification net, that sequentializes to a \emph{most general} proof.
 
 We consider a proof $\prf\pi AB$ \defn{more general} than $\prf{\pi'}AB$, written $\pi\leq\pi'$, if there is a substitution map $\rho$ such that $\pi\rho=\pi'$. Unlike for proof nets, this notion is not so natural for sequent proofs: in the permutation of existential and product rules below, from left to right $u$ must be generated as the least term more general than $s$ and $t$; from right to left, $s$ and $t$ cannot be reconstructed from $u$, and must be retrieved from their respective subproofs.
-\[
+\begin{center}\(
 	\vc{
 	 \infer[\Qrr*]{\seq{A\*B}{\exists x.C}}{
 	  \infer[\Qrr?s]{\seq A{\exists x.C}}{\seq AC}
@@ -1880,7 +1880,7 @@ We consider a proof $\prf\pi AB$ \defn{more general} than $\prf{\pi'}AB$, writte
 	   &
 	   \seq BC
 	}}}
-\]
+\)\end{center}
 
 \noindent
 To reconstruct witnesses by unification, we define the following operations.
@@ -1895,9 +1895,9 @@ To reconstruct witnesses by unification, we define the following operations.
 	The \defn{join} of coherent witness maps is the least map $\rho$ such that $\sigma\gen\rho$ and $\tau\gen\rho$.
 
 A link $\link[]ab$ on two atomic formulas is an \defn{axiom} link if there exists a witness map $\sigma$ such that $\dual a\sigma=b\sigma$. To an axiom link $\link[]ab$ over $\seq AB$ we assign an \defn{initial witness map}, which is the least witness map $\sigma$ over the domain $\ex[\!A]a\cup\ex[\!B]b$ such that $\dual a\sigma=b\sigma$. In other words, $\sigma$ is the most general unifier of $\dual a$ and $b$, over the given domain, written $\init{\dual a}b$. For an axiom linking $\lambda$ over $\seq AB$ the \defn{initial witness pre-net} $\net{\lambda_\star}AB$ is given by
-\[
+\begin{center}\(
 	\lambda_\star = \{~\link ab~\mid~\link[]ab\in\lambda~,~\sigma=\init{\dual a}b~\}~.
-\]
+\)\end{center}
 An initial witness pre-net has \emph{exact coverage}, while coalescence will give \emph{local eigenvariables}. Note that eigenvariables are constants for the purpose of unification (they are not substituted into). For Barendregt's convention, that free variables have distinct names from bound ones, we should assume that variables in the domain of a witness map are fresh; for example, the most general unifier of existential variables $x$ and $y$ should be $[z/x,z/y]$ for a fresh variable~$z$, and not $[y/x]$ or $[x/y]$.
 
 
@@ -2061,9 +2061,9 @@ If $\net{\lambda_\Sigma}AB$ sequentializes to $\pi$, then $[\pi]$ is $\net{\lamb
 By induction on the sequentialization path 
 $\net{\lambda_\Sigma^\star}AB\scoal^*\net{\{\link[\varnothing]AB^\pi\}}AB$
 it follows that in every pre-net $\net{\kappa_\Theta^\Phi}AB$ on this path, $\lambda_\Sigma$ is equal to the union over the de-sequentialization of all proof labels $\phi$ in $\Phi$:
-\[
+\begin{center}\(
 	\lambda_\Sigma=\bigcup~\{\,\deseq\phi CD \mid \link CD^\phi \in \kappa_\Theta^\Phi\,\}~.
-\]
+\)\end{center}
 The statement is then the case $\kappa_\Theta^\Phi=\{\link[\varnothing]AB^\pi\}$.
 \end{proof}
 % ..................................................
