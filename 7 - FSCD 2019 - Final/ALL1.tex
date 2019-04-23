@@ -414,7 +414,7 @@
  {}
  {}
 \author
- {Dominic J.D.\ Hughes}
+ {Dominic J.\ D.\ Hughes}
  {Logic Group, UC Berkeley, USA}
  {{http://boole.stanford.edu/\textasciitilde dominic}} %{dominich@theory.stanford.edu}
  {}
@@ -483,9 +483,7 @@ Proofs have been relegated to the appendix---for a full version see the report \
 %
 \all\ proof nets \cite[Section 4.10]{Hughes-vanGlabbeek-2005} represent a morphism $A\to B$ by a sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between the propositional atoms of $\dual A$ (the dual of $A$) and those of $B$. They are \defn{canonical}: they factor out the permutations of sequent calculus, and correspond 1--1 to morphisms of the free category with binary sums and products. \defn{Composition}, of proof nets over $\seq{\dual A}B$ and $\seq{\dual B}C$ to one over $\seq{\dual A}C$, is by the relational composition of their linkings along the dual formulas $B$ and $\dual B$ and captures sequent-calculus cut-elimination. Below are examples of proof nets and their composition.
 %
-\[
-\hspace*{-\parindent}%
-\hspace*{\fill}%
+\begin{center}\vspace{-.5ex}\(
 \begin{array}{@{}rc@{\qquad}rc@{}}
 	\text{\small diagonal:}
 &	\vc{\begin{tikzpicture}[net]
@@ -543,25 +541,24 @@ Proofs have been relegated to the appendix---for a full version see the report \
             \Vlink[violet]{[-1]1,1}
             \Vlink[violet]{[1]1,2}
     \end{tikzpicture}}
-\hfill
 \rule[-55pt]{0pt}{110pt}
-\]
+\)\vspace{-.5ex}\end{center}
 %
 We extend additive proof nets with first-order quantification. Our central challenge is to incorporate the essential content of first-order proof, the \defn{witness assignment} to existential quantifiers. Commonly, as in the sequent calculus rule below left, a witness to $\exists x.B$ is given by an immediate substitution $B[t/x]$. To assign different witnesses in different branches of a proof, the subformula is duplicated first, giving $B[s/x]$ and $B[t/x]$, as below right.
 %
-\[
-\hspace*{\fill}
-\hspace*{-\parindent}
+\begin{center}\(
+%\hspace*{\fill}
+%\hspace*{-\parindent}
 	\vc{\infer[\Qrr?t]{\seq A{\exists x.B}}{\seq A{B[t/x]}}}
-\hfill
+\hspace{10ex}
 \vc{
 	\infer[\Qrr*]{\Seq{\exists x.\dual P(x)}{P(s)\*P(t)}}{
 	 \infer[\Qrr?s]{\Seq{\exists x.\dual P(x)}{P(s)}}{\infer{\Seq{\dual P(s)}{P(s)}}{}}
 	 &&
 	 \infer[\Qrr?t]{\Seq{\exists x.\dual P(x)}{P(t)}}{\infer{\Seq{\dual P(t)}{P(t)}}{}}
    }}
-\hfill
-\]
+%\hfill
+\)\end{center}
 %
 This is incompatible with a \defn{sequent\,+\,links} proof net design, where the conclusion sequent remains intact, and a subformula $B$ cannot be the subject of substitution or duplication. Instead, we propose two alternative treatments of witnessing terms, embodied in two notions of proof net: \defn{witness nets} and \defn{unification nets}. Our solutions are based on the second author's recent \defn{unification nets} for first-order multiplicative linear logic \cite{Hughes-2018}. Their main feature is to omit existential witnesses altogether, and reconstruct them by unification.
 %
@@ -570,9 +567,7 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 
 \defn{Unification nets} omit any witness information, as illustrated below right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition is direct, by relational composition. We compare further properties in Figure~\ref{fig:results} in the conclusion, where we also discuss related work and Lambek's notion of \defn{generality} \cite{Lambek-1968-1972}.
 %
-\[
-\hspace*{\fill}
-\hspace*{-\parindent}
+\begin{center}\(
 	\text{\small a witness net:}
 	\quad
 	\vc{\begin{tikzpicture}[net]
@@ -581,7 +576,7 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 		\Vlink[red,l,label={$\scriptstyle[s/x]~~$}]{[-3]4,1}
 		\Vlink[red,r,label={$~\scriptstyle[t/x]$}]{[1]4,6}
 	\end{tikzpicture}}
-\hfill
+\hspace{11ex}
 	\text{\small a unification net:}
 	\quad
 	\vc{\begin{tikzpicture}[net]
@@ -590,14 +585,13 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 		\Vlink[red]{[-3]4,1}
 		\Vlink[red]{[1]4,6}
 	\end{tikzpicture}}
-\hfill
-\]
+\)\vspace{-1ex}\end{center}
 %
 \paragraph*{Background}
 %
 Additive linear logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995} and proof net correctness \cite{Heijltjes-Hughes-2015} for a net over $\seq AB$ are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$). Proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}, and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
 
-{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical {\mall} proof nets~\cite{Hughes-vanGlabbeek-2005}, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. Its proof nets also appear in the third author's study of the \emph{medial rule} for classical logic~\cite{str:RTA07}, and as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}. To prepare the ground for cut elimination in first-order \emph{combinatorial proofs} is a further motivation for the present work.
+{\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical {\mall} proof nets~\cite{Hughes-vanGlabbeek-2005}, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. Its proof nets also appear in the third author's study of the \emph{medial rule} for classical logic~\cite{str:RTA07}, and as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}. To prepare the ground for cut elimination in first-order combinatorial proofs~\cite{Hughes-2019-fopws} is further motivation for the present work.
 
 \paragraph*{Proof identity}
 
@@ -692,12 +686,12 @@ We extend coalescence to both witness nets and unification nets, and slicing to 
 
 We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \defn{unifying coalescence} ($\ucoal$) for unification nets. We first give an example of the former (abbreviating $P(x,y)$ to $Pxy$). In the initial witness net, below left, each link corresponds to a sequent calculus axiom between both linked subformulas, with the substitutions applied.
 %
-\newcommand\xs{xs}
-\newcommand\xt{xt}
-\newcommand\xy{xy}
-\newcommand\zs{zs}
-\newcommand\zt{zt}
-\[
+\newcommand\xs{xs}%
+\newcommand\xt{xt}%
+\newcommand\xy{xy}%
+\newcommand\zs{zs}%
+\newcommand\zt{zt}%
+\begin{center}\vspace{1pt}\(
 \hspace*{-\parindent}
 \begin{array}{@{}c@{}c@{}c@{}c@{}c@{}}
 	\vc{\begin{tikzpicture}[net]
@@ -723,7 +717,7 @@ We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \d
 	\end{tikzpicture}}
 \hfill
 \scoal\cdots
-\\ \\
+\\[6ex]
 \text{\scriptsize
 	\color{white}
 	 \infer{\vphantom{\dual P}}{
@@ -742,11 +736,11 @@ We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \d
 ~~
 	\color{blue}\infer[\!\Qrr?t]{\seq{\exists y.\dual P\xy}{P\xt}}{\color{black}\infer{\seq{\dual P\xt}{P\xt}}{}}}
 \end{array}
-\]
+\)\vspace{-3pt}\end{center}
 The first two steps (above middle and right) move both links from the subformula $\dual Pxy$ to $\exists y.\dual Pxy$, removing the substitutions $[s/y]$ and $[t/y]$ on $y$, and corresponding to sequent rules $\qrr?s$ and $\qrr?t$. Observe that we maintain the domain of the substitutions on a link as the variables of those existential quantifiers that either linked subformula is (strictly) in scope of. 
 
 The next step, from above right to below left, combines both links, and corresponds to an additive conjunction rule. We require that both substitutions agree (their domains are the same by the above observation); hence this step could not have been performed before the previous two, corresponding to the non-permutability of the generated inference rules.
-\[
+\begin{center}\(
 \begin{array}{@{}c@{}c@{}c@{}c@{}c@{}}
 \cdots\scoal\quad
 	\vc{\begin{tikzpicture}[net]
@@ -767,7 +761,7 @@ The next step, from above right to below left, combines both links, and correspo
 		\formula[y=0]{\exists*{z.}P*\zs\*P*\zt}
 		\Vlink[violet]{1,1}
 	\end{tikzpicture}}
-\\ \\
+\\[6ex]
 \text{\scriptsize
 	\color{white}\infer{\dual P}{\infer{\dual P}{
 	\color{violet}
@@ -801,11 +795,11 @@ The next step, from above right to below left, combines both links, and correspo
 	   \infer{\seq{\exists y.\dual P\xy}{P\xt}}{\infer{\seq{\dual P\xt}{P\xt}}{}}
 	}}}}
 \end{array}
-\]
+\)\end{center}
 The final steps introduce an inference $\exists R,x$ and one $\forall R$. For the latter, we require that the \emph{eigenvariable} $x$ of the universal quantification does not occur in the range of the substitution of the link, as in $[x/z]$ in the net above left---hence the two steps could not be interchanged. It corresponds to the \emph{eigenvariable condition} on the $\forall R$ rule that $x$ is not free in the context.
 
 Unifying coalescence, for unification nets, is similar to strict coalescence; two differences allow it to reconstruct witnesses by unification, which we illustrate. To initialize coalescence, the links in the net below left are given, as a substitution map, the \defn{most general unifier} of the two propositions connected by the link. Both links now correspond to sequent axioms.
-\[
+\begin{center}\vspace{0pt}\(
 \hspace*{-\parindent}
 \hspace*{\fill}
 \begin{array}{@{}ccccc@{}}
@@ -828,7 +822,7 @@ Unifying coalescence, for unification nets, is similar to strict coalescence; tw
     	\formula[y=0]{P*{ys}\*P*{tz}}
     	\Vlink[violet,r,label={~~$\scriptstyle[u/z,u/y,u/x]$}]{1,2}
     \end{tikzpicture}}
-\\ \\
+\\[6ex]
 &\qquad\qquad&
 \text{\scriptsize
 	\color{white}
@@ -847,7 +841,7 @@ Unifying coalescence, for unification nets, is similar to strict coalescence; tw
 	 }}
 \end{array}
 \hfill
-\]
+\)\vspace{-2pt}\end{center}
 The second difference is the coalescence step for additive conjunction, above right. Where strict coalescence requires both links to carry identical substitution maps, here we require both maps to be \emph{unifyable}, in the sense that both must have a common, more special (less general) substitution map. This is then applied to the new link. In the example, the terms $s$ and $t$ are unified to $u$, i.e.\ $u$ is a most general term that specializes both $s$ and $t$. Note that in the sequentialization, both subproofs also need to be specialized, from $s$ and $t$ to $u$.
 
 % ==================================================
@@ -858,19 +852,21 @@ The second difference is the coalescence step for additive conjunction, above ri
 
 First-order terms and the formulas of first-order $\all$ are generated by the following grammars.
 %
-\setMidspace{5pt}
-\[
+\setMidspace{5pt}%
+\begin{center}\vspace{-.5ex}\(
 \begin{array}{@{}l@{}l}
 	t &\Coloneqq x \Mid f(t_1,\dots,t_n)
-\\[10pt]
+\\[8pt]
 	a &\Coloneqq P(t_1,\dots,t_n) \Mid \dual P(t_1,\dots,t_n)
-\\[10pt]
+\\[8pt]
 	A &\Coloneqq a \Mid A\+A \Mid A\*A \Mid \exists x.A \Mid \forall x.A
 \end{array}
-\]
+\)\vspace{-.5ex}\end{center}
 %
-Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a matter of convenience. The \defn{dual} $\dual A$ of an arbitrary formula $A$ is given by De Morgan. We use the following notational conventions.
+%\vspace{-.5ex}
+Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a matter of convenience. The \defn{dual} $\dual A$ of an arbitrary formula $A$ is given by De Morgan. We use the following notational conventions:
 %
+%\begin{center}\vspace{-1ex}\(
 \[
 \begin{tabular}{@{}lll@{}} 
 	$x,y,z$ & $\in \var$		& first-order variables\\
@@ -881,6 +877,7 @@ Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a ma
 	$A,B,C$ & $\in \form$		& \all1 formulas \\
 \end{tabular}
 \]
+%\)\vspace{-.8ex}\end{center}
 %
 A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart for the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations, given in Figure~\ref{fig:permutations}.
 
@@ -937,13 +934,13 @@ $
 
 
 By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
-\[
+\begin{center}\vspace{-1ex}\(
 	\subs A = \{A\} \cup
 	\left\{\begin{array}{ll}
 		\subs B\uplus\subs C	& \text{if $A=B\+C$ or $A=B\*C$} \\[5pt]
 		\subs B					& \text{if $A=\exists x.B$ or $A=\forall x.B$}
 	\end{array}\right.
-\]
+\)\vspace{-1ex}\end{center}
 
 Since we will be working with a graphical representation, we will adopt \defn{Barendregt's convention}, that bound variable names are globally unique identifiers, in the following form. In a sequent $\seq AB$ we assume all quantifiers have a unique binding variable, distinct from any free variable. In a proof $\pi$ over $\seq AB$, a variable $x$ that is universally quantified as $\forall x.C$ in $\seq AB$ is an \defn{eigenvariable}. A $\qrr!$ rule on $\forall x.C$ is considered to bind all free occurrences of the eigenvariable $x$ in its direct subproof. Accordingly, we assume that $x$ does not occur free outside these subproofs (which can be guaranteed by globally renaming $x$). We take variable names to be persistent throughout a proof, in the sense that we don't admit alpha-conversion (renaming of bound variables) between proof rules. We thus have unique bound variable names in $\seq AB$, but in $\pi$ all $\qrr!$ rules on the subformula $\forall x.C$ share the same eigenvariable $x$.
 
@@ -1225,8 +1222,7 @@ When defining slices, we interpret an existential quantification $\exists x.A$ a
 	\item[Dependency.]
 We define a \defn{dependency} relation between a universal quantification $\forall x.A$ and an instantiation $B[t/y]$ of $\exists y.B$ where the eigenvariable $x$ occurs free in $t$ (a standard approach to first-order quantification \cite{Miller-1987,Girard-1996,Heijltjes-2010,Mimram-2011}). For each link, we will require this dependency relation to be \emph{acyclic}, which amounts to \emph{slice-wise} first-order correctness. It captures the non-permutability of universal and existential sequent rules due to the \emph{eigenvariable condition} of the former, as below right.
 \end{description}
-
-\[
+\begin{center}\vspace{-.8ex}\(\quad\quad
 \vc{
 	\infer[\Qrr*]{\Seq{\exists x.A}{B\*C}}{
 	 \infer[\Qrr?s]{\Seq{\exists x.A}B}{\Seq{A[s/x]}B}
@@ -1239,8 +1235,8 @@ We define a \defn{dependency} relation between a universal quantification $\fora
 	 \infer[\Qrr?t]{\Seq A{\exists y.B}}{\Seq AB[t/y]}
    }}
    \quad\text{where }x\in\fv(t)
-\]
-
+\)\vspace{.5ex}\end{center}
+%
 \noindent
 \emph{Expansion} covers the interaction between existential quantifiers and products, and \emph{dependency} that between existential and universal quantifiers. Note that in proof nets that include the multiplicatives (e.g.\ \cite{Girard-1996,Hughes-2018}), instead of a dependency as a \emph{partial order} it is common to consider the underlying graph, created by adding a \emph{jump} or \emph{leap} edge when an existential instantiation $B[t/y]$ of $\exists y.B$ contains the eigenvariable $x$ of $\forall x.A$. These edges participate in the \emph{switching} condition \cite{Danos-Regnier-1989}, to capture the interaction between quantifiers and tensors. Without the tensor, here, the dependency as a partial order suffices.
 
@@ -1878,7 +1874,7 @@ A final question is whether the current approach can be extended to obtain proof
 
 \section*{Acknowledgements}
 
-We would like to thank the anonymous referees for their constructive feedback. Dominic Hughes would like to thank his host, Wes Holliday, at the UC Berkeley Logic Group. Willem Heijltjes was supported by EPSRC Project EP/R029121/1 \emph{Typed Lambda-Calculi with Sharing and Unsharing}, and Lutz Stra{\ss}burger was supported by the ANR-FWF international
+We would like to thank the anonymous referees for their constructive feedback. Dominic Hughes thanks his hosts, Wes Holliday and Dana Scott, at the UC Berkeley Logic Group. Willem Heijltjes was supported by EPSRC Project EP/R029121/1 \emph{Typed Lambda-Calculi with Sharing and Unsharing}. Lutz Stra{\ss}burger was supported by the ANR-FWF international
 grant ANR-5-CE25-0014 \emph{The Fine Structure of Formal Proof
 Systems and their Computational Interpretations (FISP)}.
 
