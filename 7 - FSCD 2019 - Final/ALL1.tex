@@ -1065,13 +1065,13 @@ A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a 
 The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\deseq[\varnothing]\pi AB}AB$ where the function $\deseq-AB$ is defined inductively as follows (symmetric cases are omitted).
 %
 \newcommand\XDeseq[4][\sigma]{
- \left[\vcenter{#2}\right]%
+ \left[\vc{#2}\right]%
  _{\makebox[0pt][l]{$\scriptstyle{#1}$}}%
  ^{\makebox[0pt][l]{$\scriptstyle{#3\,,\,#4}$}}%
  \rule{35pt}{0pt}
 }
 \begin{align*}
-	\XDeseq{\,\infer[\Qrr1]{\seq a{\dual a}}{}}bc &\quad=\quad \{\link bc\}
+	\XDeseq{\,\infer[\Qrr1]{\seq a{\dual a}}{\rule{0pt}{3pt}}}bc &\quad=\quad \{\link bc\}
 \\ \\[-5pt]
 	\XDeseq{\infer[\Qrr+i]{\seq A {B_1\+B_2}}{\Prf \pi A{B_i}}} {A'} {B_1'\+B'_2} 
 	& \quad=\quad 
