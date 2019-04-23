@@ -431,6 +431,9 @@
 
 \Copyright{Willem B.\ Heijltjes, Dominic J.D.\ Hughes, and Lutz Stra\ss burger}
 
+%\subjclass{F.4.1: Mathematical logic--Proof theory}
+% Theory of computation - Logic - Proof theory
+% Theory of computation - Logic - Linear logic
 \ccsdesc[500]{Theory of computation~Proof theory}
 \ccsdesc[300]{Theory of computation~Linear logic}
 \keywords{Linear logic, First-order logic, Proof nets, Herbrand's Theorem}
@@ -471,6 +474,8 @@ Both capture sequent calculus cut-elimination as a one-step global composition o
 
 \section{Introduction}
 
+%We investigate the \emph{proof-net problem}, finding a canonical representation of proofs, for additive linear logic (\all) extended with first-order quantification (\all{\textnormal 1}). \all\ is the fragment of linear logic \cite{Girard-1987} that describes sums and products, and their canonical morphisms: projections, injections, and diagonals. It is rich, well-behaved, and compact: an ideal microcosm in which to explore semantic and proof-theoretic ideas. Here, we explore two techniques to account for the witness information that is essential to first-order proof: \emph{explicit substitution} and first-order \emph{unification}. 
+
 Additive linear logic (\all) is the logic of sum, product, and their canonical morphisms: projections, injections, and diagonals. Semantically, the logic represents parallel communication between two parties, with sum and product as respectively the sending and receiving of a binary choice \cite{Joyal-1995, Cockett-Santocanale-2009}. As such it is a core part of \emph{session types} for process calculi \cite{Honda-Vasconcelos-Kubo-1998, Caires-Pfenning-2010, Wadler-2014}.
 
 A microcosm of parallellism, \all\ already demonstrates the \emph{Blass problem} of game semantics \cite{Abramsky-2003}, that sequential strategies do not in general have associative composition. This is resolved by \emph{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which are a canonical, \emph{true-concurrency} presentation of \all.
@@ -478,6 +483,81 @@ A microcosm of parallellism, \all\ already demonstrates the \emph{Blass problem}
 Here, we extend proof nets to first-order additive linear logic (\all{\textnormal 1}). Beyond the solution to the proof-net problem, a main contribution is the (further) development of the two techniques we consider: \emph{explicit substitutions} for witness assignment, and reconstruction of witness information through \emph{unification}, as pioneered for MLL by the second author \cite{Hughes-2018}. We expect to apply these to first-order logics more generally.
 
 Proofs have been relegated to the appendix---for a full version see the report \cite{Heijltjes-Hughes-Strassburger-2018}.
+
+%Additive linear logic $(\all)$ is the logic of product $(\*)$, sum $(\+)$, and their canonical morphisms: projections, injections, and diagonals. It is naturally captured in \defn{proof nets} \cite{Girard-1987,Hughes-vanGlabbeek-2005}, which describe a morphism $A\to B$ by a sequent $\seq{\dual A}B$ plus a \defn{linking}, a relation between the propositional atoms of $\dual A$ and those of $B$. Four examples are illustrated below left.
+%
+%Additive proof nets are \defn{canonical}: they factor out the permutations of sequent calculus, and correspond 1--1 to morphisms of the free category. \defn{Composition}, of proof nets over $\seq{\dual A}B$ and $\seq{\dual B}C$ to one over $\seq{\dual A}C$, is by the relational composition of their linkings along the dual formulas $B$ and $\dual B$ (as illustrated below right), and captures sequent-calculus cut-elimination.
+%
+%\[
+%\hspace*{9ex}% spacing hack to achieve central horizontal alignment
+% Behold my better spacing hack to achieve central horizontal alignment :)
+%\hspace*{-\parindent}%
+%\hspace*{\fill}%
+%\begin{array}{c@{\qquad\qquad}c}
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{{\dual a}}
+%		\formula[y=0]{a\*a}
+%		\Vlink[red]{[-2]1,1}
+%		\Vlink[red]{[2]1,3}
+%	\end{tikzpicture}
+%&
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{{\dual a}}
+%		\formula[y=0]{a\+b}
+%		\Vlink[red]{1,1}
+%	\end{tikzpicture}
+%\\
+%	\text{\small diagonal}
+%&	\text{\small injection}	
+%\\ \\ \\[-10pt]
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{{\dual a}\+{\dual b}}
+%		\formula[y=0]{b\*a}
+%		\Vlink[red]{1,3}
+%		\Vlink[red]{3,1}
+%	\end{tikzpicture}
+%&
+%	\begin{tikzpicture}[net]
+%		\formula[y=1]{*{\phantom(}{\dual a}*{\phantom)}
+%		 {{\+}}*({\dual b}*{\phantom)}
+%		 {{\+}}*{\phantom(}{\dual c}*)}
+%		\formula[y=0]{*(a*{\phantom)}
+%		{{\*}}*{\phantom(}b*)
+%		{{\*}}*{\phantom(}c*{\phantom)}}
+%		\Vlink[red]{1,1}
+%		\Vlink[red]{3,3}
+%		\Vlink[red]{5,5}
+%	\end{tikzpicture}
+%\\
+%	\text{\small symmetry}
+%&	\text{\small associativity}
+%\end{array}
+%\qquad\qquad\qquad
+%\begin{array}{c}
+%    \vc{\begin{tikzpicture}[net]
+%        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+%        \formula[y=1.5]{a*\**(b*\+b*)}
+%            \Vlink[red]{1,2}
+%            \Vlink[red]{2,1}
+%        \formula[y=1]{{\dual a}*\+*({\dual b}*\*{\dual b}*)}
+%        \formula[y=0]{b*\*b}
+%            \Vlink[blue]{[-1]2,[-1]1}
+%            \Vlink[blue]{[1]2,[-1]2}
+%            \Vlink[blue]{[-1]3,[1]1}
+%            \Vlink[blue]{[1]3,[1]2}
+%    \end{tikzpicture}}
+%\quad\Rightarrow\quad
+%    \vc{\begin{tikzpicture}[net]
+%        \formula[y=2.5]{{\dual b}*\+{\dual a}}
+%        \formula[y=0]{b*\*b}
+%            \Vlink[violet]{[-1]1,1}
+%            \Vlink[violet]{[1]1,2}
+%    \end{tikzpicture}}
+%\\ \\[-5pt]
+%	\text{\small composition}
+%\end{array}
+%\hfill
+%\]
 
 \paragraph*{Additive proof nets}
 %
@@ -544,6 +624,7 @@ Proofs have been relegated to the appendix---for a full version see the report \
             \Vlink[violet]{[1]1,2}
     \end{tikzpicture}}
 \hfill
+% Tightening the text and spacing the 
 \rule[-55pt]{0pt}{110pt}
 \]
 %
@@ -569,6 +650,7 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 \defn{Witness nets} record witness assignment in substitution maps attached to each link. The example below left shows the proof net for the sequent proof earlier. (We will assume a different variable for each quantifier, and we attach links to predicate letters, as the root connective of an atomic proposition.) Witness nets are canonical for \all{\textnormal 1} sequent calculus permutations. Composition is direct, where the witness assignments of links are composed through a simple process of \emph{interaction\,+\,hiding} similar to that of game semantics \cite{Mimram-2011}.
 
 \defn{Unification nets} omit any witness information, as illustrated below right. In addition to canonicity, they embody a notion of \defn{generality}: where more than one witness could be assigned, unification nets do not require a definite choice, while witness nets do. Composition is direct, by relational composition. We compare further properties in Figure~\ref{fig:results} in the conclusion, where we also discuss related work and Lambek's notion of \defn{generality} \cite{Lambek-1968-1972}.
+%\cite{Lambek-1968, Lambek-1969, Lambek-1972}.
 %
 \[
 \hspace*{\fill}
@@ -596,6 +678,8 @@ This is incompatible with a \defn{sequent\,+\,links} proof net design, where the
 \paragraph*{Background}
 %
 Additive linear logic is combinatorially rich, yet well-behaved and tractable: proof search \cite{Galmiche-Marion-1995} and proof net correctness \cite{Heijltjes-Hughes-2015} for a net over $\seq AB$ are linear in $|A|\times|B|$ (with $|A|$ the size of the syntax tree of $A$). Proof nets remain canonical and equally tractable when extended with the two units \cite{Heijltjes-2011,Heijltjes-Hughes-2015}, and the first-order case is merely NP-complete \cite{Heijltjes-Hughes-2015}.
+
+%At the same time, the ubiquity of its main operations, product and sum, mean the ideas and results it garners are widely applicable. It serves as a microcosmos for important ideas and observations: it fostered the \emph{connections method} of proof search \cite{Galmiche-2000}; it demonstrated the \emph{Blass problem} \cite{Abramsky-2003} of game semantics, that sequential strategies do not in general have associative composition; and it is at the root of the study of fixed points in linear logic \cite{Santocanale-2002a}. The logic describes two-way communication~\cite{Cockett-Santocanale-2009}, and is a core part of \emph{session types}~\cite{Honda-1993}.
 
 {\all} is of course part of {\mall} (multiplicative-additive linear logic), and its lessons are clearly visible in the second author's canonical {\mall} proof nets~\cite{Hughes-vanGlabbeek-2005}, as well as the first and second author's locally canonical \emph{conflict nets}~\cite{Hughes-Heijltjes-2016}. Its proof nets also appear in the third author's study of the \emph{medial rule} for classical logic~\cite{str:RTA07}, and as the \emph{skew fibrations} in the second author's \emph{combinatorial proofs} for classical logic~\cite{Hughes-2006-proofs}. To prepare the ground for cut elimination in first-order \emph{combinatorial proofs} is a further motivation for the present work.
 
@@ -690,11 +774,13 @@ Additive proof nets have two natural correctness criteria. \defn{Coalescence} \c
 \]
 We extend coalescence to both witness nets and unification nets, and slicing to witness nets. Here, we illustrate the former, and leave a discussion of slicing to the conclusion of the paper.
 
-We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \defn{unifying coalescence} ($\ucoal$) for unification nets. We first give an example of the former (abbreviating $P(x,y)$ to $Pxy$). In the initial witness net, below left, each link corresponds to a sequent calculus axiom between both linked subformulas, with the substitutions applied.
+We will distinguish \defn{strict coalescence} ($\scoal$) for witness nets and \defn{unifying coalescence} ($\ucoal$) for unification nets. We first give an example of the former (abbreviating $P(x,y)$ to $Pxy$).
+%(writing $Pxy$ for $P(x,y)$ to conserve space). 
+In the initial witness net, below left, each link corresponds to a sequent calculus axiom between both linked subformulas, with the substitutions applied.
 %
-\newcommand\xs{xs}
-\newcommand\xt{xt}
-\newcommand\xy{xy}
+\newcommand\xs{xs} %{(\kern-1ptx\kern-1pt,\kern-2pts\kern-1pt)}
+\newcommand\xt{xt} %{(\kern-1ptx\kern-1pt,\kern-2ptt\kern-1pt)}
+\newcommand\xy{xy} %(\kern-1ptx\kern-1pt,\kern-2pty\kern-1pt)}
 \newcommand\zs{zs}
 \newcommand\zt{zt}
 \[
@@ -884,9 +970,21 @@ Negation $(\dual{\,\cdot\,})$ is applied to predicate symbols, $\dual P$ as a ma
 %
 A \defn{sequent} $\seq AB$ is a pair of formulas $A$ and $B$. A sequent calculus for \all1 is given in Figure~\ref{fig:sequent calculus}, where each rule has a symmetric counterpart for the first formula in the sequent. We write $\prf\pi AB$ for a proof $\pi$ with conclusion sequent $\seq AB$. Two proofs are \defn{equivalent} $\pi\sim\pi'$ if one is obtained from the other by rule permutations, given in Figure~\ref{fig:permutations}.
 
+By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
+\[
+	\subs A = \{A\} \cup
+	\left\{\begin{array}{ll}
+		\subs B\uplus\subs C	& \text{if $A=B\+C$ or $A=B\*C$} \\[5pt]
+		\subs B					& \text{if $A=\exists x.B$ or $A=\forall x.B$}
+	\end{array}\right.
+\]
+
+Since we will be working with a graphical representation, we will adopt \defn{Barendregt's convention}, that bound variable names are globally unique identifiers, in the following form. In a sequent $\seq AB$ we assume all quantifiers have a unique binding variable, distinct from any free variable. In a proof $\pi$ over $\seq AB$, a variable $x$ that is universally quantified as $\forall x.C$ in $\seq AB$ is an \defn{eigenvariable}. A $\qrr!$ rule on $\forall x.C$ is considered to bind all free occurrences of the eigenvariable $x$ in its direct subproof. Accordingly, we assume that $x$ does not occur free outside these subproofs (which can be guaranteed by globally renaming $x$). We take variable names to be persistent throughout a proof, in the sense that we don't admit alpha-conversion (renaming of bound variables) between proof rules. We thus have unique bound variable names in $\seq AB$, but in $\pi$ all $\qrr!$ rules on the subformula $\forall x.C$ share the same eigenvariable $x$.
+
+
 % ..................................................
 
-\begin{figure}[!p]
+\begin{figure}[!t]
 $
 	\infer[\Qrr1]{\vphantom B\seq a{\dual a}}{}
 \hspace*{\fill}
@@ -905,7 +1003,7 @@ $
 
 % ..................................................
 
-\begin{figure}[!p]
+\begin{figure}[!ht]
 \[
 \renewcommand\+{{+}}
 \renewcommand\*{{\times}}
@@ -931,21 +1029,6 @@ $
 \caption{Cut-free rule permutations}
 \label{fig:permutations}
 \end{figure}
-
-
-% ..................................................
-
-
-By a \defn{subformula} we will mean a subformula \defn{occurrence}. For instance, a formula $A\*A$ has two subformulas $A$, one on the left and one on the right. The \defn{subformulas} $\subs A$ of a formula are defined as follows; we write $B\sub A$ if $B$ is a subformula of $A$, i.e.\ if $B\in\subs A$.
-\[
-	\subs A = \{A\} \cup
-	\left\{\begin{array}{ll}
-		\subs B\uplus\subs C	& \text{if $A=B\+C$ or $A=B\*C$} \\[5pt]
-		\subs B					& \text{if $A=\exists x.B$ or $A=\forall x.B$}
-	\end{array}\right.
-\]
-
-Since we will be working with a graphical representation, we will adopt \defn{Barendregt's convention}, that bound variable names are globally unique identifiers, in the following form. In a sequent $\seq AB$ we assume all quantifiers have a unique binding variable, distinct from any free variable. In a proof $\pi$ over $\seq AB$, a variable $x$ that is universally quantified as $\forall x.C$ in $\seq AB$ is an \defn{eigenvariable}. A $\qrr!$ rule on $\forall x.C$ is considered to bind all free occurrences of the eigenvariable $x$ in its direct subproof. Accordingly, we assume that $x$ does not occur free outside these subproofs (which can be guaranteed by globally renaming $x$). We take variable names to be persistent throughout a proof, in the sense that we don't admit alpha-conversion (renaming of bound variables) between proof rules. We thus have unique bound variable names in $\seq AB$, but in $\pi$ all $\qrr!$ rules on the subformula $\forall x.C$ share the same eigenvariable $x$.
 
 % ..................................................
 
@@ -974,7 +1057,13 @@ A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a 
 
 % ..................................................
 
-\begin{figure}
+%We will assume that all quantifiers in a sequent $\seq AB$ have a distinct binding variable, and no bound variable shares a name with a free one (\defn{Barendregt's convention}). In a proof $\pi$ or linking $\lambda_\Sigma$ over $\seq AB$, a variable $x$ is an \defn{eigenvariable} if it is universally quantified ($\forall x.X$) in $\seq AB$, an \defn{existential variable} if existentially quantified ($\exists x.X$), and a \defn{global variable} if free in $\seq AB$. A variable $x$ introduced by a witnessing term $t$ in $\pi$ (in a rule $\qrr?t$) or in $\lambda_\Sigma$ (in the range of $\Sigma$) that is not an eigenvariable or global variable is a \defn{term variable}. We will assume the following \defn{freshness} convention: term variables are distinct from existential variables. Observe that both conventions are readily applied to proofs and linkings by renaming (\emph{$\alpha$-converting}) quantified variables in the conclusion.
+
+% ..................................................
+
+\begin{definition}
+The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\deseq[\varnothing]\pi AB}AB$ where the function $\deseq-AB$ is defined inductively as follows (symmetric cases are omitted).
+%
 \newcommand\XDeseq[4][\sigma]{
  \left[\vc{#2}\right]%
  _{\makebox[0pt][l]{$\scriptstyle{#1}$}}%
@@ -1005,19 +1094,83 @@ A \defn{witness pre-net} $\net{\lambda_\Sigma}AB$ is a sequent $\seq AB$ with a 
 	& \quad=\quad 
 	  \Deseq{\Prf\pi AB}{A'}{B'}
 \end{align*}
-\caption{De-sequentialization}
-\label{fig:deseq}
-\end{figure}
-
-% ..................................................
-
-\begin{definition}
-The \defn{de-sequentialization} $[\pi]$ of a sequent proof $\prf\pi AB$ is the witness pre-net $\net{\deseq[\varnothing]\pi AB}AB$ where the function $\deseq-AB$ is defined inductively in Figure~\ref{fig:deseq} (symmetric cases are omitted).
+%
+%\begin{align*}
+%	\XDeseq{\,\infer[\Qrr1]{\seq a{\dual a}}{}}bc &\quad=\quad \{\link bc\}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr+i]{\seq A {B_1\+B_2}}{\prf \pi A{B_i}}} {A'} {B_1'\+B'_2} 
+%	& \quad=\quad 
+%	\deseq{\prf\pi A{B_i}} {A'} {B_i'}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr*]{\seq A{B\*C}}{
+%	 \prf\pi AB && \prf{\pi'}AC 
+%	}}{A'}{B'\*C'}
+%	& \quad=\quad 
+%	  \deseq{\prf\pi AB}{A'}{B'}
+%	  \cup
+%	  \deseq{\prf{\pi'}AC}{A'}{C'}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr?t]{\seq A{\exists x.B}}{\prf\pi A{B[t/x]}}}{A'}{\exists x.B'}
+%	& \quad=\quad 
+%	 \deseq[{\sigma[t/x]}]{\prf\pi A{B[t/x]}} {A'} {B'}
+%\\ \\[-5pt]
+%	\XDeseq{\infer[\Qrr!]
+%	  {\seq A{\forall x.B}}{\prf\pi AB}} {A'} {\forall x.B'}
+%	& \quad=\quad 
+%	  \deseq{\prf\pi AB}{A'}{B'}
+%\end{align*}
 \end{definition}
 
 % ..................................................
 
 A function call $\deseq{\prf\pi AB}{A'}{B'}$ expects that $A=A'\sigma$ and $B=B'\sigma$: the translation separates a sequent $\seq AB$ into subformulas $A'$, $B'$ of the ultimate conclusion of the proof, and the accumulated existential witnesses $\sigma$. For an example, we refer to the introduction.
+%
+%To conclude this section we will identify three aspects of sequent proofs, arising from the local nature of the rules, that need to be enforced explicitly in proof nets.
+%
+%\begin{description}
+%	\item[Axiom links]
+%A sequent proof axiom connects dual atoms, $\seq a{\dual a}$. Correspondingly, a witness link $\link ab$ on atomic formulas $a$ and $b$ is an \defn{axiom link} if $a\sigma=\dual b\sigma$. An \defn{axiom} witness linking is one consisting solely of axiom links.
+%	\item[Local eigenvariables]
+%The side-condition on the $\forall R$-rule, that the eigenvariable is not free in the context, means that eigenvariables are \emph{local} to the subproof of the $\forall R$-rule. Correspondingly, a link $\link CD$ on $\seq AB$ has \defn{local eigenvariables} if for any variable $x\in\sigma$, if $x$ is an eigenvariable quantified as $\forall x.X$ in $\seq AB$, then $C\leq X$ or $D\leq X$.
+%A witness linking or pre-net has \defn{local eigenvariables} if all its links do.
+%	\item[Exact coverage]
+%The local witness substitution $[t/x]$ in a rule instance $\qrr?t$ will have been applied exactly to the axioms $\seq a{\dual a}$ in the subproof of that rule. Correspondingly, for a link $\link CD$ on $\seq AB$ we expect the domain of $\sigma$ to be exactly the existential variables in $A$ and $B$ in whose scope $C$ and $D$ occur. For a subformula $C$ of $A$, let the \defn{existential variables of $C$ in $A$} be the set $\ex[A]C = \{\,x \mid C < \exists x.X \sub A\,\}$. A link $\link CD$ on $\seq AB$ then has \defn{exact coverage} if $\dom\sigma = \ex[A]C\cup\ex[B]D$. If it does, $\sigma$ consists of two components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we abbreviate as $\sigma_C$ and $\sigma_D$ respectively.
+%A witness linking or pre-net has \defn{exact coverage} if all its links do.
+%\end{description}
+%
+%\noindent
+%Observe that a de-sequentialization $[\pi]$ has all three properties.
+
+%\begin{definition}[Local correctness]
+%A witness linking or pre-net has \emph{local eigenvariables/exact coverage} if all its links do.
+%It is \defn{locally correct} if it satisfies both.
+%\end{definition}
+
+
+%First, a witness link $\link ab$ on two atomic formulas $a$ and $b$ is an \defn{axiom} link if $a\sigma=\dual b\sigma$. A witness \defn{axiom} linking is one where every link is an axiom link. Observe that the de-sequentialization $[\pi]$ is a witness pre-net with axiom linking $\deseq[\varnothing]\pi AB$.
+
+%Second, in a sequent proof, the side-condition on the $\forall R$-rule, that the eigenvariable is not free in the context, means that eigenvariables are \emph{local} to the subproof of the $\forall R$-rule. We capture this in pre-nets as the \defn{local eigenvariables} condition: for a link $\link CD$ on $\seq AB$, if $x\in\sigma$ is an eigenvariable quantified as $\forall x.X$ in $\seq AB$, then $C\leq X$ or $D\leq X$.
+%
+%Third, for a link $\link CD$ on $\seq AB$ we expect the domain of $\sigma$ to be exactly the existential variables in $A$ and $B$ in whose scope $C$ and $D$ occur. For a subformula $C$ of $A$, let the \defn{existential variables of $C$ in $A$} be the set $\ex[A]C$:
+%\[
+%	\ex[A]C = \{\,x \mid C < \exists x.X \sub A\,\}~.
+%\]
+%
+%% ..................................................
+%
+%\begin{definition}
+%A witness pre-net $\net{\lambda_\Sigma}AB$ has \defn{exact coverage} if for every link $\link CD$ in $\lambda_\Sigma$ the domain of $\sigma$ is exactly the existential variables of $C$ and $D$:
+%\[
+%	\dom\sigma = \ex[A]C\cup\ex[B]D~.
+%\]
+%\end{definition}
+%
+% ..................................................
+%
+%The witness map $\sigma$ of a link $\link CD$ then has two natural, disjoint components, $\sigma\res{\ex[A]C}$ and $\sigma\res{\ex[B]D}$, which we will abbreviate by $\sigma_C$ and $\sigma_D$ respectively.
+
+
+
 
 % --------------------------------------------------
 
@@ -1043,9 +1196,13 @@ So far we have accumulated the following notational conventions:
 
 % ..................................................
 
-\begin{figure}
+\begin{definition}
+%
 \renewcommand{\+}{{+}}
 \renewcommand{\*}{{\times}}
+%
+\defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the following rules, which replace one or two links by another in a pre-net $\net{\lambda_\Sigma^\Pi}AB$ where $B$ has a subformula $D_1\+D_2$, $D_1\*D_2$, $\exists x.D$, and $\forall x.D$ respectively. Symmetric cases are omitted.
+%
 \begin{align*}
 \tag{$\srr+i$}
 	\link C{D_i}^\pi
@@ -1079,20 +1236,6 @@ So far we have accumulated the following notational conventions:
 	&&
 	\psi=~\vc{\infer[\Qrr!]{\seq{C\sigma}{\forall x.D\sigma}} {\Prf \pi {C\sigma} {D\sigma}}}
 \end{align*}
-\caption{Strict coalescence}
-\label{fig:strict}
-\end{figure}
-
-% ..................................................
-
-
-
-\begin{definition}
-%
-\renewcommand{\+}{{+}}
-\renewcommand{\*}{{\times}}
-%
-\defn{Strict sequentialization} ($\scoal$) is the rewrite relation on labelled pre-nets generated by the rules in Figure~\ref{fig:strict}, which replace one or two links by another in a pre-net $\net{\lambda_\Sigma^\Pi}AB$ where $B$ has a subformula $D_1\+D_2$, $D_1\*D_2$, $\exists x.D$, and $\forall x.D$ respectively. Symmetric cases are omitted.
 %
 \defn{Strict coalescence} is the same relation on witness pre-nets, ignoring proof labels, illustrated in Figure~\ref{fig:coalescence}. A witness pre-net $\net{\lambda_\Sigma}AB$ \defn{strict-coalesces} if it reduces to $\net{\{\link[\varnothing]AB\}}AB$. It \defn{strongly} strict-coalesces if any coalescence path terminates at $\net{\{\link[\varnothing]AB\}}AB$.
 \end{definition}
@@ -1484,7 +1627,7 @@ If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ seque
 \newcommand\yC{1.05}
 
 % ..................................................
-\begin{figure}[!p]
+\begin{figure}[!tp]
 \[
 \begin{array}{ccc}
     \vc{
@@ -1560,7 +1703,7 @@ If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ seque
 \label{fig:crit1}
 \end{figure}
 % ..................................................
-\begin{figure}[!p]
+\begin{figure}[!tp]
 \[
 \begin{array}{ccc}
     \vc{
@@ -1637,7 +1780,7 @@ If proof nets $\net{\lambda_\Sigma}AB$ and $\net{\kappa_\Theta}{\dual B}C$ seque
 \label{fig:crit2}
 \end{figure}
 % ..................................................
-\begin{figure}[!p]
+\begin{figure}[!tp]
 \[
 \begin{array}{ccc}
     \vc{
