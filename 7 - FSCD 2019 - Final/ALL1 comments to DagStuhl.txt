@@ -1,0 +1,4 @@
+* Could Figure 6 be pushed to page 12 please?
+* On page 12, below the figure that previously used columns, please change "We use the example on the right" to "We use the example above".
+* The macro "\fix" has become broken. It appears this is because the macro "\overrightharpoon" has changed: the version we used accepts an optional argument; the new version doesn't. I can't reproduce the problem.
+* On page 15, in "variables in the domain of a witness map are fresh", please change "domain" to "range".
